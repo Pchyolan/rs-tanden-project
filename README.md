@@ -1,7 +1,7 @@
 # RS Tandem Project
 
 ## Description
-A tiny web project fueled by coffee and optimism.  
+A tiny web project fueled by coffee and optimism ☕️
 We write code, occasionally debug, and mostly survive stage 2.  
 
 ## Team
