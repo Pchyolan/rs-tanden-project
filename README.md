@@ -1,8 +1,8 @@
 # RS Tandem Project
 
 ## Description
-This is a project created for RS School Tandem Stage 2. 
-The goal is to build a collaborative web application.
+A tiny web project fueled by coffee and optimism.  
+We write code, occasionally debug, and mostly survive stage 2.  
 
 ## Team
 - Pchyolan – https://github.com/pchyolan
