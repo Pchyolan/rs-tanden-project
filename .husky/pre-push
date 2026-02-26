@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+echo "🔍 Running pre-push checks..."
+
+# Проверка типов (если build уже включает tsc, то можно просто build)
+npm run type-check || { echo "❌ Type check failed"; exit 1; }
+echo "✅ Type check passed."
+
+# Сборка проекта
+npm run build || { echo "❌ Build failed"; exit 1; }
+echo "✅ Build passed."
+
+# Быстрые тесты (опционально)
+# npm test || { echo "❌ Tests failed"; exit 1; }
+# echo "✅ Tests passed."
+
+echo "🎉 All checks passed. Ready to push!"
