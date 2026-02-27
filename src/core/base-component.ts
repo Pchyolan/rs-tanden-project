@@ -31,9 +31,14 @@ export class BaseComponent<T extends Tags = 'div'> {
 
   /**
    * Создает новый компонент
-   * @param props - конфигурационные свойства
+   * @param props - конфигурационные свойства для создания элемента или компонент, созданный через DOM (для создания обёртки)
    */
-  constructor(props: ComponentProps<T> = {}) {
+  constructor(props: HTMLElementTagNameMap[T] | ComponentProps<T>) {
+    if (props instanceof HTMLElement) {
+      this.element = props as HTMLElementTagNameMap[T];
+      return;
+    }
+
     this.element = document.createElement(props.tag ?? 'div') as HTMLElementTagNameMap[T];
 
     if (props.className?.length) {

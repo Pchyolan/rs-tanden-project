@@ -6,15 +6,20 @@ type HeaderCallbacks = {
   onHome: () => void;
   onSignIn: () => void;
   onTestApi: () => void;
+  onWidgetClick: () => void;
 };
 
 export class Header extends BaseComponent<'header'> {
   private readonly logo: BaseComponent<'span'>;
+
   private homeBtn: BaseComponent<'button'>;
   private readonly signInBtn: BaseComponent<'button'>;
   private readonly testApiBtn: BaseComponent<'button'>;
+  private readonly widgetEngineBtn: BaseComponent<'button'>;
+
   private readonly langRuBtn: BaseComponent<'button'>;
   private readonly langEnBtn: BaseComponent<'button'>;
+
   private callbacks: HeaderCallbacks;
   private readonly unsubscribe: () => void;
 
@@ -38,6 +43,9 @@ export class Header extends BaseComponent<'header'> {
     this.testApiBtn = new BaseComponent({ tag: 'button' });
     this.testApiBtn.addEventListener('click', this.callbacks.onTestApi);
 
+    this.widgetEngineBtn = new BaseComponent({ tag: 'button', text: 'Widget Engine' });
+    this.widgetEngineBtn.addEventListener('click', this.callbacks.onWidgetClick);
+
     const langButtons = new BaseComponent({
       tag: 'div',
       className: ['lang-buttons'],
@@ -50,7 +58,7 @@ export class Header extends BaseComponent<'header'> {
     this.langEnBtn.addEventListener('click', () => language$.set('en'));
 
     langButtons.append(this.langRuBtn, this.langEnBtn);
-    navButtons.append(this.homeBtn, this.signInBtn, this.testApiBtn, langButtons);
+    navButtons.append(this.homeBtn, this.signInBtn, this.testApiBtn, this.widgetEngineBtn, langButtons);
     this.append(this.logo, navButtons);
 
     this.unsubscribe = language$.subscribe(() => this.updateHeader());

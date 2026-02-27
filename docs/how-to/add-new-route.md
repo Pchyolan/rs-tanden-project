@@ -6,6 +6,7 @@
 
 Файлы с кодом для создания страниц лежат в папке `src/pages/`. Пока что там один файл - одна страница, в теории большие страницы нужно будет бить на части. Пример самого минимального файла с подключением словаря (EN-RU):
 
+### Создание страницы со словарём
 ```typescript
 import { BaseComponent, type Page } from '../core';
 import { language$ } from '../store/language-store.ts';
@@ -45,7 +46,7 @@ export function homePage(): Page {
 }
 ```
 
-Пример файла без подключения словаря:
+### Создание страницы без подключения словаря:
 
 ```typescript
 import { BaseComponent } from '../core';
@@ -72,6 +73,27 @@ export function loginPage(): Page {
   };
 }
 ```
+### Создание страницы с использованием нативного DOM
+
+Если вы не хотите использовать `BaseComponent` для вёрстки, вы можете создать элемент через `document.createElement`, а затем обернуть его в `BaseComponent`:
+
+```typescript
+import { BaseComponent, type Page } from '../core';
+
+export function myPage(): Page {
+  return {
+    render: () => {
+        const div = document.createElement('div');
+        div.className = 'my-page';
+        div.innerHTML = '<h1>Hello</h1>';
+
+        const component = new BaseComponent(div);
+    },
+    onMount() { /* ... */ },
+    onDestroy() { /* ... */ },
+  };
+}
+```
 
 Основные моменты:
 
@@ -80,7 +102,15 @@ export function loginPage(): Page {
 - Подписка на language$ нужна только если страница содержит текст, которые нужно переводить на английский / русский. От неё нужно отписаться в onDestroy.
 - Стиль className предназначен для стилизации страницы в целом, если она нужна.
 
-## 2. Добавление словаря с переводами (если нужен)
+## 2. Добавление новой страницы в файл index.ts (для удобства импорта)
+```typescript
+export { homePage } from './home-page';
+export { loginPage } from './login-page';
+export { apiTestPage } from './api-test-page';
+export { notFoundPage } from './not-found-page';
+```
+
+## 3. Добавление словаря с переводами (если нужен)
 
 Если на новой странице есть текст, нужно добавить соответствующие ключи в папку интернационализации i18n.
 
@@ -111,11 +141,11 @@ export const mainTranslations: Record<
 
 Затем нужно добавить свой файл в `src/i18n/index.ts`. После этого он станет доступен для использования в приложении.
 
-## 3. Добавление константы для маршрута
+## 4. Добавление константы для маршрута
 
 В файле `src/constants/routes.ts` нужно добавить в константу новый маршрут, например `API_TEST: '/api-test'`
 
-## 4. Добавление нового маршрута и новой страницы в роутер
+## 5. Добавление нового маршрута и новой страницы в роутер
 
 В файле `src/components/app.ts` нужно найти метод setupRoutes() и добавить в него новую строку для своей страницы:
 
@@ -131,11 +161,11 @@ private setupRoutes(): void {
 
 Также нужно импортировать компонент страницы.
 
-## 5. Добавление кнопки в header (если нужно)
+## 6. Добавление кнопки в header (если нужно)
 
 Для разработки можно добавлять кнопку для перехода на страницу в header. Для этого нужно выполнить несколько шагов:
 
-- В файле `src/components/header.ts` в компоненте Header создать новую кнопку:
+- в файле `src/components/header.ts` в компоненте Header создать новую кнопку:
 
 ```typescript
 this.testApiBtn = new BaseComponent({ tag: 'button' });
@@ -158,6 +188,7 @@ this.header = new Header({
   onTestApi: () => this.router.navigate(Routes.API_TEST),
 });
 ```
+- добавить новую кнопку в блок navButtons в файле `src/components/header.ts`
 
 Когда кнопка для разработки станет не нужна, выпилить код из header и app в обратном порядке.
 
