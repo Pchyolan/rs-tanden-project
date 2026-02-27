@@ -25,10 +25,10 @@
     }
 
     input {
-      width: 100%;
       padding: variables.$spacing-sm;
-      margin-bottom: variables.$spacing-sm;
+      width: 100%;
       border: 1px solid #ccc;
+      margin-bottom: variables.$spacing-sm;
       border-radius: variables.$border-radius;
       font-size: 1rem;
       box-sizing: border-box;
@@ -36,13 +36,13 @@
 
     button {
       padding: variables.$spacing-sm;
-      background: variables.$color-primary;
       color: white;
+      background: variables.$color-primary;
       border: none;
+      transition: background-color variables.$transition-speed;
       border-radius: variables.$border-radius;
       cursor: pointer;
       font-size: 1rem;
-      transition: background-color variables.$transition-speed;
 
       &:hover {
         background: color.adjust(variables.$color-primary, $lightness: -10%);
@@ -58,19 +58,19 @@
 
     .textarea-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       padding: variables.$spacing-xs variables.$spacing-sm;
-      background-color: color.adjust(variables.$color-background, $lightness: 5%);
       border: 1px solid #ccc;
+      background-color: color.adjust(variables.$color-background, $lightness: 5%);
       border-radius: variables.$border-radius variables.$border-radius 0 0;
 
       a {
+        display: inline-flex;
+        align-items: center;
         color: variables.$color-primary;
         text-decoration: none;
         font-size: 0.9rem;
-        display: inline-flex;
-        align-items: center;
         gap: 4px;
 
         &:hover {
@@ -79,14 +79,14 @@
       }
 
       .copy-btn {
-        background: variables.$color-secondary;
-        color: white;
-        border: none;
         padding: 4px 12px;
+        color: white;
+        background: variables.$color-secondary;
+        border: none;
+        transition: background-color variables.$transition-speed;
         border-radius: variables.$border-radius;
         cursor: pointer;
         font-size: 0.9rem;
-        transition: background-color variables.$transition-speed;
 
         &:hover {
           background: color.adjust(variables.$color-secondary, $lightness: -10%);
@@ -95,16 +95,16 @@
     }
 
     textarea {
-      height: 100%;
-      min-height: 400px;
       padding: variables.$spacing-md;
+      height: 100%;
+      color: #d4d4d4;
+      background: #1e1e1e;
+      border: 1px solid #ccc;
+      min-height: 400px;
       font-family: monospace;
       font-size: 12px;
-      border: 1px solid #ccc;
       border-radius: 0 0 variables.$border-radius variables.$border-radius;
       resize: vertical;
-      background: #1e1e1e;
-      color: #d4d4d4;
     }
   }
 }

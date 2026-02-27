@@ -12,6 +12,8 @@
     "lint:check": "eslint src/",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
+    "lint:styles": "stylelint 'src/**/*.{scss,css}'",
+    "lint:styles:fix": "stylelint 'src/**/*.{scss,css}' --fix",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
@@ -24,7 +26,10 @@
       "prettier --write"
     ],
     "*.{json,md}": "prettier --write",
-    "*.{css,scss}": "prettier --write"
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ]
   },
   "repository": {
     "type": "git",
@@ -52,6 +57,9 @@
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "sass": "^1.97.3",
+    "stylelint": "^17.4.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "stylelint-order": "^7.0.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.1",
     "vite-plugin-eslint2": "^5.0.5",

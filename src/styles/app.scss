@@ -8,15 +8,14 @@
 }
 
 .app-header {
-  background-color: variables.$color-primary;
-  color: white;
-  padding: variables.$spacing-md variables.$spacing-xl;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: variables.$spacing-md variables.$spacing-xl;
+  color: white;
+  background-color: variables.$color-primary;
 
   .logo {
-    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
   }
@@ -27,13 +26,13 @@
   }
 
   button {
+    padding: variables.$spacing-xs variables.$spacing-md;
     background: white;
     border: none;
-    padding: variables.$spacing-xs variables.$spacing-md;
+    transition: background-color variables.$transition-speed;
     border-radius: variables.$border-radius;
     cursor: pointer;
     font-weight: 500;
-    transition: background-color variables.$transition-speed;
 
     &:hover {
       background-color: color.adjust(white, $lightness: -20%);
@@ -42,21 +41,21 @@
 }
 
 .app-main {
-  flex: 1;
-  padding: variables.$spacing-xl;
-  background-color: variables.$color-background;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 2rem;
+  justify-content: center;
+  padding: variables.$spacing-xl;
   color: color.adjust(variables.$color-text, $lightness: 40%);
+  flex: 1;
+  background-color: variables.$color-background;
+  font-size: 2rem;
 }
 
 .app-footer {
-  background-color: variables.$color-primary;
-  color: white;
-  text-align: center;
   padding: variables.$spacing-md;
+  color: white;
+  background-color: variables.$color-primary;
+  text-align: center;
   border-top: 1px solid color.adjust(variables.$color-text, $lightness: 70%);
 }
 
@@ -66,17 +65,17 @@
   margin-left: variables.$spacing-md;
 
   button {
+    padding: variables.$spacing-xs variables.$spacing-sm;
+    color: white;
     background: transparent;
     border: 1px solid white;
-    color: white;
-    padding: variables.$spacing-xs variables.$spacing-sm;
+    transition: background-color variables.$transition-speed;
     border-radius: variables.$border-radius;
     cursor: pointer;
     font-weight: 500;
-    transition: background-color variables.$transition-speed;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgb(255 255 255 / 20%);
     }
 
     &.active {
