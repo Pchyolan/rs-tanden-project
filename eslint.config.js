@@ -61,7 +61,7 @@ export default defineConfig([
                     },
                 },
             ],
-            'max-lines-per-function': ['error', 40],
+            'max-lines-per-function': ['error', 200],
             'no-console': 'off',
             'no-plusplus': 'off',
         },

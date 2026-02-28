@@ -1,0 +1,87 @@
+@use 'sass:color';
+@use 'variables';
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: variables.$spacing-md variables.$spacing-xl;
+  color: white;
+  background-color: variables.$color-primary;
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+
+  .nav-buttons {
+    display: flex;
+    gap: variables.$spacing-md;
+  }
+
+  button {
+    padding: variables.$spacing-xs variables.$spacing-md;
+    background: white;
+    border: none;
+    transition: background-color variables.$transition-speed;
+    border-radius: variables.$border-radius;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      background-color: color.adjust(white, $lightness: -20%);
+    }
+  }
+}
+
+.app-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: variables.$spacing-xl;
+  color: color.adjust(variables.$color-text, $lightness: 40%);
+  flex: 1;
+  background-color: variables.$color-background;
+  font-size: 2rem;
+}
+
+.app-footer {
+  padding: variables.$spacing-md;
+  color: white;
+  background-color: variables.$color-primary;
+  text-align: center;
+  border-top: 1px solid color.adjust(variables.$color-text, $lightness: 70%);
+}
+
+.lang-buttons {
+  display: flex;
+  gap: variables.$spacing-xs;
+  margin-left: variables.$spacing-md;
+
+  button {
+    padding: variables.$spacing-xs variables.$spacing-sm;
+    color: white;
+    background: transparent;
+    border: 1px solid white;
+    transition: background-color variables.$transition-speed;
+    border-radius: variables.$border-radius;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      background-color: rgb(255 255 255 / 20%);
+    }
+
+    &.active {
+      background-color: white;
+      color: variables.$color-primary;
+      border-color: white;
+    }
+  }
+}
