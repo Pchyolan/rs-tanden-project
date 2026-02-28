@@ -1,0 +1,10 @@
+# Прямая выкладка (запасной вариант)
+[build]
+  publish = "dist"              # Папка, где лежит сборка
+  command = "npm run build"     # Команда сборки проекта
+
+# Правила для роутинга
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
