@@ -80,3 +80,6 @@ npm run dev
 - notes - для дневников, записей встреч и документации
 - feature - для новых фич и разработок
 - fix - для правки багов
+
+# Deploy
+[тык](https://69a34feb98f241ff04906774--graceful-khapse-901247.netlify.app/) 
