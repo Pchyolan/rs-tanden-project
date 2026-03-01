@@ -4,7 +4,10 @@
 A tiny web project fueled by coffee and optimism ☕️
 We write code, occasionally debug, and mostly survive stage 2.  
 
-## 👥 Team
+## 🌱 Deploy
+[Deploy Link](https://tranquil-froyo-550c45.netlify.app/)
+
+## 🌟 Team
 - Pchyolan – [GitHub](https://github.com/pchyolan) - [Дневники](./development-notes/Pchyolan)
 - Anna Demyanovich – [GitHub](https://github.com/thefoxtale) - [Дневники](./development-notes/theFoxTale)
 
@@ -18,6 +21,9 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 ## 🤹‍♀️ Kanban-доска разработки проекта
 Все задачи, связанные с разработкой и развитием проекта, занесены на Kanban-доску - [ссылка](https://github.com/users/Pchyolan/projects/1/views/1).
+
+## 📝 Записи встреч команды
+Иногда мы ведём дневниковые записи наших встреч, и они лежат [тут](./docs/meeting-notes/index.md)
 
 ## 🚀 Запуск проекта для разработчиков
 Для запуска проекта требуется Node миниум 20-ой версии.
@@ -81,5 +87,4 @@ npm run dev
 - feature - для новых фич и разработок
 - fix - для правки багов
 
-# Deploy
-[Deploy Link](https://tranquil-froyo-550c45.netlify.app/) 
+
