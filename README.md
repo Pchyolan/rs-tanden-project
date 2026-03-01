@@ -82,4 +82,4 @@ npm run dev
 - fix - для правки багов
 
 # Deploy
-[тык](tranquil-froyo-550c45.netlify.app) 
+[Deploy Link](https://tranquil-froyo-550c45.netlify.app/) 
