@@ -3,7 +3,7 @@ import { user$ } from '@/store/auth-store';
 import { authService } from '@/services/auth-service.ts';
 import type { AuthError } from '@supabase/supabase-js';
 
-import '../../styles/api-test.scss';
+import './api-test.scss';
 
 export class ApiTestPageController {
   private container!: BaseComponent<'div'>;

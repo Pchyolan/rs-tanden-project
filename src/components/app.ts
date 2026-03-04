@@ -5,7 +5,7 @@ import { Footer } from './footer.ts';
 import { homePage, loginPage, apiTestPage, notFoundPage, widgetEnginePage, memoryGamePage } from '@/pages';
 import { routes } from '@/constants';
 
-import '../styles/app.scss';
+import './app.scss';
 
 export class App extends BaseComponent<'div'> {
   private readonly header: Header;
