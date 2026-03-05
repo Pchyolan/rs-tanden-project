@@ -33,8 +33,12 @@ export class MemoryGameWidget extends BaseComponent {
     };
 
     this.gameState = new GameState(widget.payload);
-    this.renderer = new MemoryGameRenderer(this.gameState);
+    this.renderer = new MemoryGameRenderer({ gameState: this.gameState, onReset: this.handleReset });
 
     this.append(this.renderer);
   }
+
+  private handleReset = () => {
+    this.gameState.reset();
+  };
 }

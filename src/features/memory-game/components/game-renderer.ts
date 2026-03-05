@@ -14,20 +14,28 @@ import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
 
 import './game-renderer.scss';
 
+type MemoryGameRendererProps = {
+  gameState: GameState;
+  onReset: () => void;
+};
+
 export class MemoryGameRenderer extends BaseComponent {
   private gameState: GameState;
+
+  private onReset: () => void;
 
   private graphRenderer?: GraphRenderer;
   private markedCounter?: BaseComponent<'span'>;
   private unsubscribe?: () => void;
 
-  constructor(gameState: GameState) {
+  constructor({ gameState, onReset }: MemoryGameRendererProps) {
     super({
       tag: 'div',
       className: ['memory-game__container'],
     });
 
     this.gameState = gameState;
+    this.onReset = onReset;
 
     this.createElements();
     this.subscribeToMarkedGarbage();
@@ -145,32 +153,43 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__text', 'memory-game__text--green'],
     });
 
+    const questionWrapper = this.renderIconWrapper(questionLogo, 'question');
+
+    const refreshWrapper = this.renderIconWrapper(refreshLogo, 'refresh');
+    refreshWrapper.addEventListener('click', this.onReset);
+
     controlsPanel.append(
-      new BaseComponent<'img'>({
-        tag: 'img',
-        className: ['memory-game__icon'],
-        attrs: {
-          src: questionLogo,
-          alt: 'question',
-        },
-      }),
+      questionWrapper,
       new BaseComponent<'span'>({
         tag: 'span',
         text: 'Marked items:',
         className: ['memory-game__text'],
       }),
       this.markedCounter,
-      new BaseComponent<'img'>({
-        tag: 'img',
-        className: ['memory-game__icon'],
-        attrs: {
-          src: refreshLogo,
-          alt: 'refresh',
-        },
-      })
+      refreshWrapper
     );
 
     return controlsPanel;
+  }
+
+  private renderIconWrapper(iconLogo: string, iconAltText: string): BaseComponent {
+    const iconWrapper = new BaseComponent({
+      tag: 'div',
+      className: ['memory-game__icon-wrapper'],
+    });
+
+    const iconImg = new BaseComponent<'img'>({
+      tag: 'img',
+      className: ['memory-game__icon'],
+      attrs: {
+        src: iconLogo,
+        alt: iconAltText,
+      },
+    });
+
+    iconWrapper.append(iconImg);
+
+    return iconWrapper;
   }
 
   private renderBottomPanel(): BaseComponent {

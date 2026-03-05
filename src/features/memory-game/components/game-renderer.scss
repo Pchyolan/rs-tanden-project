@@ -67,6 +67,11 @@ pre.memory-game__code {
   color: $color-text;
 }
 
+.memory-game__text--green {
+  color: $color-accent;
+  font-weight: 700;
+}
+
 .memory-game__hint-container {
   @include flex-center;
 
@@ -96,6 +101,27 @@ pre.memory-game__code {
 .memory-game__icon {
   width: 40px;
   height: 40px;
+}
+
+.memory-game__icon-wrapper {
+  @include flex-center;
+
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    box-shadow $transition-speed,
+    transform $transition-speed ease;
+
+  &:hover {
+    box-shadow: 0 0 12px rgb(0 150 255 / 80%);
+  }
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 16px rgb(0 100 200 / 90%);
+  }
 }
 
 .memory-game__button {
