@@ -1,7 +1,7 @@
 import { BaseComponent } from '@/core';
 
 import { GraphRenderer } from './graph-renderer';
-import { GameState } from '../core/game-state';
+import type { MemoryGamePayload } from '../types';
 
 import infoLogo from '@/assets/images/icons/info.png';
 import questionLogo from '@/assets/images/icons/question.png';
@@ -15,30 +15,32 @@ import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
 import './game-renderer.scss';
 
 type MemoryGameRendererProps = {
-  gameState: GameState;
+  payload: MemoryGamePayload;
+  onObjectClick: (objectId: string) => void;
   onReset: () => void;
 };
 
 export class MemoryGameRenderer extends BaseComponent {
-  private gameState: GameState;
+  private readonly payload: MemoryGamePayload;
 
-  private onReset: () => void;
+  private readonly onReset: () => void;
+  private readonly onObjectClick: (objectId: string) => void;
 
   private graphRenderer?: GraphRenderer;
   private markedCounter?: BaseComponent<'span'>;
-  private unsubscribe?: () => void;
 
-  constructor({ gameState, onReset }: MemoryGameRendererProps) {
+  constructor({ payload, onObjectClick, onReset }: MemoryGameRendererProps) {
     super({
       tag: 'div',
       className: ['memory-game__container'],
     });
 
-    this.gameState = gameState;
+    this.payload = payload;
+
+    this.onObjectClick = onObjectClick;
     this.onReset = onReset;
 
     this.createElements();
-    this.subscribeToMarkedGarbage();
   }
 
   private createElements() {
@@ -82,16 +84,14 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__code'],
     });
 
-    const payload = this.gameState.getPayload();
-
-    if (payload.highlightedLine) {
-      codeContainer.element.dataset.line = String(payload.highlightedLine);
+    if (this.payload.highlightedLine) {
+      codeContainer.element.dataset.line = String(this.payload.highlightedLine);
       codeContainer.element.classList.add('line-highlight');
     }
 
     const codeElement = new BaseComponent<'code'>({
       tag: 'code',
-      text: payload.codeSnippet,
+      text: this.payload.codeSnippet,
       className: ['language-javascript'],
     });
 
@@ -132,8 +132,8 @@ export class MemoryGameRenderer extends BaseComponent {
     });
 
     this.graphRenderer = new GraphRenderer({
-      payload: this.gameState.getPayload(),
-      onObjectClick: (objectId) => this.gameState.toggleMark(objectId),
+      payload: this.payload,
+      onObjectClick: this.onObjectClick,
     });
 
     rightPanel.append(this.graphRenderer, this.renderControls());
@@ -219,20 +219,11 @@ export class MemoryGameRenderer extends BaseComponent {
     return bottomPanel;
   }
 
-  private subscribeToMarkedGarbage() {
-    this.unsubscribe = this.gameState.markedGarbage$.subscribe((markedSet) => {
-      if (this.markedCounter) {
-        this.markedCounter.element.textContent = String(markedSet.size);
-      }
+  public updateMarkedObjects(markedSet: Set<string>): void {
+    if (this.markedCounter) {
+      this.markedCounter.element.textContent = String(markedSet.size);
+    }
 
-      if (this.graphRenderer) {
-        this.graphRenderer.updateMarkedObjects(markedSet);
-      }
-    });
-  }
-
-  public override remove(): void {
-    this.unsubscribe?.();
-    super.remove();
+    this.graphRenderer?.updateMarkedObjects(markedSet);
   }
 }

@@ -1,12 +1,12 @@
 import { type Page } from '@/core';
-import { MemoryGameWidget } from '@/features/memory-game/memory-game-widget';
+import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator.ts';
 
 export function memoryGamePage(): Page {
-  let widget: MemoryGameWidget;
+  let widget: MemoryGameWidgetCreator;
 
   return {
     render() {
-      widget = new MemoryGameWidget();
+      widget = new MemoryGameWidgetCreator('gc-001');
       return widget;
     },
     onMount() {
