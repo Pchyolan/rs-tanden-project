@@ -5,6 +5,8 @@ import type { MemoryGameWidget } from '@/features/memory-game/types';
 import { GameState } from '@/features/memory-game/core/game-state';
 import { MemoryGameRenderer } from '@/features/memory-game/components/game-renderer';
 
+import './memory-game-widget-creator.scss';
+
 export class MemoryGameWidgetCreator extends BaseComponent {
   private readonly widgetId: string;
   private gameState: GameState | null = null;
@@ -15,16 +17,18 @@ export class MemoryGameWidgetCreator extends BaseComponent {
     super({ tag: 'div', className: ['memory-game-widget'] });
     this.widgetId = widgetId;
 
-    const loader = new BaseComponent({ tag: 'div', text: 'Loading...', className: ['loader'] });
-    this.append(loader);
+    const spinnerContainer = new BaseComponent({ tag: 'div', className: ['spinner-container'] });
+    const spinner = new BaseComponent({ tag: 'div', className: ['spinner'] });
+    spinnerContainer.append(spinner);
+    this.append(spinnerContainer);
 
     this.loadWidget()
       .then(() => {
-        loader.remove();
+        spinnerContainer.remove();
       })
       .catch((error) => {
+        spinnerContainer.remove();
         console.error('Failed to load widget:', error);
-        loader.remove();
         const errorMessage = new BaseComponent({
           tag: 'div',
           text: 'Failed to load widget. Please try again.',
@@ -48,6 +52,8 @@ export class MemoryGameWidgetCreator extends BaseComponent {
           }
         },
         onReset: this.handleReset,
+        onCollect: this.handleCollect,
+        onSkip: this.handleSkip,
       });
 
       this.clear();
@@ -73,6 +79,33 @@ export class MemoryGameWidgetCreator extends BaseComponent {
     if (this.gameState) {
       this.gameState.reset();
     }
+  };
+
+  private handleCollect = async () => {
+    if (!this.gameState) return;
+
+    const answer = { markedAsGarbage: this.gameState.getMarked() };
+    try {
+      const verdict = await widgetDataSource.submitAnswer('memory-game', this.widgetId, answer);
+      if (verdict.isCorrect) {
+        this.showNotification('✅ Perfect! All garbage collected.', 'success');
+      } else {
+        this.showNotification(
+          verdict.explanation || '❌ Some objects are still reachable or incorrectly marked.',
+          'error'
+        );
+      }
+    } catch {
+      this.showNotification('Network error. Please try again.', 'error');
+    }
+  };
+
+  private showNotification(message: string, type: 'success' | 'error' = 'success') {
+    alert(`[${type}] ${message}`);
+  }
+
+  private handleSkip = () => {
+    console.log('Skip');
   };
 
   public override remove(): void {
