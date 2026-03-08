@@ -28,9 +28,9 @@ export class GraphRenderer extends BaseComponent {
     viewBoxHeight: 400,
 
     arrowMarkerId: 'arrowhead',
-    arrowSize: 10,
-    arrowRefX: 9,
-    arrowRefY: 5,
+    arrowSize: 8,
+    arrowRefX: 7,
+    arrowRefY: 4,
 
     textOffsetY: -0.4, // смещение для первой строки
     textLineHeight: 1.4, // расстояние между строками
@@ -81,7 +81,10 @@ export class GraphRenderer extends BaseComponent {
     marker.setAttribute('markerUnits', 'strokeWidth');
 
     const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    polygon.setAttribute('points', '0 0, 9 5, 0 10');
+    polygon.setAttribute(
+      'points',
+      `0 0, ${GraphRenderer.config.arrowRefX} ${GraphRenderer.config.arrowRefY}, 0 ${GraphRenderer.config.arrowSize}`
+    );
     polygon.setAttribute('fill', 'white');
 
     marker.append(polygon);

@@ -3,23 +3,23 @@
   transition: filter 0.2s;
 
   .object-rect {
-    fill: #add8e6;
-    stroke: #4682b4;
+    fill: #60a5fa;
+    stroke: #60a5fa;
     stroke-width: 2;
   }
 
   &.root .object-rect {
-    fill: #b3d9ff;
-    stroke: #06c;
+    fill: #a78bfa;
+    stroke: #a78bfa;
   }
 
   &.marked .object-rect {
     fill: #ffb3b3;
-    stroke: #c00;
+    stroke: #ffb3b3;
   }
 
   &:hover .object-rect {
-    filter: brightness(0.95);
+    filter: brightness(0.9);
   }
 }
 

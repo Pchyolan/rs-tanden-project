@@ -101,7 +101,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
   };
 
   private showNotification(message: string, type: 'success' | 'error' = 'success') {
-    alert(`[${type}] ${message}`);
+    console.log(`[${type}] ${message}`);
   }
 
   public override remove(): void {
