@@ -8,7 +8,7 @@ import questionLogo from '@/assets/images/icons/question.png';
 import refreshLogo from '@/assets/images/icons/refresh.png';
 
 import Prism from 'prismjs';
-import 'prismjs/themes/prism-twilight.css';
+import '@/styles/prism/prism-tailwind-moon-blue.css';
 import 'prismjs/plugins/line-highlight/prism-line-highlight';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
 
