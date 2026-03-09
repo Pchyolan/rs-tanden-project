@@ -1,4 +1,5 @@
 import { BaseComponent, Observable } from '@/core';
+import { SoundKey, SoundService } from '@/services/sound-service';
 
 import { GraphRenderer } from './graph-renderer';
 import type { GameState, MemoryGamePayload } from '../types';
@@ -26,6 +27,7 @@ type MemoryGameRendererProps = {
 export class MemoryGameRenderer extends BaseComponent {
   private readonly payload: MemoryGamePayload;
   private graphRenderer?: GraphRenderer;
+  private soundService = SoundService.getInstance();
 
   private unsubscribeMachine?: () => void;
 
@@ -258,7 +260,7 @@ export class MemoryGameRenderer extends BaseComponent {
           break;
         }
         case gameStates.result: {
-          console.log('Result');
+          this.soundService.playSound(SoundKey.next);
           break;
         }
         case gameStates.animation: {

@@ -22,7 +22,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
   private renderer: MemoryGameRenderer | null = null;
 
   private unsubscribe?: () => void;
-  private onComplete?: () => void;
+  private readonly onComplete?: () => void;
 
   constructor({ widgetId, onComplete }: MemoryGameWidgetCreatorProps) {
     super({ tag: 'div', className: ['memory-game-widget'] });
@@ -106,6 +106,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
 
     try {
       const verdict = await widgetDataSource.submitAnswer('memory-game', this.widgetId, answer);
+
       if (verdict.isCorrect) {
         this.gameMachine.transition({ type: gameActions.submitSuccess });
         this.showNotification('✅ Perfect! All garbage collected.', 'success');

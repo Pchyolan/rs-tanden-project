@@ -1,4 +1,5 @@
 import { BaseComponent } from '@/core';
+import { SoundKey, SoundService } from '@/services/sound-service';
 import type { MemoryGamePayload, MemoryObject } from '@/features/memory-game/types';
 
 import './graph-renderer.scss';
@@ -38,6 +39,7 @@ export class GraphRenderer extends BaseComponent {
 
   private payload: MemoryGamePayload;
   private readonly svg: SVGElement;
+  private soundService = SoundService.getInstance();
 
   private objectElements = new Map<string, SVGGElement>();
   private linkElements: { path: SVGPathElement; from: string; to: string }[] = [];
@@ -125,6 +127,7 @@ export class GraphRenderer extends BaseComponent {
       event.stopPropagation();
 
       group.classList.add('shake-animation');
+      this.soundService.playSound(SoundKey.error);
 
       setTimeout(() => {
         group.classList.remove('shake-animation');
@@ -193,6 +196,7 @@ export class GraphRenderer extends BaseComponent {
         event.stopPropagation();
 
         group.classList.add('click-animation');
+        this.soundService.playSound(SoundKey.mark);
         this.onObjectClick(object.id);
 
         setTimeout(() => {
