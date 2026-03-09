@@ -1,4 +1,5 @@
 import { widgetTypes } from '@/constants';
+import type { MemoryGamePayload } from '@/features/memory-game/types';
 
 export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
 
@@ -29,5 +30,5 @@ export type Widget =
   | (BaseWidget & { type: typeof widgetTypes.codeCompletion; payload: unknown })
   | (BaseWidget & { type: typeof widgetTypes.codeOrdering; payload: unknown })
   | (BaseWidget & { type: typeof widgetTypes.asyncSorter; payload: unknown })
-  | (BaseWidget & { type: typeof widgetTypes.memoryGame; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.memoryGame; payload: MemoryGamePayload })
   | (BaseWidget & { type: typeof widgetTypes.stackBuilder; payload: unknown });

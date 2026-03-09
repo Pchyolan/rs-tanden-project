@@ -78,7 +78,7 @@ export class BaseComponent<T extends Tags = 'div'> {
    * @returns this для цепочки вызовов
    */
   public show(): this {
-    this.element.style.display = '';
+    this.element.classList.remove('hidden');
     return this;
   }
 
@@ -87,7 +87,7 @@ export class BaseComponent<T extends Tags = 'div'> {
    * @returns this для цепочки вызовов
    */
   public hide(): this {
-    this.element.style.display = 'none';
+    this.element.classList.add('hidden');
     return this;
   }
 

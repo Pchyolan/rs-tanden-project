@@ -1,36 +1,19 @@
-import { BaseComponent, type Page } from '@/core';
-import { language$ } from '../store/language-store.ts';
-import { translations, type TranslationKey } from '@/i18n';
+import { type Page } from '@/core';
+import { TicketPageController } from '@/pages/controllers';
 
 export function memoryGamePage(): Page {
-  let container: BaseComponent<'div'>;
-  let textComponent: BaseComponent<'p'>;
-  let unsubscribe: () => void;
-
-  const updateTexts = () => {
-    const lang = language$.value;
-    const dictionary = (key: TranslationKey) => translations[lang][key];
-    textComponent.element.textContent = dictionary('myText');
-  };
+  let controller: TicketPageController;
 
   return {
     render() {
-      container = new BaseComponent({ tag: 'div', className: ['memory-game-page'] });
-      textComponent = new BaseComponent({ tag: 'p', className: ['memory-game-text'] });
-
-      container.append(textComponent);
-
-      unsubscribe = language$.subscribe(updateTexts);
-      updateTexts();
-
-      return container;
+      controller = new TicketPageController(['gc-001', 'gc-002', 'gc-003']);
+      return controller;
     },
     onMount() {
-      console.log('NOTE: Home page mounted');
+      console.log('NOTE: Memory Game page mounted');
     },
     onDestroy() {
-      if (unsubscribe) unsubscribe();
-      console.log('NOTE: Home page destroyed');
+      console.log('NOTE: Memory Game page destroyed');
     },
   };
 }

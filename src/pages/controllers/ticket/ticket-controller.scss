@@ -1,0 +1,7 @@
+@use '@/styles/mixins' as *;
+
+.ticket-page {
+  @include flex-center;
+
+  width: 100%;
+}

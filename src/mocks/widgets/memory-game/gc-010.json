@@ -1,0 +1,23 @@
+{
+  "id": "gc-010",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["garbage-collection", "dom"],
+  "payload": {
+    "codeSnippet": "let div = document.createElement('div');\ndocument.body.appendChild(div);\ndocument.body.removeChild(div);\n// div still referenced",
+    "highlightedLine": 4,
+    "objects": [
+      { "id": "div-var", "label": "Variable div", "x": 100, "y": 150 },
+      { "id": "dom-div", "label": "DOM <div>", "x": 300, "y": 150 },
+      { "id": "body", "label": "document.body", "x": 100, "y": 300 }
+    ],
+    "links": [{ "from": "div-var", "to": "dom-div", "label": "ref" }],
+    "rootIds": ["global", "document.body"],
+    "rootLinks": [
+      { "from": "global", "to": "div-var" },
+      { "from": "document.body", "to": "body", "label": "ref" }
+    ]
+  },
+  "correctAnswer": []
+}

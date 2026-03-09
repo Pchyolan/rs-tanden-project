@@ -1,0 +1,23 @@
+{
+  "id": "gc-001",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["garbage-collection", "memory", "reachability"],
+  "payload": {
+    "codeSnippet": "let a = {val: 1};\nlet b = a;\na = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "var-a", "label": "Variable a", "x": 100, "y": 150 },
+      { "id": "var-b", "label": "Variable b", "x": 250, "y": 150 },
+      { "id": "obj-1", "label": "Object {val:1}", "x": 400, "y": 300 }
+    ],
+    "links": [{ "from": "var-b", "to": "obj-1", "label": "ref" }],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-a" },
+      { "from": "global", "to": "var-b" }
+    ]
+  },
+  "correctAnswer": []
+}

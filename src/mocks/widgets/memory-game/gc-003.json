@@ -1,0 +1,26 @@
+{
+  "id": "gc-003",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["garbage-collection", "simple"],
+  "payload": {
+    "codeSnippet": "let user = {name: 'Alice'};\nlet admin = user;\nadmin = null;\nuser = null;",
+    "highlightedLine": 4,
+    "objects": [
+      { "id": "user-var", "label": "Variable user", "x": 100, "y": 150 },
+      { "id": "admin-var", "label": "Variable admin", "x": 400, "y": 150 },
+      { "id": "user-obj", "label": "Object {name:'Alice'}", "x": 250, "y": 300 }
+    ],
+    "links": [
+      { "from": "user-var", "to": "user-obj", "label": "ref" },
+      { "from": "admin-var", "to": "user-obj", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "user-var" },
+      { "from": "global", "to": "admin-var" }
+    ]
+  },
+  "correctAnswer": ["user-obj"]
+}

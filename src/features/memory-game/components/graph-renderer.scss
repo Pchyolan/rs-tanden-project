@@ -1,0 +1,103 @@
+@use '@/styles/variables' as *;
+
+.graph-object {
+  cursor: pointer;
+  transition: filter $transition-speed;
+
+  .object-rect {
+    fill: #60a5fa;
+    stroke: #60a5fa;
+    stroke-width: 2;
+  }
+
+  &.root .object-rect {
+    fill: #a78bfa;
+    stroke: #a78bfa;
+  }
+
+  &.marked .object-rect {
+    fill: #fbab73;
+    stroke: #fbab73;
+  }
+
+  &:hover .object-rect {
+    filter: brightness(0.9);
+  }
+
+  &.click-animation {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: click-pulse $transition-speed ease-out;
+  }
+
+  &.shake-animation {
+    animation: shake 0.3s ease-in-out;
+  }
+
+  &.collecting {
+    opacity: 0;
+    transition:
+      transform $transition-speed ease-out,
+      opacity $transition-speed ease-out;
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    transform: scale(0);
+  }
+}
+
+.graph-object__label-root {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.graph-object__label-second {
+  font-weight: bold;
+}
+
+.graph-link {
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  marker-end: url('#arrowhead');
+  fill: none;
+}
+
+.root-link {
+  stroke-dasharray: 5, 5;
+}
+
+@keyframes click-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-3px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}

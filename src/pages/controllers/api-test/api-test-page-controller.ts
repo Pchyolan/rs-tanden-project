@@ -1,9 +1,9 @@
 import { BaseComponent } from '@/core';
 import { user$ } from '@/store/auth-store';
-import { authService } from '@/services/auth-service.ts';
+import { authService } from '@/services/auth-service';
 import type { AuthError } from '@supabase/supabase-js';
 
-import './api-test.scss';
+import './api-test-page.scss';
 
 export class ApiTestPageController {
   private container!: BaseComponent<'div'>;
