@@ -1,6 +1,8 @@
+@use '@/styles/variables' as *;
+
 .graph-object {
   cursor: pointer;
-  transition: filter 0.2s;
+  transition: filter $transition-speed;
 
   .object-rect {
     fill: #60a5fa;
@@ -14,19 +16,29 @@
   }
 
   &.marked .object-rect {
-    fill: #ffb3b3;
-    stroke: #ffb3b3;
+    fill: #fbab73;
+    stroke: #fbab73;
   }
 
   &:hover .object-rect {
     filter: brightness(0.9);
   }
 
+  &.click-animation {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: click-pulse $transition-speed ease-out;
+  }
+
+  &.shake-animation {
+    animation: shake 0.3s ease-in-out;
+  }
+
   &.collecting {
     opacity: 0;
     transition:
-      transform 0.5s ease-out,
-      opacity 0.5s ease-out;
+      transform $transition-speed ease-out,
+      opacity $transition-speed ease-out;
     transform-box: fill-box;
     transform-origin: 50% 50%;
     transform: scale(0);
@@ -52,4 +64,40 @@
 
 .root-link {
   stroke-dasharray: 5, 5;
+}
+
+@keyframes click-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-3px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }

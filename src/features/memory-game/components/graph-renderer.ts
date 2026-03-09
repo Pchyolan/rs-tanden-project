@@ -65,10 +65,10 @@ export class GraphRenderer extends BaseComponent {
   private renderGraph() {
     this.addArrowMarker();
 
-    this.renderRoot();
     this.renderRootLinks();
-
     this.renderLinks();
+
+    this.renderRoot();
     this.renderObjects();
   }
 
@@ -120,6 +120,17 @@ export class GraphRenderer extends BaseComponent {
 
     group.append(rect);
     group.append(text);
+
+    group.addEventListener('click', (event) => {
+      event.stopPropagation();
+
+      group.classList.add('shake-animation');
+
+      setTimeout(() => {
+        group.classList.remove('shake-animation');
+      }, 300);
+    });
+
     this.svg.append(group);
   }
 
@@ -180,7 +191,13 @@ export class GraphRenderer extends BaseComponent {
 
       group.addEventListener('click', (event) => {
         event.stopPropagation();
+
+        group.classList.add('click-animation');
         this.onObjectClick(object.id);
+
+        setTimeout(() => {
+          group.classList.remove('click-animation');
+        }, 200);
       });
 
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
