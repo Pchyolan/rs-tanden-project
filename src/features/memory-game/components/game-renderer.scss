@@ -5,7 +5,6 @@
 .memory-game__container {
   @include flex-column;
 
-  padding: $spacing-sm;
   width: 100%;
   height: 100%;
 }
@@ -52,13 +51,8 @@ pre.memory-game__code {
 }
 
 .memory-game__bottom-panel {
-  @include flex-center;
-
-  flex-direction: column;
-  flex-shrink: 0;
-  gap: 8px;
-  width: 100%;
-  height: 100px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .memory-game__text-wrapper {
