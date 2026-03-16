@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import eslint from 'vite-plugin-eslint2';
+import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   plugins: [
@@ -7,7 +8,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': new URL('src', import.meta.url).pathname,
+      '@': fileURLToPath(new URL('src', import.meta.url)),
     },
   },
   server: {

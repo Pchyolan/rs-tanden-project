@@ -1,5 +1,6 @@
 import { widgetTypes } from '@/constants';
 import type { MemoryGamePayload } from '@/features/memory-game/types';
+import type { QuizPayload } from '@/features/quiz/types';
 
 export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
 
@@ -25,7 +26,7 @@ export type BaseWidget = {
 // Временный вариант: все payload имеют тип unknown
 // При реализации конкретного виджета необходимо заменить unknown на соответствующий тип и добавить сюда импорт
 export type Widget =
-  | (BaseWidget & { type: typeof widgetTypes.quiz; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.quiz; payload: QuizPayload })
   | (BaseWidget & { type: typeof widgetTypes.trueFalse; payload: unknown })
   | (BaseWidget & { type: typeof widgetTypes.codeCompletion; payload: unknown })
   | (BaseWidget & { type: typeof widgetTypes.codeOrdering; payload: unknown })

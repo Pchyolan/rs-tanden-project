@@ -1,0 +1,17 @@
+{
+  "id": "quiz-1",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["js"],
+  "payload": {
+    "question": "What does typeof null return?",
+    "options": [
+      { "index": 0, "text": "null" },
+      { "index": 1, "text": "undefined" },
+      { "index": 2, "text": "object" },
+      { "index": 3, "text": "number" }
+    ]
+  },
+  "correctAnswer": 2
+}
