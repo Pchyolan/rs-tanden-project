@@ -1,7 +1,102 @@
 @use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
 
 .ticket-page {
-  @include flex-center;
+  @include flex-column;
 
   width: 100%;
+  background-color: #0b0f19;
+  background-image:
+    linear-gradient(rgb(148 163 184 / 8%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 8%) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.task-wrapper {
+  @include flex-center;
+
+  gap: $spacing-sm;
+  padding: $spacing-md;
+}
+
+.task-counter {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.segments-container {
+  display: flex;
+  height: $spacing-sm;
+  margin-left: $spacing-sm;
+  gap: $spacing-xs;
+}
+
+.task-segment {
+  width: 40px;
+  background-color: $color-primary;
+  transition: background-color $transition-speed;
+
+  &:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
+
+  &.active {
+    background-color: $color-secondary;
+  }
+}
+
+.widget-wrapper {
+  @include flex-center;
+
+  gap: $spacing-md;
+  padding: $spacing-sm;
+  flex: 1;
+}
+
+.current-wrapper {
+  @include flex-center;
+
+  padding: $spacing-md;
+  height: 100%;
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(255 255 255 / 35%);
+  flex: 1;
+  backdrop-filter: blur(20px);
+  border-radius: 22px;
+  box-shadow:
+    0 10px 40px rgb(0 0 0 / 30%),
+    inset 0 0 20px rgb(255 255 255 / 10%);
+}
+
+.arrow-button {
+  padding: 0;
+  color: currentcolor;
+  background: none;
+  border: none;
+  transition:
+    opacity $transition-speed,
+    color $transition-speed;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-secondary;
+    opacity: 0.7;
+  }
+
+  &:disabled {
+    color: transparent;
+    cursor: default;
+  }
+}
+
+.arrow-left,
+.arrow-right {
+  width: 40px;
+  height: 40px;
+  fill: currentcolor;
 }

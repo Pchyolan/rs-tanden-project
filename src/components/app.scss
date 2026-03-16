@@ -4,7 +4,8 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .app-header {
@@ -46,6 +47,7 @@
   flex: 1;
   background-color: $color-background;
   font-size: 2rem;
+  overflow: hidden;
 }
 
 .app-footer {
