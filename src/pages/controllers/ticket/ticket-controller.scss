@@ -1,7 +1,67 @@
 @use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
 
 .ticket-page {
-  @include flex-center;
+  @include flex-column;
 
   width: 100%;
+  background-color: #0b0f19;
+  background-image:
+    linear-gradient(rgb(148 163 184 / 8%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 8%) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.task-wrapper {
+  @include flex-center;
+
+  gap: $spacing-sm;
+  padding: $spacing-md;
+}
+
+.task-circle {
+  width: $spacing-md;
+  height: $spacing-md;
+  border-radius: 50%;
+  background-color: $color-primary;
+  transition: background-color $transition-speed;
+
+  &.active {
+    background-color: $color-secondary;
+  }
+}
+
+.widget-wrapper {
+  @include flex-center;
+
+  gap: $spacing-md;
+  padding: $spacing-sm;
+  flex: 1;
+}
+
+.current-wrapper {
+  @include flex-center;
+
+  padding: 24px;
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(255 255 255 / 35%);
+  flex: 1;
+  backdrop-filter: blur(20px);
+  border-radius: 22px;
+  box-shadow:
+    0 10px 40px rgb(0 0 0 / 30%),
+    inset 0 0 20px rgb(255 255 255 / 10%);
+}
+
+.arrow-left,
+.arrow-right {
+  cursor: pointer;
+  fill: currentcolor;
+  width: 40px;
+  height: 40px;
+  transition: fill $transition-speed;
+
+  &:hover {
+    fill: $color-secondary;
+  }
 }
