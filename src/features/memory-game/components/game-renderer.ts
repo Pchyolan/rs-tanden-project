@@ -15,6 +15,9 @@ import 'prismjs/plugins/line-highlight/prism-line-highlight';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
 
 import './game-renderer.scss';
+import { language$ } from '@/store/language-store.ts';
+import { translations } from '@/i18n';
+import { getElementWithType } from '@/utils/selectors.ts';
 
 type MemoryGameRendererProps = {
   payload: MemoryGamePayload;
@@ -26,10 +29,13 @@ type MemoryGameRendererProps = {
 
 export class MemoryGameRenderer extends BaseComponent {
   private readonly payload: MemoryGamePayload;
+  private currentState: string = gameStates.idle;
+
   private graphRenderer?: GraphRenderer;
   private soundService = SoundService.getInstance();
 
   private unsubscribeMachine?: () => void;
+  private unsubscribeLanguage?: () => void;
 
   private markedCounter?: BaseComponent<'span'>;
   private collectButton?: BaseComponent<'button'>;
@@ -47,6 +53,7 @@ export class MemoryGameRenderer extends BaseComponent {
     this.createUI(onObjectClick, onReset, onCollect);
 
     this.subscribeToMachine(gameState$);
+    this.unsubscribeLanguage = language$.subscribe(() => this.updateText());
   }
 
   private createUI(onObjectClick: (objectId: string) => void, onReset: () => void, onCollect: () => void) {
@@ -98,18 +105,18 @@ export class MemoryGameRenderer extends BaseComponent {
 
     const p1 = new BaseComponent({
       tag: 'p',
-      text: 'Below you see JavaScript code that has just been executed. The last executed line is highlighted.',
-      className: ['memory-game__hint-text'],
+      text: translations[language$.value].hintFirstLine,
+      className: ['memory-game__hint-text', 'hint-first'],
     });
     const p2 = new BaseComponent({
       tag: 'p',
-      text: 'Your task is to analyze the code and click on objects in the memory graph that become unreachable (garbage) after this code runs.',
-      className: ['memory-game__hint-text'],
+      text: translations[language$.value].hintSecondLine,
+      className: ['memory-game__hint-text', 'hint-second'],
     });
     const p3 = new BaseComponent({
       tag: 'p',
-      text: 'Click on objects to mark them as garbage. Note: root objects (like the global object) cannot be collected.',
-      className: ['memory-game__hint-text'],
+      text: translations[language$.value].hintThirdLine,
+      className: ['memory-game__hint-text', 'hint-third'],
     });
 
     textContainer.append(p1, p2, p3);
@@ -145,9 +152,9 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__hint-container'],
     });
 
-    this.questionWrapper = this.renderIconWrapper(questionLogo, 'Add me a clue');
+    this.questionWrapper = this.renderIconWrapper(questionLogo, translations[language$.value].clueTooltip);
 
-    this.refreshWrapper = this.renderIconWrapper(refreshLogo, 'Refresh objects selection');
+    this.refreshWrapper = this.renderIconWrapper(refreshLogo, translations[language$.value].refreshTooltip);
     this.refreshWrapper.addEventListener('click', onReset);
 
     buttonsBlock.append(this.questionWrapper, this.refreshWrapper);
@@ -203,15 +210,15 @@ export class MemoryGameRenderer extends BaseComponent {
     textWrapper.append(
       new BaseComponent<'span'>({
         tag: 'span',
-        text: 'Selected garbage:',
-        className: ['memory-game__text'],
+        text: translations[language$.value].selectedLine,
+        className: ['memory-game__text', 'selected-garbage-line'],
       }),
       this.markedCounter
     );
 
     this.collectButton = new BaseComponent<'button'>({
       tag: 'button',
-      text: 'Collect',
+      text: translations[language$.value].collectButton,
       className: ['memory-game__button'],
     });
     this.collectButton.addEventListener('click', onCollect);
@@ -239,16 +246,15 @@ export class MemoryGameRenderer extends BaseComponent {
   private subscribeToMachine(gameState$: Observable<GameState>) {
     this.unsubscribeMachine = gameState$.subscribe((state) => {
       const isActive = state === gameStates.idle;
+      this.currentState = state;
       this.setInteractive(isActive);
 
-      // Управление кнопкой Collect
       if (this.collectButton) {
-        if (state === gameStates.submitting) {
-          this.collectButton.element.textContent = 'Submitting...';
+        this.collectButton.element.textContent = this.getButtonText();
+        if (this.currentState === gameStates.submitting) {
           this.collectButton.element.classList.add('loading');
           this.collectButton.element.disabled = true;
         } else {
-          this.collectButton.element.textContent = 'Collect';
           this.collectButton.element.classList.remove('loading');
           this.collectButton.element.disabled = !isActive;
         }
@@ -295,9 +301,49 @@ export class MemoryGameRenderer extends BaseComponent {
       await this.graphRenderer.animateGarbageCollection();
     }
   }
+  private updateText(): void {
+    const dictionary = translations[language$.value];
+
+    const hintFirstLine = getElementWithType(HTMLParagraphElement, 'hint-first', this.element);
+    hintFirstLine.textContent = dictionary.hintFirstLine;
+
+    const hintSecondLine = getElementWithType(HTMLParagraphElement, 'hint-second', this.element);
+    hintSecondLine.textContent = dictionary.hintSecondLine;
+
+    const hintThirdLine = getElementWithType(HTMLParagraphElement, 'hint-third', this.element);
+    hintThirdLine.textContent = dictionary.hintThirdLine;
+
+    const selectedLine = getElementWithType(HTMLSpanElement, 'selected-garbage-line', this.element);
+    selectedLine.textContent = dictionary.selectedLine;
+
+    if (this.collectButton) {
+      this.collectButton.element.textContent = this.getButtonText();
+    }
+
+    if (this.questionWrapper) {
+      const questionTooltip = getElementWithType(HTMLImageElement, 'memory-game__icon', this.questionWrapper.element);
+      questionTooltip.title = dictionary.clueTooltip;
+    }
+
+    if (this.refreshWrapper) {
+      const refreshTooltip = getElementWithType(HTMLImageElement, 'memory-game__icon', this.refreshWrapper.element);
+      refreshTooltip.title = dictionary.refreshTooltip;
+    }
+  }
+
+  private getButtonText(): string {
+    let buttonText = translations[language$.value].collectButton;
+
+    if (this.currentState === gameStates.submitting) {
+      buttonText = translations[language$.value].submittingButton;
+    }
+
+    return buttonText;
+  }
 
   public override remove(): void {
     this.unsubscribeMachine?.();
+    this.unsubscribeLanguage?.();
     super.remove();
   }
 }
