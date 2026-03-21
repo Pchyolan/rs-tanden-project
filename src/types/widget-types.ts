@@ -1,7 +1,8 @@
-import { widgetTypes } from '@/constants';
+import { widgetEvents, widgetTypes } from '@/constants';
 import type { MemoryGamePayload } from '@/features/memory-game/types';
 
 export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
+export type WidgetEvent = (typeof widgetEvents)[keyof typeof widgetEvents];
 
 // Базовый интерфейс виджета
 export type BaseWidget = {

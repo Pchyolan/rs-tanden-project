@@ -7,3 +7,8 @@ export const widgetTypes = {
   memoryGame: 'memory-game',
   stackBuilder: 'stack-builder',
 } as const;
+
+export const widgetEvents = {
+  Ready: 'ready',
+  Complete: 'complete',
+} as const;

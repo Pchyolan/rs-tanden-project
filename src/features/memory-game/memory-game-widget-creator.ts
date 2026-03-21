@@ -1,22 +1,19 @@
 import { BaseComponent } from '@/core';
 import { widgetDataSource } from '@/api';
-import { SoundKey, SoundService } from '@/services/sound-service';
 
 import type { MemoryGameWidget } from './types';
+import type { WidgetComponent, WidgetEvent } from '@/types';
+
 import { gameActions } from './constants';
+import { widgetEvents } from '@/constants';
+
+import { SoundKey, SoundService } from '@/services/sound-service';
 
 import { GameState } from '@/features/memory-game/core/game-state';
 import { GameMachine } from '@/features/memory-game/core/game-machine';
 import { MemoryGameRenderer } from '@/features/memory-game/components/game-renderer';
 
-import './memory-game-widget-creator.scss';
-
-type MemoryGameWidgetCreatorProps = {
-  widgetId: string;
-  onComplete: () => void;
-};
-
-export class MemoryGameWidgetCreator extends BaseComponent {
+export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComponent {
   private readonly widgetId: string;
 
   private gameState: GameState | null = null;
@@ -25,37 +22,32 @@ export class MemoryGameWidgetCreator extends BaseComponent {
   private soundService = SoundService.getInstance();
   private renderer: MemoryGameRenderer | null = null;
 
-  private unsubscribe?: () => void;
-  private readonly onComplete?: () => void;
+  private completeHandler?: () => void;
+  private readyHandler?: () => void;
+  private unsubscribeFromGameState?: () => void;
 
-  constructor({ widgetId, onComplete }: MemoryGameWidgetCreatorProps) {
+  constructor(widgetId: string) {
     super({ tag: 'div', className: ['memory-game-widget'] });
     this.widgetId = widgetId;
     this.gameMachine = new GameMachine();
-    this.onComplete = onComplete;
-
-    const spinnerContainer = new BaseComponent({ tag: 'div', className: ['spinner-container'] });
-    const spinner = new BaseComponent({ tag: 'div', className: ['spinner'] });
-    spinnerContainer.append(spinner);
-    this.append(spinnerContainer);
-
-    this.loadWidget()
-      .then(() => {
-        spinnerContainer.remove();
-      })
-      .catch((error) => {
-        spinnerContainer.remove();
-        console.error('Failed to load widget:', error);
-        const errorMessage = new BaseComponent({
-          tag: 'div',
-          text: 'Failed to load widget. Please try again.',
-          className: ['error-message'],
-        });
-        this.append(errorMessage);
-      });
   }
 
-  private async loadWidget() {
+  render(): BaseComponent {
+    this.loadWidget();
+    return this;
+  }
+
+  on(event: WidgetEvent, handler: () => void): void {
+    if (event === widgetEvents.Ready) this.readyHandler = handler;
+    if (event === widgetEvents.Complete) this.completeHandler = handler;
+  }
+
+  destroy(): void {
+    this.unsubscribeFromGameState?.();
+    this.remove();
+  }
+
+  private async loadWidget(): Promise<void> {
     try {
       const widget = await widgetDataSource.getWidgetById<MemoryGameWidget>('memory-game', this.widgetId);
 
@@ -80,6 +72,8 @@ export class MemoryGameWidgetCreator extends BaseComponent {
       this.gameMachine.transition({ type: gameActions.loadSuccess });
 
       this.subscribeToMarkedGarbage();
+
+      this.readyHandler?.();
     } catch (error) {
       console.log('Failed to load memory game widget', error);
       this.gameMachine.transition({ type: gameActions.loadError, error: String(error) });
@@ -88,7 +82,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
 
   private subscribeToMarkedGarbage(): void {
     if (this.gameState) {
-      this.unsubscribe = this.gameState.markedGarbage$.subscribe((markedSet) => {
+      this.unsubscribeFromGameState = this.gameState.markedGarbage$.subscribe((markedSet) => {
         if (this.renderer) {
           this.renderer.updateMarkedObjects(markedSet);
         }
@@ -103,7 +97,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
     }
   };
 
-  private handleCollect = async () => {
+  private handleCollect = async (): Promise<void> => {
     if (!this.gameState) return;
 
     this.gameMachine.transition({ type: gameActions.submit });
@@ -118,7 +112,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
 
         await this.renderer?.playAnimation();
         this.gameMachine.transition({ type: gameActions.animationEnd });
-        if (this.onComplete) this.onComplete();
+        this.completeHandler?.();
       } else {
         this.gameMachine.transition({ type: gameActions.submitError });
         this.showNotification(
@@ -127,7 +121,6 @@ export class MemoryGameWidgetCreator extends BaseComponent {
         );
         await this.renderer?.playAnimation();
         this.gameMachine.transition({ type: gameActions.animationEnd });
-        if (this.onComplete) this.onComplete();
       }
     } catch {
       this.gameMachine.transition({ type: gameActions.submitError });
@@ -135,12 +128,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
     }
   };
 
-  private showNotification(message: string, type: 'success' | 'error' = 'success') {
+  private showNotification(message: string, type: 'success' | 'error' = 'success'): void {
     console.log(`[${type}] ${message}`);
-  }
-
-  public override remove(): void {
-    this.unsubscribe?.();
-    super.remove();
   }
 }
