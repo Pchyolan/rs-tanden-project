@@ -62,7 +62,7 @@ export class MemoryGameWidgetCreator extends BaseComponent {
 
       this.gameState = new GameState(widget.payload);
 
-      const header = new WidgetHeader('JS Garbage Collector Trainer', widget.difficulty);
+      const header = new WidgetHeader({ widgetType: widget.type, difficulty: widget.difficulty });
 
       this.renderer = new MemoryGameRenderer({
         payload: widget.payload,
