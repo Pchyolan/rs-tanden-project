@@ -10,6 +10,7 @@ import './app.scss';
 export class App extends BaseComponent<'div'> {
   private readonly header: Header;
   public mainContainer: BaseComponent<'div'>;
+  private contentContainer: BaseComponent<'div'>;
   private readonly footer: Footer;
   public router: Router;
 
@@ -29,11 +30,18 @@ export class App extends BaseComponent<'div'> {
       className: ['app-main'],
     });
 
+    this.contentContainer = new BaseComponent({
+      tag: 'div',
+      className: ['app-content'],
+    });
+
+    this.mainContainer.append(this.contentContainer);
+
     this.footer = new Footer();
 
     this.append(this.header, this.mainContainer, this.footer);
 
-    this.router = new Router(this.mainContainer);
+    this.router = new Router(this.contentContainer);
     this.setupRoutes();
   }
 

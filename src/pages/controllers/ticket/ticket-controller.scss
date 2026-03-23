@@ -4,19 +4,16 @@
 .ticket-page {
   @include flex-column;
 
+  position: relative;
   width: 100%;
-  background-color: #0b0f19;
-  background-image:
-    linear-gradient(rgb(148 163 184 / 8%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(148 163 184 / 8%) 1px, transparent 1px);
-  background-size: 40px 40px;
 }
 
 .task-wrapper {
   @include flex-center;
 
-  gap: $spacing-sm;
+  position: relative;
   padding: $spacing-md;
+  gap: $spacing-sm;
 }
 
 .task-counter {
@@ -34,7 +31,7 @@
 
 .task-segment {
   width: 40px;
-  background-color: $color-primary;
+  background-color: $color-primary-dark;
   transition: background-color $transition-speed;
 
   &:first-child {
@@ -53,24 +50,19 @@
 .widget-wrapper {
   @include flex-center;
 
-  gap: $spacing-md;
+  position: relative;
   padding: $spacing-sm;
+  gap: $spacing-md;
   flex: 1;
 }
 
 .current-wrapper {
   @include flex-center;
+  @include panel;
 
   padding: $spacing-md;
   height: 100%;
-  background: rgb(255 255 255 / 8%);
-  border: 1px solid rgb(255 255 255 / 35%);
   flex: 1;
-  backdrop-filter: blur(20px);
-  border-radius: 22px;
-  box-shadow:
-    0 10px 40px rgb(0 0 0 / 30%),
-    inset 0 0 20px rgb(255 255 255 / 10%);
 }
 
 .arrow-button {

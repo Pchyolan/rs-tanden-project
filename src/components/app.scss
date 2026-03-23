@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
 
 .app-container {
   display: flex;
@@ -12,8 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $spacing-md $spacing-xl;
-  color: white;
+  color: $color-text-primary;
   background-color: $color-primary;
 
   .logo {
@@ -41,21 +41,71 @@
   }
 }
 
-.app-main {
+.header-content {
   display: flex;
-  color: color.adjust($color-text, $lightness: 40%);
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: $spacing-md $spacing-xl;
+  width: 100%;
+  max-width: $content-wrapper-width;
+}
+
+.app-main {
+  position: relative;
+  width: 100%;
   flex: 1;
-  background-color: $color-background;
+  background-color: $color-primary;
+  background-image:
+    linear-gradient(rgb(148 163 184 / 60%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 60%) 1px, transparent 1px);
+  background-size: 35px 35px;
   font-size: 2rem;
   overflow: hidden;
+
+  &::before,
+  &::after {
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 50px;
+    content: '';
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &::before {
+    top: 0;
+    background: linear-gradient(to bottom, $color-primary, transparent);
+  }
+
+  &::after {
+    bottom: 0;
+    background: linear-gradient(to top, $color-primary, transparent);
+  }
+}
+
+.app-content {
+  /* чтобы псевдоэлементы не перекрывали содержимое окна */
+  position: relative;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  width: 100%;
+  max-width: $content-wrapper-width;
+  z-index: 2;
 }
 
 .app-footer {
-  padding: $spacing-md;
-  color: white;
+  color: $color-text-primary;
   background-color: $color-primary;
   text-align: center;
-  border-top: 1px solid color.adjust($color-text, $lightness: 70%);
+}
+
+.footer-content {
+  margin: 0 auto;
+  padding: $spacing-md;
+  width: 100%;
+  max-width: $content-wrapper-width;
 }
 
 .lang-buttons {
@@ -65,9 +115,9 @@
 
   button {
     padding: $spacing-xs $spacing-sm;
-    color: white;
+    color: $color-text-primary;
     background: transparent;
-    border: 1px solid white;
+    border: 1px solid $color-text-primary;
     transition: background-color $transition-speed;
     border-radius: $border-radius;
     cursor: pointer;
