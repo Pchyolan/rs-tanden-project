@@ -1,6 +1,6 @@
 import { BaseComponent, Router } from '@/core';
-import { Header } from './header.ts';
-import { Footer } from './footer.ts';
+import { Header } from '../header.ts';
+import { Footer } from '../footer.ts';
 
 import { homePage, loginPage, apiTestPage, notFoundPage, widgetEnginePage, memoryGamePage } from '@/pages';
 import { routes } from '@/constants';

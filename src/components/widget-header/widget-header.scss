@@ -1,0 +1,77 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+}
+
+.widget-header__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+  cursor: default;
+}
+
+.widget-header__difficulty {
+  @include flex-center;
+
+  padding: $spacing-xs;
+  color: white;
+  border: 1px solid $difficulty-border;
+  min-width: 70px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background-color: $difficulty-bg;
+  border-radius: $border-radius;
+  cursor: default;
+
+  &-easy {
+    color: $difficulty-easy;
+  }
+
+  &-medium {
+    color: $difficulty-medium;
+  }
+
+  &-hard {
+    color: $difficulty-hard;
+  }
+}
+
+.widget-header__left {
+  @include flex-center;
+
+  gap: $spacing-md;
+}
+
+.widget-header__dots {
+  @include flex-center;
+
+  gap: $spacing-xs;
+}
+
+.widget-header__dot {
+  @include flex-center;
+
+  transition: transform $transition-speed;
+
+  &:hover {
+    transform: scale(1.3);
+  }
+}
+
+.dot-blue {
+  fill: $dot-color-blue;
+}
+
+.dot-orange {
+  fill: $dot-color-orange;
+}
+
+.dot-green {
+  fill: $dot-color-green;
+}

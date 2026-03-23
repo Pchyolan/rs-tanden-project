@@ -4,12 +4,21 @@ import type { MemoryGamePayload } from '@/features/memory-game/types';
 
 export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
 
+// Уровень сложности
+export type Difficulty = 1 | 2 | 3;
+
+export const difficultyMap = {
+  1: 'Easy',
+  2: 'Medium',
+  3: 'Hard',
+};
+
 // Базовый интерфейс виджета
 export type BaseWidget = {
   id: string;
   type: WidgetType;
   version: number; // Для миграций схемы
-  difficulty: 1 | 2 | 3; // Уровень сложности
+  difficulty: Difficulty;
   tags: string[];
 };
 

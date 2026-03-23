@@ -1,4 +1,5 @@
 import { BaseComponent } from '@/core';
+import { WidgetHeader } from '@/components';
 import { widgetDataSource } from '@/api';
 
 import type { MemoryGameWidget } from './types';
@@ -53,6 +54,8 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
 
       this.gameState = new GameState(widget.payload);
 
+      const header = new WidgetHeader({ widgetType: widget.type, difficulty: widget.difficulty });
+
       this.renderer = new MemoryGameRenderer({
         payload: widget.payload,
         gameState$: this.gameMachine.state$,
@@ -66,7 +69,7 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
       });
 
       this.clear();
-      this.append(this.renderer);
+      this.append(header, this.renderer);
       this.renderer.highlightCode();
 
       this.gameMachine.transition({ type: gameActions.loadSuccess });

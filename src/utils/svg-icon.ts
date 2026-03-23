@@ -39,3 +39,25 @@ export function createBackArrow(): SVGElement {
   svg.append(path);
   return svg;
 }
+
+/**
+ * Создаёт SVG-круг (точку) заданного размера и цвета
+ * @param colorClass - Класс, который задаёт цвет точки
+ * @param size - Размер круга в пикселях (по умолчанию 8)
+ * @returns SVGElement с кругом
+ */
+export function createDot(colorClass: string, size: number = 8): SVGElement {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', String(size));
+  svg.setAttribute('height', String(size));
+  svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+
+  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('cx', String(size / 2));
+  circle.setAttribute('cy', String(size / 2));
+  circle.setAttribute('r', String(size / 2));
+  circle.classList.add(colorClass); // вместо setAttribute('fill', color)
+
+  svg.append(circle);
+  return svg;
+}
