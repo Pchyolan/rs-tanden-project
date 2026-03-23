@@ -47,10 +47,12 @@ export class WidgetHeader extends BaseComponent {
 
     leftGroup.append(dotsContainer, titleElement);
 
+    const difficultyText = difficultyMap[difficulty];
+    const difficultyClass = `widget-header__difficulty-${difficultyText.toLowerCase()}`;
     const difficultyElement = new BaseComponent({
       tag: 'span',
       text: difficultyMap[difficulty],
-      className: ['widget-header__difficulty'],
+      className: ['widget-header__difficulty', difficultyClass],
     });
 
     this.append(leftGroup, difficultyElement);
