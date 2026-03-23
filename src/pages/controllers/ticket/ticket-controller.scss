@@ -116,3 +116,45 @@
     transform: rotate(360deg);
   }
 }
+
+.brain-loader {
+  position: relative;
+  margin: 0 auto;
+  width: 220px;
+  height: 220px;
+}
+
+.brain-loader__contour,
+.brain-loader__fill {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.brain-loader__contour {
+  z-index: 2;
+}
+
+.brain-loader__fill {
+  z-index: 1;
+  overflow: hidden;
+  animation: brain-fill-up 2.2s ease-in-out infinite;
+  transform-origin: bottom center;
+  clip-path: inset(100% 0 0 0);
+}
+
+@keyframes brain-fill-up {
+  0% {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  50% {
+    clip-path: inset(0 0 0 0);
+  }
+
+  100% {
+    clip-path: inset(100% 0 0 0);
+  }
+}

@@ -2,6 +2,9 @@ import { BaseComponent, Observable } from '@/core';
 import { widgetEvents } from '@/constants';
 import type { WidgetComponent } from '@/types';
 
+import konturImg from '@/assets/kontur.png';
+import raskrasImg from '@/assets/raskras.png';
+
 import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator';
 import { createLeftArrow, createRightArrow } from '@/utils/svg-icon';
 
@@ -76,7 +79,15 @@ export class TicketPageController extends BaseComponent {
 
     this.append(tasksWrapper, widgetWrapper);
 
-    this.spinnerComponent = new BaseComponent({ tag: 'div', className: ['spinner'] });
+    this.spinnerComponent = new BaseComponent({ tag: 'div', className: ['brain-loader'] });
+
+    const contourLayer = new BaseComponent({ tag: 'div', className: ['brain-loader__contour'] });
+    const fillLayer = new BaseComponent({ tag: 'div', className: ['brain-loader__fill'] });
+
+    contourLayer.element.style.backgroundImage = `url(${konturImg})`;
+    fillLayer.element.style.backgroundImage = `url(${raskrasImg})`;
+
+    this.spinnerComponent.append(fillLayer, contourLayer);
     this.isLoading$.subscribe((isLoading: boolean) => {
       if (isLoading) this.currentWidgetWrapper.append(this.spinnerComponent);
       else this.spinnerComponent.remove();
