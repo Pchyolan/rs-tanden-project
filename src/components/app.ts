@@ -43,7 +43,9 @@ export class App extends BaseComponent<'div'> {
     this.router.addRoute(routes.api_test, apiTestPage);
     this.router.addRoute(routes.widget_engine, widgetEnginePage);
     this.router.addRoute(routes.memory_game, memoryGamePage);
-    this.router.setNotFound(notFoundPage);
+
+    this.router.setNotFound(() => notFoundPage((path) => this.router.navigate(path)));
+
     this.router.start();
   }
 }

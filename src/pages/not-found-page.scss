@@ -1,0 +1,114 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.not-found-page {
+  @include flex-column;
+
+  align-items: center;
+  gap: $spacing-md;
+  width: 100%;
+}
+
+.not-found-page__header {
+  font-size: 130px;
+  font-weight: bold;
+  letter-spacing: 6px;
+
+  /* градиент как у кнопок */
+  background: linear-gradient(180deg, #e1f5fe, #81d4fa);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* мягкий glow */
+  text-shadow:
+    0 2px 10px rgb(255 255 255 / 60%),
+    0 10px 30px rgb(79 195 247 / 50%),
+    0 0 60px rgb(66 165 245 / 30%);
+
+  /* лёгкая глубина */
+  filter: drop-shadow(0 10px 20px rgb(0 0 0 / 15%));
+
+  /* появление */
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+  animation:
+    fade404 0.8s ease-out forwards,
+    floating 4s ease-in-out infinite 0.8s;
+}
+
+@keyframes fade404 {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.not-found-page__image {
+  display: block;
+  margin: 0 auto;
+  width: 280px;
+
+  /* стартовое состояние (для анимации появления) */
+  opacity: 0;
+  transform: scale(0.8) translateY(20px);
+
+  /* мягкое свечение */
+  filter: drop-shadow(0 0 10px rgb(79 195 247 / 60%)) drop-shadow(0 0 30px rgb(66 165 245 / 40%))
+    drop-shadow(0 0 60px rgb(126 87 194 / 30%));
+  animation:
+    fade-in-brain 0.8s ease-out forwards,
+    floating 4s ease-in-out infinite 0.8s;
+
+  &:hover {
+    transform: scale(1.08);
+    transition: transform 0.3s ease;
+  }
+}
+
+@keyframes fade-in-brain {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes floating {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.03) translateY(-6px);
+  }
+}
+
+.not-found-page__text {
+  color: $color-text-primary;
+  font-weight: 700;
+}
+
+.not-found-page__button {
+  @include button-primary;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  .button-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .button-arrow {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
