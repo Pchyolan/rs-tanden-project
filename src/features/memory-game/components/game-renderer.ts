@@ -67,9 +67,46 @@ export class MemoryGameRenderer extends BaseComponent {
       onObjectClick: onObjectClick,
     });
 
-    panelsContainer.append(this.renderCodeSnippet(), this.graphRenderer);
+    panelsContainer.append(this.renderCodePanel(), this.renderGraphPanel());
 
     this.append(this.renderTopPanel(onReset), panelsContainer, this.renderBottomPanel(onCollect));
+  }
+
+  private renderCodePanel(): BaseComponent {
+    const panel = new BaseComponent({
+      tag: 'div',
+      className: ['memory-game__code-panel'],
+    });
+
+    const header = new BaseComponent({
+      tag: 'div',
+      text: 'Code',
+      className: ['memory-game__panel-header'],
+    });
+
+    const codeContainer = this.renderCodeSnippet();
+    panel.append(header, codeContainer);
+    return panel;
+  }
+
+  private renderGraphPanel(): BaseComponent {
+    const panel = new BaseComponent({
+      tag: 'div',
+      className: ['memory-game__graph-panel'],
+    });
+
+    const header = new BaseComponent({
+      tag: 'div',
+      text: 'Memory Graph',
+      className: ['memory-game__panel-header'],
+    });
+
+    if (this.graphRenderer) {
+      panel.append(header, this.graphRenderer);
+    } else {
+      panel.append(header);
+    }
+    return panel;
   }
 
   /**

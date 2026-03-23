@@ -25,23 +25,48 @@
   padding: 8px;
 }
 
-pre.memory-game__code {
-  border-radius: 16px;
-  margin: 0;
+.memory-game__code-panel,
+.memory-game__graph-panel {
+  @include flex-column;
+  @include panel;
+
+  padding: 2px;
+  background: $color-background-header;
+  overflow: hidden;
+}
+
+.memory-game__code-panel {
   width: 40%;
-  height: 100%;
+}
+
+.memory-game__graph-panel {
+  width: 60%;
+}
+
+.memory-game__panel-header {
+  padding: $spacing-sm $spacing-md;
+  color: $color-text-primary;
+  background: $color-background-header;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+pre.memory-game__code {
+  margin: 0;
+  background: $color-background;
+  border-radius: $border-radius-lg;
+  flex: 1;
 }
 
 .memory-game__graph-container {
-  width: 60%;
-  height: 100%;
+  margin: 0;
+  padding: $spacing-md;
+  width: 100%;
+  height: auto;
+  background: $color-background;
+  border-radius: $border-radius-lg;
   flex: 1;
-  min-height: 0;
-  color: #d4d4d4;
-  background: #1e293b;
   overflow: auto;
-  border-radius: 16px;
-  font-size: 20px;
 
   &.is-disabled {
     pointer-events: none;
