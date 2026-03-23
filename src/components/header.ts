@@ -30,6 +30,11 @@ export class Header extends BaseComponent<'header'> {
     super({ tag: 'header', className: ['app-header'] });
     this.callbacks = callbacks;
 
+    const contentContainer = new BaseComponent({
+      tag: 'div',
+      className: ['header-content'],
+    });
+
     this.logo = new BaseComponent({ tag: 'span', className: ['logo'] });
 
     const navButtons = new BaseComponent({
@@ -72,7 +77,9 @@ export class Header extends BaseComponent<'header'> {
       this.memoryGameBtn,
       langButtons
     );
-    this.append(this.logo, navButtons);
+
+    contentContainer.append(this.logo, navButtons);
+    this.append(contentContainer);
 
     this.unsubscribe = language$.subscribe(() => this.updateHeader());
 
