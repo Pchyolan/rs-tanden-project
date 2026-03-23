@@ -84,12 +84,12 @@
 }
 
 .not-found-page__text {
-  color: white /*$color-text-primary*/;
+  color: $color-text-primary;
   font-weight: 700;
 }
 
 .not-found-page__button {
-  /* @include button-primary; */
+  @include button-primary;
 
   display: inline-flex;
   align-items: center;
