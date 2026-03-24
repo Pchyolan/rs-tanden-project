@@ -1,0 +1,17 @@
+{
+  "id": "quiz-2",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["javascript", "array"],
+  "payload": {
+    "question": "Which method adds an element to the end of an array?",
+    "options": [
+      { "index": 0, "text": "push()" },
+      { "index": 1, "text": "pop()" },
+      { "index": 2, "text": "shift()" },
+      { "index": 3, "text": "map()" }
+    ]
+  },
+  "correctAnswer": 0
+}
