@@ -83,18 +83,15 @@
 }
 
 .curved-text {
+  @include flex-center;
   position: relative;
-  width: 300px;
-  height: 140px;
+  height: 100px;
   margin: 0 auto;
 }
 
 .curved-text__digit {
   position: absolute;
-  left: 35%;
-  top: 20%;
-  transform: translate(-50%, -50%) scale(0.8);
-  transform-origin: center center;
+  opacity: 0;
   font-size: 140px;
   font-weight: 900;
   background: linear-gradient(180deg, #e1f5fe, #81d4fa);
@@ -105,14 +102,13 @@
           0 10px 30px rgb(79 195 247 / 50%),
           0 0 60px rgb(66 165 245 / 30%);
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
-  opacity: 0;
 }
 
 // Анимация появления + расползания
 @keyframes slideInLeft {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
   }
   100% {
     opacity: 1;
@@ -123,7 +119,7 @@
 @keyframes slideInCenter {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
   }
   100% {
     opacity: 1;
@@ -134,7 +130,7 @@
 @keyframes slideInRight {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
   }
   100% {
     opacity: 1;
@@ -151,13 +147,13 @@
 .curved-text__digit.digit-1 {
   animation:
           slideInCenter 0.6s ease-out forwards,
-          floating-center 4s ease-in-out infinite 0.7s;
+          floating-center 4s ease-in-out infinite 0.6s;
 }
 
 .curved-text__digit.digit-2 {
   animation:
           slideInRight 0.6s ease-out forwards,
-          floating-right 4s ease-in-out infinite 0.8s;
+          floating-right 4s ease-in-out infinite 0.6s;
 }
 
 @keyframes floating-left {
@@ -165,7 +161,7 @@
     transform: translate(-95px, -15px) rotate(-10deg);
   }
   50% {
-    transform: translate(-95px, -25px) rotate(-12deg) scale(1.05);
+    transform: translate(-95px, -15px) rotate(-10deg) scale(1.1);
   }
 }
 
@@ -174,7 +170,7 @@
     transform: translate(0, -35px) rotate(0deg);
   }
   50% {
-    transform: translate(0, -45px) rotate(2deg) scale(1.05);
+    transform: translate(0, -35px) rotate(0deg) scale(1.1);
   }
 }
 
@@ -183,6 +179,6 @@
     transform: translate(95px, -15px) rotate(10deg);
   }
   50% {
-    transform: translate(95px, -25px) rotate(12deg) scale(1.05);
+    transform: translate(95px, -15px) rotate(10deg) scale(1.1);
   }
 }

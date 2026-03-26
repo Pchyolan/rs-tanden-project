@@ -44,7 +44,6 @@ export function notFoundPage(navigate: (path: string) => void): Page {
         className: ['curved-text'],
       });
 
-      // Создаём три цифры
       ['4', '0', '4'].forEach((digit, index) => {
         const span = new BaseComponent({
           tag: 'span',
