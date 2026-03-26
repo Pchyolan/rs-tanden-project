@@ -6,12 +6,30 @@
   position: relative;
   height: 100px;
   margin: 0 auto;
+
+  // Позиции для левой цифры
+  --pos-left-x: -120px;
+  --pos-left-y: -15px;
+  --pos-left-rotate: -10deg;
+
+  // Позиции для центральной цифры
+  --pos-center-x: 0;
+  --pos-center-y: -35px;
+  --pos-center-rotate: 0deg;
+
+  // Позиции для правой цифры
+  --pos-right-x: 120px;
+  --pos-right-y: -15px;
+  --pos-right-rotate: 10deg;
+
+  // Общий коэффициент масштабирования при плавании
+  --float-scale: 1.1;
 }
 
 .curved-text__digit {
   position: absolute;
   opacity: 0;
-  font-size: 140px;
+  font-size: clamp(5rem, 12vw, 10rem);
   font-weight: 900;
   background: linear-gradient(180deg, #e1f5fe, #81d4fa);
   -webkit-background-clip: text;
@@ -21,83 +39,87 @@
           0 10px 30px rgb(79 195 247 / 50%),
           0 0 60px rgb(66 165 245 / 30%);
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  transform-origin: center;
 }
 
-// Анимация появления + расползания
-@keyframes slideInLeft {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-85px, -15px) scale(1) rotate(-10deg);
-  }
-}
-
-@keyframes slideInCenter {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(0, -35px) scale(1) rotate(0deg);
-  }
-}
-
-@keyframes slideInRight {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(85px, -15px) scale(1) rotate(10deg);
-  }
-}
-
+// Цифра слева
 .curved-text__digit.digit-0 {
   animation:
-          slideInLeft 0.6s ease-out forwards,
+          slide-in-left 0.6s ease-out forwards,
           floating-left 4s ease-in-out infinite 0.6s;
 }
 
-.curved-text__digit.digit-1 {
-  animation:
-          slideInCenter 0.6s ease-out forwards,
-          floating-center 4s ease-in-out infinite 0.6s;
-}
-
-.curved-text__digit.digit-2 {
-  animation:
-          slideInRight 0.6s ease-out forwards,
-          floating-right 4s ease-in-out infinite 0.6s;
+@keyframes slide-in-left {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(var(--pos-left-x), var(--pos-left-y)) scale(1) rotate(var(--pos-left-rotate));
+  }
 }
 
 @keyframes floating-left {
   0%, 100% {
-    transform: translate(-95px, -15px) rotate(-10deg);
+    transform: translate(var(--pos-left-x), var(--pos-left-y)) rotate(var(--pos-left-rotate));
   }
   50% {
-    transform: translate(-95px, -15px) rotate(-10deg) scale(1.1);
+    transform: translate(var(--pos-left-x), var(--pos-left-y)) rotate(var(--pos-left-rotate)) scale(var(--float-scale));
+  }
+}
+
+// Цифра в середине
+.curved-text__digit.digit-1 {
+  animation:
+          slide-in-center 0.6s ease-out forwards,
+          floating-center 4s ease-in-out infinite 0.6s;
+}
+
+@keyframes slide-in-center {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(var(--pos-center-x), var(--pos-center-y)) scale(1) rotate(var(--pos-center-rotate));
   }
 }
 
 @keyframes floating-center {
   0%, 100% {
-    transform: translate(0, -35px) rotate(0deg);
+    transform: translate(var(--pos-center-x), var(--pos-center-y)) rotate(var(--pos-center-rotate));
   }
   50% {
-    transform: translate(0, -35px) rotate(0deg) scale(1.1);
+    transform: translate(var(--pos-center-x), var(--pos-center-y)) rotate(var(--pos-center-rotate)) scale(var(--float-scale));
+  }
+}
+
+// Цифра справа
+.curved-text__digit.digit-2 {
+  animation:
+          slide-in-right 0.6s ease-out forwards,
+          floating-right 4s ease-in-out infinite 0.6s;
+}
+
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(var(--pos-right-x), var(--pos-right-y)) scale(1) rotate(var(--pos-right-rotate));
   }
 }
 
 @keyframes floating-right {
   0%, 100% {
-    transform: translate(95px, -15px) rotate(10deg);
+    transform: translate(var(--pos-right-x), var(--pos-right-y)) rotate(var(--pos-right-rotate));
   }
   50% {
-    transform: translate(95px, -15px) rotate(10deg) scale(1.1);
+    transform: translate(var(--pos-right-x), var(--pos-right-y)) rotate(var(--pos-right-rotate)) scale(var(--float-scale));
   }
 }
+

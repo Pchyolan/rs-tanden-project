@@ -18,6 +18,12 @@
   gap: $spacing-md;
 }
 
+.animation-wrapper {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .not-found-page__image {
   display: block;
   margin: 0 auto;
