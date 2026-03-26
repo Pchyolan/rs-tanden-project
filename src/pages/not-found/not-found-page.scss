@@ -67,20 +67,25 @@
 .not-found-page__text {
   color: $color-text-primary;
   font-weight: 700;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  text-align: center;
 }
 
 .not-found-page__button {
   @include button-primary;
 
+  font-size: clamp(0.8rem, 4vw, 1.2rem);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: $spacing-sm;
 
   .button-content {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: $spacing-sm;
   }
 
   .button-arrow {
@@ -90,7 +95,7 @@
   }
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: clamp(16px, 3vw, 24px);
+    height: clamp(16px, 3vw, 24px);
   }
 }
