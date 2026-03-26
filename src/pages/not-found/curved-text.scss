@@ -8,18 +8,18 @@
   margin: 0 auto;
 
   // Позиции для левой цифры
-  --pos-left-x: -120px;
-  --pos-left-y: -15px;
+  --pos-left-x: clamp(-120px, -12vw, -60px);
+  --pos-left-y: clamp(-15px, -2vw, -10px);
   --pos-left-rotate: -10deg;
 
   // Позиции для центральной цифры
   --pos-center-x: 0;
-  --pos-center-y: -35px;
+  --pos-center-y: clamp(-35px, -5vw, -25px);
   --pos-center-rotate: 0deg;
 
   // Позиции для правой цифры
-  --pos-right-x: 120px;
-  --pos-right-y: -15px;
+  --pos-right-x: clamp(60px, 12vw, 120px);
+  --pos-right-y: clamp(-15px, -2vw, -10px);
   --pos-right-rotate: 10deg;
 
   // Общий коэффициент масштабирования при плавании
@@ -120,6 +120,12 @@
   }
   50% {
     transform: translate(var(--pos-right-x), var(--pos-right-y)) rotate(var(--pos-right-rotate)) scale(var(--float-scale));
+  }
+}
+
+@media (max-width: 768px) {
+  .curved-text {
+    --float-scale: 1.05;
   }
 }
 
