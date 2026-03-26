@@ -1,7 +1,7 @@
 import { BaseComponent } from '@/core';
 import type { Page } from '@/core';
 
-import { createBackArrow } from '@/utils/svg-icon';
+import { createBackArrow } from '@/utils/svg-icon.ts';
 import notFoundImageUrl from '@/assets/images/brains/not-found.png';
 
 import './not-found-page.scss';

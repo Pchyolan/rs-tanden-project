@@ -5,8 +5,8 @@ import type { WidgetComponent } from '@/types';
 import konturImg from '@/assets/kontur.png';
 import raskrasImg from '@/assets/raskras.png';
 
-import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator';
-import { createLeftArrow, createRightArrow } from '@/utils/svg-icon';
+import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator.ts';
+import { createLeftArrow, createRightArrow } from '@/utils/svg-icon.ts';
 
 import './ticket-controller.scss';
 

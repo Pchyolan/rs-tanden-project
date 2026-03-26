@@ -1,5 +1,5 @@
 import { type Page } from '@/core';
-import { TicketPageController } from '@/pages/controllers';
+import { TicketPageController } from '@/features/ticket';
 
 export function memoryGamePage(): Page {
   let controller: TicketPageController;
