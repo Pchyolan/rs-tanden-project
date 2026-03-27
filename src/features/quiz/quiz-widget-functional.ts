@@ -1,5 +1,6 @@
-import type { QuizWidget, QuizAnswer } from './types';
 import { widgetDataSource } from '@/api';
+import type { WidgetContext } from '@/types';
+import type { QuizWidget, QuizAnswer } from './types';
 
 import './quiz-widget-creator.scss';
 
@@ -49,11 +50,7 @@ function createTaskCard(...children: HTMLElement[]): HTMLDivElement {
 // Основная функция рендера – принимает данные виджета и контекст с колбэками
 export function renderQuizWidget(
   widget: QuizWidget,
-  context: {
-    widgetId: string;
-    onReady: () => void;
-    onComplete: () => void;
-  }
+  context: WidgetContext
 ): { element: HTMLElement; destroy: () => void } {
   const container = document.createElement('div');
   container.className = 'quiz-widget';
