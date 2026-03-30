@@ -1,7 +1,8 @@
 import { BaseComponent } from '@/core';
+import type { AuthError } from '@supabase/supabase-js';
+
 import { user$ } from '@/store/auth-store';
 import { authService } from '@/services/auth-service';
-import type { AuthError } from '@supabase/supabase-js';
 
 import './api-test-page.scss';
 

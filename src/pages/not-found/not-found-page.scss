@@ -5,48 +5,29 @@
   @include flex-column;
 
   align-items: center;
-  gap: $spacing-md;
+  justify-content: center;
+  gap: $spacing-xxl;
   width: 100%;
+  height: 100%;
 }
 
-.not-found-page__header {
-  font-size: 130px;
-  font-weight: bold;
-  letter-spacing: 6px;
-
-  /* градиент как у кнопок */
-  background: linear-gradient(180deg, #e1f5fe, #81d4fa);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  /* мягкий glow */
-  text-shadow:
-    0 2px 10px rgb(255 255 255 / 60%),
-    0 10px 30px rgb(79 195 247 / 50%),
-    0 0 60px rgb(66 165 245 / 30%);
-
-  /* лёгкая глубина */
-  filter: drop-shadow(0 10px 20px rgb(0 0 0 / 15%));
-
-  /* появление */
-  opacity: 0;
-  transform: translateY(-20px) scale(0.95);
-  animation:
-    fade404 0.8s ease-out forwards,
-    floating 4s ease-in-out infinite 0.8s;
+.animation-wrapper,
+.button-wrapper {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-md;
 }
 
-@keyframes fade404 {
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.animation-wrapper {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .not-found-page__image {
   display: block;
   margin: 0 auto;
-  width: 280px;
+  width: clamp(180px, 30vw, 280px);
 
   /* стартовое состояние (для анимации появления) */
   opacity: 0;
@@ -75,31 +56,37 @@
 @keyframes floating {
   0%,
   100% {
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
 
   50% {
-    transform: scale(1.03) translateY(-6px);
+    transform: scale(1.1);
   }
 }
 
 .not-found-page__text {
   color: $color-text-primary;
   font-weight: 700;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  text-align: center;
+  cursor: default;
 }
 
 .not-found-page__button {
   @include button-primary;
 
+  font-size: clamp(0.8rem, 4vw, 1.2rem);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: $spacing-sm;
 
   .button-content {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: $spacing-sm;
   }
 
   .button-arrow {
@@ -109,7 +96,7 @@
   }
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: clamp(16px, 3vw, 24px);
+    height: clamp(16px, 3vw, 24px);
   }
 }
