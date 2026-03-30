@@ -10,6 +10,7 @@ export class QuizAnswerValidator implements AnswerValidator {
       isCorrect,
       explanation: isCorrect ? 'Correct answer!' : 'Wrong answer. Try again.',
       xpEarned: isCorrect ? 10 : 0,
+      streakUpdated: false,
     };
   }
 }
