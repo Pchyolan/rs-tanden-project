@@ -1,10 +1,31 @@
-# Автоматически определять текстовые файлы и нормализовывать их
+# Автоматическое определение текстовых файлов
 * text=auto
 
-# Для всех текстовых файлов принудительно использовать LF в репозитории и в рабочей копии
-* text eol=lf
-
-# Примеры для явного указания бинарных файлов (их не нужно трогать)
+# Явное указание бинарных файлов (Git не будет пытаться конвертировать их)
 *.png binary
 *.jpg binary
+*.jpeg binary
 *.ico binary
+*.webm binary
+*.mp4 binary
+*.gif binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+
+# Для текстовых файлов явно задаём LF
+*.js text eol=lf
+*.ts text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
