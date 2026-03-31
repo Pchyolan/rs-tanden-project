@@ -6,3 +6,5 @@ export { Router } from './router';
 export type { Page } from './router';
 
 export { SupabaseClient } from './supabase-client';
+
+export { WidgetFactory } from './widget-factory';

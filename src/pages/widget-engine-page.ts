@@ -1,19 +1,25 @@
 import { type Page } from '@/core';
-import { QuizWidgetCreator } from '@/features/quiz/quiz-widget-creator';
+import type { TicketItem } from '@/types';
+import { TicketPageController } from '@/features/ticket';
 
 export function widgetEnginePage(): Page {
-  let widget: QuizWidgetCreator;
+  let controller: TicketPageController;
 
   return {
     render() {
-      widget = new QuizWidgetCreator(['quiz-1', 'quiz-2', 'quiz-3']);
-      return widget;
+      const items: TicketItem[] = [
+        { type: 'quiz', id: 'quiz-1' },
+        { type: 'quiz', id: 'quiz-2' },
+        { type: 'quiz', id: 'quiz-3' },
+      ];
+      controller = new TicketPageController(items);
+      return controller;
     },
     onMount() {
-      console.log('NOTE: Widget Engine page mounted');
+      console.log('Widget Engine page mounted');
     },
     onDestroy() {
-      console.log('NOTE: Widget Engine page destroyed');
+      console.log('Widget Engine page destroyed');
     },
   };
 }

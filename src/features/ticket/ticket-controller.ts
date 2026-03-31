@@ -1,34 +1,34 @@
-import { BaseComponent, Observable } from '@/core';
+import { BaseComponent, Observable, WidgetFactory } from '@/core';
 import { widgetEvents } from '@/constants';
-import type { WidgetComponent } from '@/types';
+import type { TicketItem, WidgetComponent } from '@/types';
 
 import konturImg from '@/assets/kontur.png';
 import raskrasImg from '@/assets/raskras.png';
-
-import { MemoryGameWidgetCreator } from '@/features/memory-game/memory-game-widget-creator.ts';
-import { createLeftArrow, createRightArrow } from '@/utils/svg-icon.ts';
+import { createLeftArrow, createRightArrow } from '@/utils/svg-icon';
 
 import './ticket-controller.scss';
 
 export class TicketPageController extends BaseComponent {
   private currentIndex: number = 0;
-  private readonly currentWidgetWrapper: BaseComponent;
   private currentWidget: WidgetComponent | null = null;
+  private readonly currentWidgetWrapper: BaseComponent;
+  private factory: WidgetFactory;
 
   private isLoading$ = new Observable(false);
   private readonly spinnerComponent: BaseComponent;
 
-  private readonly widgetsList: string[];
+  private readonly ticketItems: TicketItem[];
   private taskSegments: BaseComponent[] = [];
   private readonly counterElement: BaseComponent<'span'>;
 
   private readonly leftButton: BaseComponent<'button'>;
   private readonly rightButton: BaseComponent<'button'>;
 
-  constructor(widgetsList: string[]) {
+  constructor(widgetsList: TicketItem[]) {
     super({ tag: 'div', className: ['ticket-page'] });
 
-    this.widgetsList = widgetsList;
+    this.ticketItems = widgetsList;
+    this.factory = new WidgetFactory();
 
     const tasksWrapper = new BaseComponent({
       tag: 'div',
@@ -100,17 +100,17 @@ export class TicketPageController extends BaseComponent {
     this.currentWidgetWrapper.clear();
     this.isLoading$.set(true);
 
-    if (this.currentIndex >= this.widgetsList.length) {
+    if (this.currentIndex >= this.ticketItems.length) {
       this.counterElement.element.textContent = '';
       this.updateButtonsState();
       this.showCompletionMessage();
       return;
     }
 
-    const widgetId = this.widgetsList[this.currentIndex];
-
-    if (widgetId) {
-      this.currentWidget = new MemoryGameWidgetCreator(widgetId);
+    const currentItem = this.ticketItems[this.currentIndex];
+    if (currentItem) {
+      const { type, id } = currentItem;
+      this.currentWidget = this.factory.create(type, id);
 
       this.currentWidget.on(widgetEvents.Ready, () => {
         this.isLoading$.set(false);
@@ -129,19 +129,19 @@ export class TicketPageController extends BaseComponent {
   }
 
   private goToPrevious(): void {
-    if (this.currentIndex >= this.widgetsList.length || this.currentIndex <= 0) return;
+    if (this.currentIndex >= this.ticketItems.length || this.currentIndex <= 0) return;
     this.currentIndex--;
     this.loadNext();
   }
 
   private goToNext(): void {
-    if (this.currentIndex >= this.widgetsList.length - 1) return;
+    if (this.currentIndex >= this.ticketItems.length - 1) return;
     this.currentIndex++;
     this.loadNext();
   }
 
   private updateTaskSegments(): void {
-    this.counterElement.element.textContent = `Task ${this.currentIndex + 1} / ${this.widgetsList.length}`;
+    this.counterElement.element.textContent = `Task ${this.currentIndex + 1} / ${this.ticketItems.length}`;
 
     this.taskSegments.forEach((segment, index) => {
       segment.element.classList.toggle('active', index <= this.currentIndex);
@@ -160,12 +160,12 @@ export class TicketPageController extends BaseComponent {
   }
 
   private updateButtonsState(): void {
-    if (this.currentIndex >= this.widgetsList.length) {
+    if (this.currentIndex >= this.ticketItems.length) {
       this.leftButton.element.disabled = true;
       this.rightButton.element.disabled = true;
     } else {
       this.leftButton.element.disabled = this.currentIndex === 0;
-      this.rightButton.element.disabled = this.currentIndex === this.widgetsList.length - 1;
+      this.rightButton.element.disabled = this.currentIndex === this.ticketItems.length - 1;
     }
   }
 

@@ -64,3 +64,9 @@ export type WidgetComponent = {
    */
   destroy(): void;
 };
+
+export type WidgetContext = {
+  widgetId: string;
+  onReady: () => void;
+  onComplete: () => void;
+};
