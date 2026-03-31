@@ -28,7 +28,7 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
   private unsubscribeFromGameState?: () => void;
 
   constructor(widgetId: string) {
-    super({ tag: 'div', className: ['memory-game-widget'] });
+    super({ tag: 'div', className: ['ticket-widget'] });
     this.widgetId = widgetId;
     this.gameMachine = new GameMachine();
   }
