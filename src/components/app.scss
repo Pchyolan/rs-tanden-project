@@ -1,0 +1,84 @@
+@use 'sass:color';
+@use '../styles/variables' as *;
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-xl;
+  color: white;
+  background-color: $color-primary;
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+
+  .nav-buttons {
+    display: flex;
+    gap: $spacing-md;
+  }
+
+  button {
+    padding: $spacing-xs $spacing-md;
+    background: white;
+    border: none;
+    transition: background-color $transition-speed;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      background-color: color.adjust(white, $lightness: -20%);
+    }
+  }
+}
+
+.app-main {
+  display: flex;
+  color: color.adjust($color-text, $lightness: 40%);
+  flex: 1;
+  background-color: $color-background;
+  font-size: 2rem;
+}
+
+.app-footer {
+  padding: $spacing-md;
+  color: white;
+  background-color: $color-primary;
+  text-align: center;
+  border-top: 1px solid color.adjust($color-text, $lightness: 70%);
+}
+
+.lang-buttons {
+  display: flex;
+  gap: $spacing-xs;
+  margin-left: $spacing-md;
+
+  button {
+    padding: $spacing-xs $spacing-sm;
+    color: white;
+    background: transparent;
+    border: 1px solid white;
+    transition: background-color $transition-speed;
+    border-radius: $border-radius;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+      background-color: rgb(255 255 255 / 20%);
+    }
+
+    &.active {
+      background-color: white;
+      color: $color-primary;
+      border-color: white;
+    }
+  }
+}

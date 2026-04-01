@@ -13,6 +13,7 @@ export class MemoryGameAnswerValidator implements AnswerValidator {
       explanation: isCorrect
         ? 'Perfect! All garbage collected.'
         : 'Some objects are still reachable or incorrectly marked.',
+      streakUpdated: false,
       xpEarned: isCorrect ? 10 : 0,
       ...(isCorrect ? {} : { errors: { missedGarbage: missed, wronglyMarked } }),
     };

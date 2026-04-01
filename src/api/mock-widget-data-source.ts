@@ -4,6 +4,7 @@ import type { WidgetDataSource } from './types';
 import type { AnswerValidator } from '@/api/validators/answer-validator';
 import { MemoryGameAnswerValidator } from '@/api/validators/memory-game-validator';
 import { QuizAnswerValidator } from '@/api/validators/quiz-validator';
+import { TrueFalseAnswerValidator } from '@/api/validators/true-false-validator';
 
 // Функции для случайной задержки при загрузке (для отладки loading)
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -12,6 +13,7 @@ const randomDelay = () => delay(300 + Math.random() * 700);
 const validators = new Map<WidgetType, AnswerValidator>([
   ['memory-game', new MemoryGameAnswerValidator()],
   ['quiz', new QuizAnswerValidator()],
+  ['true-false', new TrueFalseAnswerValidator()],
 ]);
 
 export class MockWidgetDataSource implements WidgetDataSource {
@@ -31,7 +33,7 @@ export class MockWidgetDataSource implements WidgetDataSource {
       const module = await import(`../mocks/widgets/${widgetType}/${widgetId}.json`);
       const widget = module.default;
 
-      if (widget.correctAnswer === undefined) {
+      if (!widget.correctAnswer) {
         throw new Error('Mock widget has no correctAnswer field');
       }
 
