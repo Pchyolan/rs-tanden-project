@@ -1,0 +1,12 @@
+{
+  "id": "tf-9",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["arrays", "typeof"],
+  "payload": {
+    "statement": "typeof [] возвращает 'object'",
+    "explanation": "Массив в JavaScript — это объект, поэтому typeof [] === 'object'."
+  },
+  "correctAnswer": true
+}

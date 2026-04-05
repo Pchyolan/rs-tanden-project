@@ -1,0 +1,12 @@
+{
+  "id": "tf-3",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["variables", "scope"],
+  "payload": {
+    "statement": "Переменную, объявленную через const, нельзя переназначить",
+    "explanation": "const запрещает переназначение самой переменной."
+  },
+  "correctAnswer": true
+}

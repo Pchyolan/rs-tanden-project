@@ -1,0 +1,12 @@
+{
+  "id": "tf-5",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["functions", "hoisting"],
+  "payload": {
+    "statement": "Function declaration можно вызвать до её объявления в коде",
+    "explanation": "Function declaration поднимается целиком во время hoisting."
+  },
+  "correctAnswer": true
+}

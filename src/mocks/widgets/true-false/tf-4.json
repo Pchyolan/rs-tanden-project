@@ -1,0 +1,12 @@
+{
+  "id": "tf-4",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["js", "typeof"],
+  "payload": {
+    "statement": "typeof null возвращает 'null'",
+    "explanation": "typeof null возвращает 'object' — это историческая особенность JavaScript."
+  },
+  "correctAnswer": false
+}

@@ -1,0 +1,12 @@
+{
+  "id": "tf-8",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["objects", "references"],
+  "payload": {
+    "statement": "Два разных объекта с одинаковыми полями равны при сравнении через ===",
+    "explanation": "Объекты сравниваются по ссылке, а не по содержимому."
+  },
+  "correctAnswer": false
+}

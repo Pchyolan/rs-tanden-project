@@ -1,0 +1,12 @@
+{
+  "id": "tf-2",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["arrays", "methods"],
+  "payload": {
+    "statement": "Метод map() изменяет исходный массив",
+    "explanation": "map() возвращает новый массив и не мутирует исходный."
+  },
+  "correctAnswer": false
+}

@@ -1,0 +1,12 @@
+{
+  "id": "tf-10",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["promises", "async-await"],
+  "payload": {
+    "statement": "async функция всегда возвращает Promise",
+    "explanation": "Любая async функция оборачивает возвращаемое значение в Promise."
+  },
+  "correctAnswer": true
+}

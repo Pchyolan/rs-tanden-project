@@ -1,0 +1,12 @@
+{
+  "id": "tf-7",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["async", "event-loop"],
+  "payload": {
+    "statement": "Код внутри setTimeout(fn, 0) выполнится синхронно сразу после текущей строки",
+    "explanation": "setTimeout отправляет колбэк в очередь macrotask, поэтому выполнение будет позже."
+  },
+  "correctAnswer": false
+}

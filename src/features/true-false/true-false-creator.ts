@@ -1,13 +1,10 @@
 import { BaseComponent } from '@/core';
 import { widgetDataSource } from '@/api';
+import { widgetEvents } from '@/constants';
+import type { WidgetComponent, WidgetEvent } from '@/types';
 import type { TrueFalseAnswer, TrueFalseWidget } from './types';
 
 import './true-false-widget-creator.scss';
-
-type TrueFalseWidgetCreatorProps = {
-  widgetId: string;
-  onComplete?: () => void;
-};
 
 function createStatement(text: string): HTMLDivElement {
   const element = document.createElement('div');
@@ -43,72 +40,32 @@ function createTaskCard(...children: HTMLElement[]): HTMLDivElement {
   return element;
 }
 
-function createCenterRow(...children: HTMLElement[]): HTMLDivElement {
-  const element = document.createElement('div');
-  element.className = 'center-row';
-  children.forEach((child) => element.append(child));
-  return element;
-}
-
-function createGameLayout(...children: HTMLElement[]): HTMLDivElement {
-  const element = document.createElement('div');
-  element.className = 'game-layout';
-  children.forEach((child) => element.append(child));
-  return element;
-}
-
-function createTopSpace(): HTMLDivElement {
-  const element = document.createElement('div');
-  element.className = 'top-space';
-  return element;
-}
-
-function createSideSpace(className: string): HTMLDivElement {
-  const element = document.createElement('div');
-  element.className = className;
-  return element;
-}
-
-export class TrueFalseWidgetCreator extends BaseComponent {
+export class TrueFalseWidgetCreator extends BaseComponent implements WidgetComponent {
   private readonly widgetId: string;
-  private readonly onComplete: (() => void) | undefined;
+  private completeHandler?: () => void;
+  private readyHandler?: () => void;
   private isAnswered = false;
 
-  constructor({ widgetId, onComplete }: TrueFalseWidgetCreatorProps) {
-    super({ tag: 'div', className: ['screen'] });
-
+  constructor(widgetId: string) {
+    super({ tag: 'div', className: ['true-false-widget-container'] });
     this.widgetId = widgetId;
-    this.onComplete = onComplete;
-
-    void this.renderWidget();
   }
 
-  // оп
-  private async handleAnswer(value: boolean, widget: TrueFalseWidget): Promise<void> {
-    if (this.isAnswered) return;
-    this.isAnswered = true;
-
-    const answer: TrueFalseAnswer = { value };
-
-    try {
-      const verdict = await widgetDataSource.submitAnswer('true-false', this.widgetId, answer);
-
-      const explanationText = widget.payload.explanation;
-      const explanation = createExplanation(
-        `${verdict.isCorrect ? '✅ Correct!' : '❌ Incorrect.'} ${explanationText}`
-      );
-
-      this.element.append(explanation);
-
-      setTimeout(() => {
-        this.onComplete?.();
-      }, 1200);
-    } catch (error) {
-      console.error('Failed to submit true/false answer', error);
-    }
+  render(): BaseComponent {
+    void this.loadWidget();
+    return this;
   }
 
-  private async renderWidget(): Promise<void> {
+  on(event: WidgetEvent, handler: () => void): void {
+    if (event === widgetEvents.Ready) this.readyHandler = handler;
+    if (event === widgetEvents.Complete) this.completeHandler = handler;
+  }
+
+  destroy(): void {
+    this.remove();
+  }
+
+  private async loadWidget(): Promise<void> {
     try {
       const widget = await widgetDataSource.getWidgetById<TrueFalseWidget>('true-false', this.widgetId);
 
@@ -121,27 +78,45 @@ export class TrueFalseWidgetCreator extends BaseComponent {
       const falseButton = createButton('False');
 
       trueButton.addEventListener('click', () => {
-        void this.handleAnswer(true, widget);
+        void this.handleAnswer(true, widget, answersBlock);
       });
 
       falseButton.addEventListener('click', () => {
-        void this.handleAnswer(false, widget);
+        void this.handleAnswer(false, widget, answersBlock);
       });
 
       answersBlock.append(trueButton, falseButton);
 
       const taskCard = createTaskCard(statement, answersBlock);
+      this.element.append(taskCard);
 
-      const topSpace = createTopSpace();
-      const leftSpace = createSideSpace('side-space side-space-left');
-      const rightSpace = createSideSpace('side-space side-space-right');
-
-      const centerRow = createCenterRow(leftSpace, taskCard, rightSpace);
-      const layout = createGameLayout(topSpace, centerRow);
-
-      this.element.append(layout);
+      this.readyHandler?.();
     } catch (error) {
       console.error('Failed to load true-false widget', error);
+      this.element.textContent = 'Error loading true/false widget';
+    }
+  }
+
+  private async handleAnswer(value: boolean, widget: TrueFalseWidget, answersBlock: HTMLDivElement): Promise<void> {
+    if (this.isAnswered) return;
+    this.isAnswered = true;
+
+    const answer: TrueFalseAnswer = { value };
+
+    try {
+      const verdict = await widgetDataSource.submitAnswer('true-false', this.widgetId, answer);
+
+      const explanation = createExplanation(
+        `${verdict.isCorrect ? '✅ Correct!' : '❌ Incorrect.'} ${widget.payload.explanation}`
+      );
+
+      answersBlock.append(explanation);
+
+      setTimeout(() => {
+        this.completeHandler?.();
+      }, 1200);
+    } catch (error) {
+      console.error('Failed to submit true/false answer', error);
     }
   }
 }

@@ -1,0 +1,12 @@
+{
+  "id": "tf-6",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["strict-equality", "comparison"],
+  "payload": {
+    "statement": "Оператор === выполняет приведение типов перед сравнением",
+    "explanation": "=== сравнивает без приведения типов."
+  },
+  "correctAnswer": false
+}

@@ -1,0 +1,12 @@
+{
+  "id": "tf-1",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["promises", "basics"],
+  "payload": {
+    "statement": "Promise.all() возвращает результаты в порядке завершения промисов",
+    "explanation": "Promise.all() сохраняет порядок элементов входного массива, а не порядок завершения."
+  },
+  "correctAnswer": false
+}
