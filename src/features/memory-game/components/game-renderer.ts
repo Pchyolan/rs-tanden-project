@@ -15,10 +15,12 @@ import '@/styles/prism/prism-tailwind-moon-blue.css';
 import 'prismjs/plugins/line-highlight/prism-line-highlight';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
 
-import './game-renderer.scss';
 import { language$ } from '@/store/language-store.ts';
 import { translations } from '@/i18n';
 import { getElementWithType } from '@/utils/selectors.ts';
+
+import './game-renderer.scss';
+import './round-buttons.scss';
 
 type MemoryGameRendererProps = {
   payload: MemoryGamePayload;
@@ -72,7 +74,7 @@ export class MemoryGameRenderer extends BaseComponent {
 
     panelsContainer.append(this.renderCodePanel(), this.renderGraphPanel());
 
-    this.append(this.renderTopPanel(), panelsContainer, this.renderBottomPanel(onCollect, onReset));
+    this.append(panelsContainer, this.renderBottomPanel(onCollect, onReset));
   }
 
   private renderCodePanel(): BaseComponent {
@@ -112,61 +114,12 @@ export class MemoryGameRenderer extends BaseComponent {
     return panel;
   }
 
-  /**
-   * Верхний блок
-   */
-  private renderTopPanel(): BaseComponent {
-    const topPanel = new BaseComponent({
-      tag: 'div',
-      className: ['memory_game__top-panel'],
-    });
-
-    topPanel.append(this.renderHint());
-
-    return topPanel;
-  }
-
-  private renderHint(): BaseComponent {
-    const hintBlock = new BaseComponent({
-      tag: 'div',
-      className: ['memory-game__hint-container'],
-    });
-
-    const icon = new BaseComponent<'img'>({
-      tag: 'img',
-      className: ['memory-game__icon'],
-      attrs: { src: infoLogo, alt: 'info' },
-    });
-
-    const textContainer = new BaseComponent({
-      tag: 'div',
-      className: ['memory-game__hint-text-container'],
-    });
-
-    const p1 = new BaseComponent({
-      tag: 'p',
-      text: translations[language$.value].hintFirstLine,
-      className: ['memory-game__hint-text', 'hint-first'],
-    });
-    const p2 = new BaseComponent({
-      tag: 'p',
-      text: translations[language$.value].hintSecondLine,
-      className: ['memory-game__hint-text', 'hint-second'],
-    });
-    const p3 = new BaseComponent({
-      tag: 'p',
-      text: translations[language$.value].hintThirdLine,
-      className: ['memory-game__hint-text', 'hint-third'],
-    });
-
-    textContainer.append(p1, p2, p3);
-
-    hintBlock.append(icon, textContainer);
-    return hintBlock;
-  }
-
-  private renderIconWrapper(iconLogo: string, iconAltText: string): BaseComponent {
-    const wrapper = new BaseComponent({
+  private renderIconWrapper(
+    iconLogo: string,
+    iconAltText: string,
+    tooltipContent: BaseComponent | string
+  ): BaseComponent {
+    const iconContainer = new BaseComponent({
       tag: 'div',
       className: ['memory-game__icon-container'],
     });
@@ -182,7 +135,6 @@ export class MemoryGameRenderer extends BaseComponent {
       attrs: {
         src: iconLogo,
         alt: iconAltText,
-        title: iconAltText,
       },
     });
 
@@ -196,22 +148,60 @@ export class MemoryGameRenderer extends BaseComponent {
     });
 
     iconWrapper.append(iconImg);
-    wrapper.append(iconWrapper, sparkleImg);
 
-    return wrapper;
+    const tooltip = new BaseComponent({
+      tag: 'div',
+      className: ['memory-game__tooltip'],
+    });
+
+    if (typeof tooltipContent === 'string') {
+      tooltip.element.textContent = tooltipContent;
+    } else {
+      tooltip.append(tooltipContent);
+    }
+
+    iconContainer.append(iconWrapper, sparkleImg, tooltip);
+
+    return iconContainer;
   }
 
   private renderAdditionButtons(onReset: () => void): BaseComponent {
     const buttonsBlock = new BaseComponent({
       tag: 'div',
-      className: ['memory-game__hint-container'],
+      className: ['memory-game__buttons-block'],
     });
 
-    this.infoWrapper = this.renderIconWrapper(infoLogo, translations[language$.value].infoTooltip);
+    const hintContainer = new BaseComponent({ tag: 'div', className: ['memory-game__hint-tooltip-content'] });
+    const p1 = new BaseComponent({
+      tag: 'p',
+      text: translations[language$.value].hintFirstLine,
+      className: ['hint__first-line'],
+    });
+    const p2 = new BaseComponent({
+      tag: 'p',
+      text: translations[language$.value].hintSecondLine,
+      className: ['hint__second-line'],
+    });
+    const p3 = new BaseComponent({
+      tag: 'p',
+      text: translations[language$.value].hintThirdLine,
+      className: ['hint__third-line'],
+    });
+    hintContainer.append(p1, p2, p3);
 
-    this.questionWrapper = this.renderIconWrapper(questionLogo, translations[language$.value].clueTooltip);
+    this.infoWrapper = this.renderIconWrapper(infoLogo, translations[language$.value].infoTooltip, hintContainer);
 
-    this.refreshWrapper = this.renderIconWrapper(refreshLogo, translations[language$.value].refreshTooltip);
+    this.questionWrapper = this.renderIconWrapper(
+      questionLogo,
+      translations[language$.value].clueTooltip,
+      translations[language$.value].clueTooltip
+    );
+
+    this.refreshWrapper = this.renderIconWrapper(
+      refreshLogo,
+      translations[language$.value].refreshTooltip,
+      translations[language$.value].refreshTooltip
+    );
     this.refreshWrapper.addEventListener('click', onReset);
 
     buttonsBlock.append(this.infoWrapper, this.questionWrapper, this.refreshWrapper);
@@ -361,13 +351,13 @@ export class MemoryGameRenderer extends BaseComponent {
   private updateText(): void {
     const dictionary = translations[language$.value];
 
-    const hintFirstLine = getElementWithType(HTMLParagraphElement, 'hint-first', this.element);
+    const hintFirstLine = getElementWithType(HTMLParagraphElement, 'hint__first-line', this.element);
     hintFirstLine.textContent = dictionary.hintFirstLine;
 
-    const hintSecondLine = getElementWithType(HTMLParagraphElement, 'hint-second', this.element);
+    const hintSecondLine = getElementWithType(HTMLParagraphElement, 'hint__second-line', this.element);
     hintSecondLine.textContent = dictionary.hintSecondLine;
 
-    const hintThirdLine = getElementWithType(HTMLParagraphElement, 'hint-third', this.element);
+    const hintThirdLine = getElementWithType(HTMLParagraphElement, 'hint__third-line', this.element);
     hintThirdLine.textContent = dictionary.hintThirdLine;
 
     const selectedLine = getElementWithType(HTMLSpanElement, 'selected-garbage-line', this.element);
@@ -378,13 +368,13 @@ export class MemoryGameRenderer extends BaseComponent {
     }
 
     if (this.questionWrapper) {
-      const questionTooltip = getElementWithType(HTMLImageElement, 'memory-game__icon', this.questionWrapper.element);
-      questionTooltip.title = dictionary.clueTooltip;
+      const questionTooltip = getElementWithType(HTMLDivElement, 'memory-game__tooltip', this.questionWrapper.element);
+      questionTooltip.textContent = dictionary.clueTooltip;
     }
 
     if (this.refreshWrapper) {
-      const refreshTooltip = getElementWithType(HTMLImageElement, 'memory-game__icon', this.refreshWrapper.element);
-      refreshTooltip.title = dictionary.refreshTooltip;
+      const refreshTooltip = getElementWithType(HTMLDivElement, 'memory-game__tooltip', this.refreshWrapper.element);
+      refreshTooltip.textContent = dictionary.refreshTooltip;
     }
   }
 
