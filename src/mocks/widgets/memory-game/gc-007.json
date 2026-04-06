@@ -10,8 +10,8 @@
     "objects": [
       { "id": "var-a", "label": "Variable a", "x": 100, "y": 150 },
       { "id": "var-b", "label": "Variable b", "x": 100, "y": 300 },
-      { "id": "obj-a", "label": "Object A", "x": 300, "y": 150 },
-      { "id": "obj-b", "label": "Object B", "x": 300, "y": 300 }
+      { "id": "obj-a", "label": "Object A", "x": 400, "y": 150 },
+      { "id": "obj-b", "label": "Object B", "x": 400, "y": 300 }
     ],
     "links": [
       { "from": "obj-a", "to": "obj-b", "label": "ref" },

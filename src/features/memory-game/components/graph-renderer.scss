@@ -8,6 +8,7 @@
     fill: url(#objectGradient);
     stroke: $button-success-border;
     stroke-width: 2;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
   }
 
   &.root .object-rect {
@@ -20,8 +21,18 @@
     stroke: #c2410c;
   }
 
+  // Эффект внутренней тени (вогнутость)
+  .object-effect {
+    stroke: none;
+  }
+
+  // Блик
+  .object-highlight {
+    fill: rgba(255, 255, 255, 0.4);
+  }
+
   &:hover .object-rect {
-    filter: brightness(0.9);
+    filter: brightness(0.9) drop-shadow(0 2px 2px rgba(0,0,0,0.3));
   }
 
   &.click-animation {
@@ -45,13 +56,15 @@
   }
 }
 
-.graph-object__label-root {
-  font-weight: bold;
-  font-size: 24px;
-}
-
+.graph-object__label-root,
+.graph-object__label-single,
 .graph-object__label-second {
   font-weight: bold;
+  font-size: 26px;
+}
+
+.graph-object__label-first {
+  font-size: 20px;
 }
 
 .graph-link {

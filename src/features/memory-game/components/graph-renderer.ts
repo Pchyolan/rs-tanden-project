@@ -11,10 +11,10 @@ type GraphRendererProps = {
 
 export class GraphRenderer extends BaseComponent {
   private static readonly config = {
-    objectWidth: 140,
+    objectWidth: 220,
     objectHeight: 80,
     objectRadius: 40,
-    objectCenterX: 70, // половина ширины
+    objectCenterX: 110, // половина ширины
     objectCenterY: 40, // половина высоты
 
     rootX: 350,
@@ -34,7 +34,7 @@ export class GraphRenderer extends BaseComponent {
     arrowRefY: 4,
 
     textOffsetY: -0.4, // смещение для первой строки
-    textLineHeight: 1.4, // расстояние между строками
+    textLineHeight: 1.2, // расстояние между строками
   } as const;
 
   private payload: MemoryGamePayload;
@@ -158,8 +158,8 @@ export class GraphRenderer extends BaseComponent {
     const markedStop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
     markedStop2.setAttribute('offset', '100%');
     markedStop2.setAttribute('stop-color', '#f97316');
-    markedGradient.append(markedStop1, markedStop2);
 
+    markedGradient.append(markedStop1, markedStop2);
     defs.append(markedGradient);
   }
 
@@ -270,6 +270,7 @@ export class GraphRenderer extends BaseComponent {
         }, 200);
       });
 
+      // Основной прямоугольник (с градиентом)
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       rect.setAttribute('x', String(object.x));
       rect.setAttribute('y', String(object.y));
@@ -278,8 +279,21 @@ export class GraphRenderer extends BaseComponent {
       rect.setAttribute('rx', String(GraphRenderer.config.objectRadius));
       rect.classList.add('object-rect');
 
-      group.append(rect);
+      // Эллипс для блика
+      const highlight = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+      const dx = 24;
+      const dy = 20;
+      highlight.setAttribute('cx', String(object.x + dx));
+      highlight.setAttribute('cy', String(object.y + dy));
+      highlight.setAttribute('rx', '12');
+      highlight.setAttribute('ry', '4');
+      highlight.setAttribute('transform', `rotate(-25, ${object.x + dx}, ${object.y + dy})`);
+      highlight.classList.add('object-highlight');
+      highlight.setAttribute('pointer-events', 'none');
 
+      group.append(rect, highlight);
+
+      // Текст
       const text = this.createText(object);
       group.append(text);
 
@@ -294,20 +308,34 @@ export class GraphRenderer extends BaseComponent {
     text.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
     text.setAttribute('y', String(object.y + GraphRenderer.config.objectCenterY));
 
-    const lines = object.label.split(' ');
-    const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    tspan1.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
-    tspan1.setAttribute('dy', String(GraphRenderer.config.textOffsetY) + 'em');
-    tspan1.textContent = lines[0] || '';
+    const label = object.label;
+    const firstSpaceIndex = label.indexOf(' ');
 
-    const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    tspan2.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
-    tspan2.setAttribute('dy', String(GraphRenderer.config.textLineHeight) + 'em');
-    tspan2.setAttribute('class', 'graph-object__label-second');
-    tspan2.textContent = lines[1] || '';
+    if (firstSpaceIndex === -1) {
+      // Одна строка по центру
+      text.setAttribute('y', String(object.y + GraphRenderer.config.objectCenterY + 8));
+      text.textContent = label;
+      text.setAttribute('class', 'graph-object__label-single');
+    } else {
+      // Две строки: первое слово и весь остальной текст (со смещением строк)
+      const firstLine = label.slice(0, Math.max(0, firstSpaceIndex));
+      const secondLine = label.slice(Math.max(0, firstSpaceIndex + 1));
 
-    text.append(tspan1);
-    text.append(tspan2);
+      const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      tspan1.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
+      tspan1.setAttribute('dy', String(GraphRenderer.config.textOffsetY) + 'em');
+      tspan1.textContent = firstLine;
+      tspan1.setAttribute('class', 'graph-object__label-first');
+
+      const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      tspan2.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
+      tspan2.setAttribute('dy', String(GraphRenderer.config.textLineHeight) + 'em');
+      tspan2.setAttribute('class', 'graph-object__label-second');
+      tspan2.textContent = secondLine;
+
+      text.append(tspan1);
+      text.append(tspan2);
+    }
 
     return text;
   }

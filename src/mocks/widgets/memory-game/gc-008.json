@@ -9,9 +9,9 @@
     "highlightedLine": 2,
     "objects": [
       { "id": "arr-var", "label": "Variable arr", "x": 100, "y": 100 },
-      { "id": "arr-obj", "label": "Array [obj1, obj2]", "x": 350, "y": 100 },
-      { "id": "obj1", "label": "Object {x:1}", "x": 200, "y": 225 },
-      { "id": "obj2", "label": "Object {x:2}", "x": 400, "y": 225 },
+      { "id": "arr-obj", "label": "Array [obj1, obj2]", "x": 500, "y": 100 },
+      { "id": "obj1", "label": "Object {x:1}", "x": 250, "y": 225 },
+      { "id": "obj2", "label": "Object {x:2}", "x": 550, "y": 225 },
       { "id": "last-var", "label": "Variable last", "x": 100, "y": 350 }
     ],
     "links": [
