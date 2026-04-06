@@ -29,6 +29,7 @@
   border-radius: 50%;
   border: 2px solid $color-surface;
   background: $color-primary-glow;
+  opacity: 0.85;
 
   &.is-disabled {
     pointer-events: none;
