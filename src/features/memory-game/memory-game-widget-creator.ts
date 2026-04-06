@@ -12,7 +12,7 @@ import { SoundKey, SoundService } from '@/services/sound-service';
 
 import { GameState } from '@/features/memory-game/core/game-state';
 import { GameMachine } from '@/features/memory-game/core/game-machine';
-import { MemoryGameRenderer } from '@/features/memory-game/components/game-renderer';
+import { MemoryGameRenderer } from '@/features/memory-game/components';
 
 export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComponent {
   private readonly widgetId: string;

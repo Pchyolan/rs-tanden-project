@@ -1,6 +1,6 @@
 import { BaseComponent } from '@/core';
-import { SoundKey, SoundService } from '@/services/sound-service';
-import type { GraphObject, MemoryGamePayload, MemoryObject } from '@/features/memory-game/types';
+import { SoundKey, SoundService } from '@/services/sound-service.ts';
+import type { GraphObject, MemoryGamePayload, MemoryObject } from '@/features/memory-game/types.ts';
 
 import './graph-renderer.scss';
 

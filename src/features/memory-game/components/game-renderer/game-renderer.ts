@@ -1,9 +1,9 @@
 import { BaseComponent, Observable } from '@/core';
-import { SoundKey, SoundService } from '@/services/sound-service';
+import { SoundKey, SoundService } from '@/services/sound-service.ts';
 
-import { GraphRenderer } from './graph-renderer';
-import type { GameState, MemoryGamePayload } from '../types';
-import { gameStates } from '../constants';
+import { GraphRenderer } from '../graph-renderer/graph-renderer.ts';
+import type { GameState, MemoryGamePayload } from '../../types.ts';
+import { gameStates } from '../../constants.ts';
 
 import infoLogo from '@/assets/images/icons/info.png';
 import questionLogo from '@/assets/images/icons/question.png';
