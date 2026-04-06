@@ -12,8 +12,10 @@ import sparkleImage from '@/assets/images/icons/sparkle.png';
 
 import Prism from 'prismjs';
 import '@/styles/prism/prism-tailwind-moon-blue.css';
-import 'prismjs/plugins/line-highlight/prism-line-highlight';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
+import 'prismjs/plugins/line-numbers/prism-line-numbers';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
+import 'prismjs/plugins/line-highlight/prism-line-highlight';
 
 import { language$ } from '@/store/language-store.ts';
 import { translations } from '@/i18n';
@@ -21,6 +23,7 @@ import { getElementWithType } from '@/utils/selectors.ts';
 
 import './game-renderer.scss';
 import './round-buttons.scss';
+import './prism-styles.scss';
 
 type MemoryGameRendererProps = {
   payload: MemoryGamePayload;
@@ -215,7 +218,7 @@ export class MemoryGameRenderer extends BaseComponent {
   private renderCodeSnippet(): BaseComponent<'pre'> {
     const codeContainer = new BaseComponent<'pre'>({
       tag: 'pre',
-      className: ['memory-game__code'],
+      className: ['memory-game__code', 'line-numbers'],
     });
 
     if (this.payload.highlightedLine) {
@@ -284,10 +287,24 @@ export class MemoryGameRenderer extends BaseComponent {
   }
 
   public highlightCode() {
-    const codeElement = getElementWithType(HTMLElement, 'language-javascript', this.element);
-    if (!codeElement) return;
+    const preElement = getElementWithType(HTMLElement, 'memory-game__code', this.element);
+    if (!preElement) return;
 
-    Prism.highlightElement(codeElement);
+    // Удаляем старые артефакты плагинов
+    const oldRows = preElement.querySelector('.line-numbers-rows');
+    if (oldRows) oldRows.remove();
+
+    preElement.querySelectorAll('.line-highlight').forEach((element) => element.remove());
+
+    // Добавляем классы и атрибуты
+    preElement.classList.add('line-numbers');
+    if (this.payload.highlightedLine) {
+      preElement.classList.add('line-highlight');
+      preElement.dataset.line = String(this.payload.highlightedLine);
+    }
+
+    // Запускаем подсветку
+    Prism.highlightAllUnder(this.element);
   }
 
   private subscribeToMachine(gameState$: Observable<GameState>) {
