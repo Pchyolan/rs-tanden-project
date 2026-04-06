@@ -109,25 +109,26 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
     try {
       const verdict = await widgetDataSource.submitAnswer('memory-game', this.widgetId, answer);
 
+      // Показываем уведомление о результате
       if (verdict.isCorrect) {
-        this.gameMachine.transition({ type: gameActions.submitSuccess });
         this.showNotification('✅ Perfect! All garbage collected.', 'success');
-
-        await this.renderer?.playAnimation();
-        this.gameMachine.transition({ type: gameActions.animationEnd });
-        this.completeHandler?.();
       } else {
-        this.gameMachine.transition({ type: gameActions.submitError });
         this.showNotification(
           verdict.explanation || '❌ Some objects are still reachable or incorrectly marked.',
           'error'
         );
-        await this.renderer?.playAnimation();
-        this.gameMachine.transition({ type: gameActions.animationEnd });
       }
+
+      // Запускаем анимацию (сборка мусора)
+      await this.renderer?.playAnimation();
+
+      // Переход к следующему виджету в любом случае
+      this.gameMachine.transition({ type: gameActions.animationEnd });
+      this.completeHandler?.();
     } catch {
       this.gameMachine.transition({ type: gameActions.submitError });
       this.showNotification('Network error. Please try again.', 'error');
+      this.completeHandler?.();
     }
   };
 
