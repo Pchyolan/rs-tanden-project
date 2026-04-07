@@ -6,11 +6,19 @@ export class QuizAnswerValidator implements AnswerValidator {
   validate(answer: QuizAnswer, correctAnswer: number): Verdict {
     const isCorrect = answer.selectedIndex === correctAnswer;
 
-    return {
-      isCorrect,
-      explanation: isCorrect ? 'Correct answer!' : 'Wrong answer. Try again.',
-      xpEarned: isCorrect ? 10 : 0,
-      streakUpdated: false,
-    };
+    return isCorrect
+      ? {
+          isCorrect: true,
+          explanation: 'Correct answer!',
+          xpEarned: 10,
+          streakUpdated: false,
+        }
+      : {
+          isCorrect: false,
+          explanation: 'Wrong answer. Try again.',
+          xpEarned: 0,
+          streakUpdated: false,
+          errors: {},
+        };
   }
 }

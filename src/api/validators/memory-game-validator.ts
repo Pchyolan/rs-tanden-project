@@ -8,14 +8,19 @@ export class MemoryGameAnswerValidator implements AnswerValidator {
     const wronglyMarked = answer.markedAsGarbage.filter((id) => !correctAnswer.includes(id));
     const isCorrect = missed.length === 0 && wronglyMarked.length === 0;
 
-    return {
-      isCorrect,
-      explanation: isCorrect
-        ? 'Perfect! All garbage collected.'
-        : 'Some objects are still reachable or incorrectly marked.',
-      streakUpdated: false,
-      xpEarned: isCorrect ? 10 : 0,
-      ...(isCorrect ? {} : { errors: { missedGarbage: missed, wronglyMarked } }),
-    };
+    return isCorrect
+      ? {
+          isCorrect: true,
+          explanation: 'Perfect! All garbage collected.',
+          streakUpdated: false,
+          xpEarned: 10,
+        }
+      : {
+          isCorrect: false,
+          explanation: 'Some objects are still reachable or incorrectly marked.',
+          streakUpdated: false,
+          xpEarned: 0,
+          errors: { missedGarbage: missed, wronglyMarked },
+        };
   }
 }

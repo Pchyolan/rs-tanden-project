@@ -1,11 +1,9 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vitest/config'; // важно: из vitest/config
 import eslint from 'vite-plugin-eslint2';
 import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
-  plugins: [
-    eslint({ overrideConfigFile: './eslint.config.js' })
-  ],
+  plugins: [eslint({ overrideConfigFile: './eslint.config.js' })],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('src', import.meta.url)),
@@ -18,6 +16,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    css: true,
+    include: ['tests/unit/**/*.test.ts', 'tests/unit/**/*.spec.ts'],
+    coverage: {
+      exclude: ['tests/**', '**/*.test.ts'],
+    },
   },
 });
