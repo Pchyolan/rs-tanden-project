@@ -99,7 +99,9 @@
   font-family: vars.$font-family-base;
   font-style: normal;
   overflow: hidden;
+}
 
+@mixin element-states {
   &:hover {
     transform: scale(1.02);
     filter: brightness(1.06);
@@ -109,8 +111,14 @@
   &:active {
     transform: scale(0.98);
     filter: brightness(0.98);
-    border-color: color.adjust(vars.$button-success-border, $lightness: -10%);
+    border-color: color.adjust(vars.$button-success-border, $lightness: 5%);
   }
+}
+
+@mixin no-select {
+  -webkit-user-select: none;  /* Safari */
+  -ms-user-select: none;      /* IE 10+ и Edge */
+  user-select: none;          /* Современные браузеры */
 }
 
 // =====================
@@ -122,7 +130,6 @@
   color: white;
   background: vars.$color-primary;
   border: 3px solid vars.$button-success-border;
-  cursor: pointer;
 
   // Внутренняя тень (вогнутость)
   &::before {
@@ -139,6 +146,8 @@
 
 @mixin button-base {
   @include glacier-base;
+
+  cursor: pointer;
 
   // Блик (блик-отражение)
   &::after {
@@ -243,6 +252,7 @@
 // =====================
 @mixin input-base {
   @include element-base;
+  @include element-states;
 
   color: vars.$color-input-text;
   background: white;

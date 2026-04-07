@@ -46,7 +46,7 @@ export class MemoryGameRenderer extends BaseComponent {
   private codeHeader?: BaseComponent;
   private graphHeader?: BaseComponent;
 
-  private markedCounter?: BaseComponent<'span'>;
+  private markedCounterText?: BaseComponent<'span'>;
   private collectButton?: BaseComponent<'button'>;
 
   private refreshWrapper?: BaseComponent;
@@ -254,19 +254,13 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__text-wrapper'],
     });
 
-    this.markedCounter = new BaseComponent<'span'>({
-      tag: 'span',
-      text: '0',
-      className: ['memory-game__text', 'memory-game__text--green'],
-    });
-
     textWrapper.append(
       new BaseComponent<'span'>({
         tag: 'span',
         text: translations[language$.value].selectedLine,
         className: ['memory-game__text', 'selected-garbage-line'],
       }),
-      this.markedCounter
+      this.renderGarbageCounter()
     );
 
     this.collectButton = new BaseComponent<'button'>({
@@ -281,9 +275,27 @@ export class MemoryGameRenderer extends BaseComponent {
     return bottomPanel;
   }
 
+  private renderGarbageCounter(): BaseComponent {
+    // Контейнер-кружок для счётчика
+    const markedCounterWrapper = new BaseComponent({
+      tag: 'div',
+      className: ['memory-game__counter-wrapper'],
+    });
+
+    // Текст счётчика
+    this.markedCounterText = new BaseComponent<'span'>({
+      tag: 'span',
+      text: '0',
+      className: ['memory-game__text'],
+    });
+
+    markedCounterWrapper.append(this.markedCounterText);
+    return markedCounterWrapper;
+  }
+
   public updateMarkedObjects(markedSet: Set<string>): void {
-    if (this.markedCounter) {
-      this.markedCounter.element.textContent = String(markedSet.size);
+    if (this.markedCounterText) {
+      this.markedCounterText.element.textContent = String(markedSet.size);
     }
 
     this.graphRenderer?.updateMarkedObjects(markedSet);

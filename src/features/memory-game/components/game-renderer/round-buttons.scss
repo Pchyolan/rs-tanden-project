@@ -24,12 +24,14 @@
 
 .memory-game__icon-wrapper {
   @include glacier-base;
+  @include element-states;
 
   padding: 0;
   border-radius: 50%;
   border: 2px solid $color-surface;
   background: $color-primary-glow;
   opacity: 0.85;
+  cursor: pointer;
 
   &.is-disabled {
     pointer-events: none;

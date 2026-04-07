@@ -18,6 +18,7 @@
 
 .widget-header__difficulty {
   @include flex-center;
+  @include no-select;
 
   padding: $spacing-xs;
   color: white;

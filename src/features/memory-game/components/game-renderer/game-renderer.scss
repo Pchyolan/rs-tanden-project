@@ -38,6 +38,8 @@
 }
 
 .memory-game__panel-header {
+  @include no-select;
+
   padding: $spacing-sm $spacing-md;
   color: $color-text-primary;
   background: $color-background-header;
@@ -53,17 +55,19 @@
 .memory-game__text-wrapper {
   @include flex-center;
 
-  gap: 16px;
+  gap: $spacing-sm;
 }
 
 .memory-game__text {
+  @include no-select;
+
   font-size: $font-size-base;
   color: $color-text;
 }
 
-.memory-game__text--green {
-  color: $color-accent;
-  font-weight: 700;
+.selected-garbage-line {
+  font-weight: 900;
+  color: $color-text-muted;
 }
 
 .memory-game__button {
@@ -80,4 +84,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.memory-game__counter-wrapper {
+  @include glacier-base;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid $color-surface;
+  background: $color-primary-glow;
 }
