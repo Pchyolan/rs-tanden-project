@@ -1,6 +1,6 @@
 # Self-assessment: Анна Демьянович (GitHub: [theFoxTale](https://github.com/theFoxTale))
 
-> Ссылка на PR: <!-- добавьте ссылку на этот PR после его создания -->
+Ссылка на PR: [тык](https://github.com/Pchyolan/rs-tandem-project/pull/79)
 
 ## Таблица фич
 
