@@ -43,6 +43,9 @@ export class MemoryGameRenderer extends BaseComponent {
   private unsubscribeMachine?: () => void;
   private unsubscribeLanguage?: () => void;
 
+  private codeHeader?: BaseComponent;
+  private graphHeader?: BaseComponent;
+
   private markedCounter?: BaseComponent<'span'>;
   private collectButton?: BaseComponent<'button'>;
 
@@ -86,14 +89,14 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__code-panel'],
     });
 
-    const header = new BaseComponent({
+    this.codeHeader = new BaseComponent({
       tag: 'div',
-      text: 'Code',
+      text: translations[language$.value].codePanelName,
       className: ['memory-game__panel-header'],
     });
 
     const codeContainer = this.renderCodeSnippet();
-    panel.append(header, codeContainer);
+    panel.append(this.codeHeader, codeContainer);
     return panel;
   }
 
@@ -103,16 +106,16 @@ export class MemoryGameRenderer extends BaseComponent {
       className: ['memory-game__graph-panel'],
     });
 
-    const header = new BaseComponent({
+    this.graphHeader = new BaseComponent({
       tag: 'div',
-      text: 'Memory Graph',
+      text: translations[language$.value].graphPanelName,
       className: ['memory-game__panel-header'],
     });
 
     if (this.graphRenderer) {
-      panel.append(header, this.graphRenderer);
+      panel.append(this.graphHeader, this.graphRenderer);
     } else {
-      panel.append(header);
+      panel.append(this.graphHeader);
     }
     return panel;
   }
@@ -367,6 +370,14 @@ export class MemoryGameRenderer extends BaseComponent {
   }
   private updateText(): void {
     const dictionary = translations[language$.value];
+
+    if (this.codeHeader) {
+      this.codeHeader.element.textContent = dictionary.codePanelName;
+    }
+
+    if (this.graphHeader) {
+      this.graphHeader.element.textContent = dictionary.graphPanelName;
+    }
 
     const hintFirstLine = getElementWithType(HTMLParagraphElement, 'hint__first-line', this.element);
     hintFirstLine.textContent = dictionary.hintFirstLine;

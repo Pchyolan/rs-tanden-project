@@ -9,7 +9,9 @@ export type MemoryGameTranslationKey =
   | 'submittingButton'
   | 'infoTooltip'
   | 'clueTooltip'
-  | 'refreshTooltip';
+  | 'refreshTooltip'
+  | 'codePanelName'
+  | 'graphPanelName';
 
 export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameTranslationKey, string>> = {
   en: {
@@ -25,6 +27,8 @@ export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameT
     infoTooltip: 'What is it?',
     clueTooltip: 'Give me a clue',
     refreshTooltip: 'Refresh objects selection',
+    codePanelName: 'Code',
+    graphPanelName: 'Memory Graph',
   },
   ru: {
     hintFirstLine:
@@ -39,5 +43,7 @@ export const memoryGamePageTranslations: Record<LanguageType, Record<MemoryGameT
     infoTooltip: 'В чём задача?',
     clueTooltip: 'Получить подсказку',
     refreshTooltip: 'Сбросить помеченные объекты',
+    codePanelName: 'Блок кода',
+    graphPanelName: 'Граф памяти',
   },
 };
