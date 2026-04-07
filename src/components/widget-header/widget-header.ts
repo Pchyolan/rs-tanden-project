@@ -45,24 +45,27 @@ export class WidgetHeader extends BaseComponent {
 
     this.titleElement = new BaseComponent({
       tag: 'h2',
-      text: translations[language$.value][widgetType],
+      text: translations[language$.value][widgetType] ?? widgetType,
       className: ['widget-header__title'],
     });
 
     leftGroup.append(dotsContainer, this.titleElement);
 
-    const difficultyText = difficultyMap[difficulty];
-    const difficultyClass = `widget-header__difficulty-${difficultyText.toLowerCase()}`;
+    const difficultyKey = difficultyMap[difficulty];
+    const difficultyText = translations[language$.value][difficultyKey] ?? difficultyKey;
+    const difficultyClass = `widget-header__difficulty-${difficultyKey}`;
+
     const difficultyElement = new BaseComponent({
       tag: 'span',
-      text: difficultyMap[difficulty],
+      text: difficultyText,
       className: ['widget-header__difficulty', difficultyClass],
     });
 
     this.append(leftGroup, difficultyElement);
 
     this.unsubscribe = language$.subscribe(() => {
-      this.titleElement.element.textContent = translations[language$.value][widgetType];
+      this.titleElement.element.textContent = translations[language$.value][widgetType] ?? widgetType;
+      difficultyElement.element.textContent = translations[language$.value][difficultyKey] ?? difficultyKey;
     });
   }
 
