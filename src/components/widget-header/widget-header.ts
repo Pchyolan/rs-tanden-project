@@ -33,14 +33,15 @@ export class WidgetHeader extends BaseComponent {
       className: ['widget-header__dots'],
     });
 
-    const dotClasses = ['dot-blue', 'dot-orange', 'dot-green'];
-    dotClasses.forEach((className) => {
-      const dot = createDot(className, 8);
+    Object.values(difficultyMap).map((difficultyName) => {
+      const dot = createDot(`dot-${difficultyName}`, 8);
+
       const dotWrapper = new BaseComponent({
         tag: 'div',
         className: ['widget-header__dot'],
       });
       dotWrapper.element.append(dot);
+
       dotsContainer.append(dotWrapper);
     });
 
