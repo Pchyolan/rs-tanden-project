@@ -10,8 +10,9 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 Проект написан на TypeScript с собственной компонентной системой, реактивными `Observable`, роутером и полной локализацией (русский/английский). Бэкенд — Supabase (авторизация, хранение виджетов и прогресса).
 
-## 🌱 Deploy
-[Deploy Link](https://tranquil-froyo-550c45.netlify.app/)
+## 🌱 Deploy & Demo
+- [Deploy Link](https://tranquil-froyo-550c45.netlify.app/)  
+- [Demo video]()  
 
 ## 🌟 JustBuildIt Team
 - Pchyolan – [GitHub](https://github.com/pchyolan) - [Дневники](./development-notes/Pchyolan)
