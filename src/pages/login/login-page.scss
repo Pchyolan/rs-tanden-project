@@ -89,3 +89,43 @@
 .login-field {
   @include input-base;
 }
+
+.login-submit-btn {
+  @include button-success;
+  width: 100%;
+}
+
+.error-message {
+  font-size: 0.85rem;
+  margin-top: $spacing-xs;
+  text-align: center;
+  min-height: 2.5rem;
+}
+
+.register-fields-container,
+.login-fields-container {
+  @include flex-column;
+  gap: $spacing-sm;
+  width: 100%;
+  opacity: 0;
+  display: none;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  &.show {
+    opacity: 1;
+    display: flex;
+    transform: translateY(0);
+  }
+}
+
+.login-cancel-btn {
+  @include button-primary;
+  width: 100%;
+}
+
+.login-buttons-container {
+  @include flex-center;
+  gap: $spacing-md;
+  margin-top: $spacing-sm;
+}

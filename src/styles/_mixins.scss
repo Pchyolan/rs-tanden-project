@@ -109,7 +109,13 @@
   &:active {
     transform: scale(0.98);
     filter: brightness(0.98);
-    border-color: color.adjust(vars.$button-success-border, $lightness: -10%);
+    border-color: color.adjust(vars.$button-border, $lightness: -10%);
+  }
+
+  &:focus {
+    outline: none; // убираем встроенный outline браузера
+    border-color: vars.$button-border;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 38%);
   }
 }
 
@@ -121,7 +127,7 @@
 
   color: white;
   background: vars.$color-primary;
-  border: 3px solid vars.$button-success-border;
+  border: 3px solid vars.$button-border;
   cursor: pointer;
 
   // Внутренняя тень (вогнутость)
@@ -242,7 +248,7 @@
 
   color: vars.$color-input-text;
   background: white;
-  border: 3px solid vars.$button-success-border;
+  border: 3px solid vars.$input-border;
 
   &::placeholder {
     color: vars.$color-input-placeholder;
