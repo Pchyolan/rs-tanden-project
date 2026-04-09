@@ -1,6 +1,6 @@
 import { BaseComponent } from '@/core';
-import { SoundKey, SoundService } from '@/services/sound-service';
-import type { MemoryGamePayload, MemoryObject } from '@/features/memory-game/types';
+import { SoundKey, SoundService } from '@/services/sound-service.ts';
+import type { GraphObject, MemoryGamePayload, MemoryObject } from '@/features/memory-game/types.ts';
 
 import './graph-renderer.scss';
 
@@ -11,10 +11,10 @@ type GraphRendererProps = {
 
 export class GraphRenderer extends BaseComponent {
   private static readonly config = {
-    objectWidth: 140,
+    objectWidth: 220,
     objectHeight: 80,
     objectRadius: 40,
-    objectCenterX: 70, // половина ширины
+    objectCenterX: 110, // половина ширины
     objectCenterY: 40, // половина высоты
 
     rootX: 350,
@@ -34,7 +34,7 @@ export class GraphRenderer extends BaseComponent {
     arrowRefY: 4,
 
     textOffsetY: -0.4, // смещение для первой строки
-    textLineHeight: 1.4, // расстояние между строками
+    textLineHeight: 1.2, // расстояние между строками
   } as const;
 
   private payload: MemoryGamePayload;
@@ -66,6 +66,7 @@ export class GraphRenderer extends BaseComponent {
 
   private renderGraph() {
     this.addArrowMarker();
+    this.addGradients();
 
     this.renderRootLinks();
     this.renderLinks();
@@ -97,6 +98,71 @@ export class GraphRenderer extends BaseComponent {
     this.svg.append(defs);
   }
 
+  private addGradients(): void {
+    const defs = this.svg.querySelector('defs') || document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    if (!defs.parentNode) this.svg.prepend(defs);
+
+    // Градиент для обычного объекта (аналог button-primary)
+    const normalGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+
+    normalGradient.id = 'objectGradient';
+    normalGradient.setAttribute('x1', '0%');
+    normalGradient.setAttribute('y1', '0%');
+    normalGradient.setAttribute('x2', '0%');
+    normalGradient.setAttribute('y2', '100%');
+
+    const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    stop1.setAttribute('offset', '0%');
+    stop1.setAttribute('stop-color', '#2ea2ff'); // светлый верх
+
+    const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    stop2.setAttribute('offset', '100%');
+    stop2.setAttribute('stop-color', '#1976d2'); // тёмный низ
+
+    normalGradient.append(stop1, stop2);
+    defs.append(normalGradient);
+
+    // Градиент для root (фиолетовый)
+    const rootGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+    rootGradient.id = 'rootGradient';
+
+    rootGradient.setAttribute('x1', '0%');
+    rootGradient.setAttribute('y1', '0%');
+    rootGradient.setAttribute('x2', '0%');
+    rootGradient.setAttribute('y2', '100%');
+
+    const rootStop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    rootStop1.setAttribute('offset', '0%');
+    rootStop1.setAttribute('stop-color', '#a78bfa');
+
+    const rootStop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    rootStop2.setAttribute('offset', '100%');
+    rootStop2.setAttribute('stop-color', '#7c3aed');
+
+    rootGradient.append(rootStop1, rootStop2);
+    defs.append(rootGradient);
+
+    // Градиент для marked (оранжевый)
+    const markedGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+    markedGradient.id = 'markedGradient';
+
+    markedGradient.setAttribute('x1', '0%');
+    markedGradient.setAttribute('y1', '0%');
+    markedGradient.setAttribute('x2', '0%');
+    markedGradient.setAttribute('y2', '100%');
+
+    const markedStop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    markedStop1.setAttribute('offset', '0%');
+    markedStop1.setAttribute('stop-color', '#fbab73');
+
+    const markedStop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    markedStop2.setAttribute('offset', '100%');
+    markedStop2.setAttribute('stop-color', '#f97316');
+
+    markedGradient.append(markedStop1, markedStop2);
+    defs.append(markedGradient);
+  }
+
   private renderRoot(): void {
     const rootId = this.payload.rootIds[0];
     if (!rootId) return;
@@ -113,6 +179,10 @@ export class GraphRenderer extends BaseComponent {
     rect.setAttribute('rx', String(GraphRenderer.config.rootRadius));
     rect.classList.add('object-rect');
 
+    // Эллипс для блика
+    const rootObject: GraphObject = { x: GraphRenderer.config.rootX, y: GraphRenderer.config.rootY };
+    const highlight = this.createHighlight(rootObject, 26, 18);
+
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttribute('x', String(GraphRenderer.config.rootCenterX));
     text.setAttribute('y', String(GraphRenderer.config.rootCenterY + 10));
@@ -120,8 +190,7 @@ export class GraphRenderer extends BaseComponent {
     text.setAttribute('class', 'graph-object__label-root');
     text.textContent = rootId;
 
-    group.append(rect);
-    group.append(text);
+    group.append(rect, highlight, text);
 
     group.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -161,6 +230,41 @@ export class GraphRenderer extends BaseComponent {
     });
   }
 
+  private getTargetPoint(source: MemoryObject, target: MemoryObject): { x: number; y: number } {
+    const sourceCenterX = source.x + GraphRenderer.config.objectCenterX;
+    const sourceCenterY = source.y + GraphRenderer.config.objectCenterY;
+
+    const targetLeft = target.x;
+    const targetRight = target.x + GraphRenderer.config.objectWidth;
+
+    const targetTop = target.y;
+    const targetBottom = target.y + GraphRenderer.config.objectHeight;
+
+    const targetCenterX = target.x + GraphRenderer.config.objectCenterX;
+    const targetCenterY = target.y + GraphRenderer.config.objectCenterY;
+
+    // Горизонтальное направление
+    if (sourceCenterX < targetCenterX) {
+      // Источник слева, цель справа – стрелка в левый край цели
+      return { x: targetLeft, y: targetCenterY };
+    } else if (sourceCenterX > targetRight) {
+      // Источник справа, цель слева – стрелка в правый край цели
+      return { x: targetRight, y: targetCenterY };
+    } else {
+      // Вертикальное направление: источник выше или ниже
+      if (sourceCenterY < targetTop) {
+        // Источник выше – стрелка в верхний край
+        return { x: targetCenterX, y: targetTop };
+      } else if (sourceCenterY > targetBottom) {
+        // Источник ниже – стрелка в нижний край
+        return { x: targetCenterX, y: targetBottom };
+      } else {
+        // Если объекты перекрываются, используем левый край (условно - это запасной вариант)
+        return { x: targetLeft, y: targetCenterY };
+      }
+    }
+  }
+
   private renderLinks() {
     this.payload.links.forEach((link) => {
       const fromObject = this.payload.objects.find((item) => item.id === link.from);
@@ -169,19 +273,34 @@ export class GraphRenderer extends BaseComponent {
 
       const fromX = fromObject.x + GraphRenderer.config.objectCenterX;
       const fromY = fromObject.y + GraphRenderer.config.objectCenterY;
-      const toX = toObject.x;
-      const toY = toObject.y + GraphRenderer.config.objectCenterY;
+      const targetPoint = this.getTargetPoint(fromObject, toObject);
+      const toX = targetPoint.x;
+      const toY = targetPoint.y;
 
-      const midX = fromX;
-      const midY = toY;
+      // Разницы координат
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+
+      let pathD: string;
+      if (Math.abs(dx) < 30) {
+        // Вертикальная прямая
+        pathD = `M ${fromX} ${fromY} L ${toX} ${toY}`;
+      } else if (Math.abs(dy) < 30) {
+        // Горизонтальная прямая
+        pathD = `M ${fromX} ${fromY} L ${toX} ${toY}`;
+      } else {
+        // L-образный путь: сначала горизонталь от источника, затем вертикаль к цели
+        const midX = fromX;
+        const midY = toY;
+        pathD = `M ${fromX} ${fromY} L ${midX} ${midY} L ${toX} ${toY}`;
+      }
 
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', `M ${fromX} ${fromY} L ${midX} ${midY} L ${toX} ${toY}`);
+      path.setAttribute('d', pathD);
       path.setAttribute('marker-end', `url(#${GraphRenderer.config.arrowMarkerId})`);
       path.classList.add('graph-link');
 
       this.linkElements.push({ path, from: link.from, to: link.to });
-
       this.svg.append(path);
     });
   }
@@ -204,6 +323,7 @@ export class GraphRenderer extends BaseComponent {
         }, 200);
       });
 
+      // Основной прямоугольник (с градиентом)
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       rect.setAttribute('x', String(object.x));
       rect.setAttribute('y', String(object.y));
@@ -212,8 +332,12 @@ export class GraphRenderer extends BaseComponent {
       rect.setAttribute('rx', String(GraphRenderer.config.objectRadius));
       rect.classList.add('object-rect');
 
-      group.append(rect);
+      // Эллипс для блика
+      const highlight = this.createHighlight(object);
 
+      group.append(rect, highlight);
+
+      // Текст
       const text = this.createText(object);
       group.append(text);
 
@@ -222,26 +346,54 @@ export class GraphRenderer extends BaseComponent {
     });
   }
 
+  private createHighlight(object: GraphObject, dx: number = 26, dy: number = 16): SVGEllipseElement {
+    const highlight = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+
+    highlight.setAttribute('cx', String(object.x + dx));
+    highlight.setAttribute('cy', String(object.y + dy));
+    highlight.setAttribute('rx', '12');
+    highlight.setAttribute('ry', '4');
+    highlight.setAttribute('transform', `rotate(-25, ${object.x + dx}, ${object.y + dy})`);
+    highlight.classList.add('object-highlight');
+    highlight.setAttribute('pointer-events', 'none');
+
+    return highlight;
+  }
+
   private createText(object: MemoryObject): SVGTextElement {
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttribute('text-anchor', 'middle');
     text.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
     text.setAttribute('y', String(object.y + GraphRenderer.config.objectCenterY));
 
-    const lines = object.label.split(' ');
-    const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    tspan1.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
-    tspan1.setAttribute('dy', String(GraphRenderer.config.textOffsetY) + 'em');
-    tspan1.textContent = lines[0] || '';
+    const label = object.label;
+    const firstSpaceIndex = label.indexOf(' ');
 
-    const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    tspan2.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
-    tspan2.setAttribute('dy', String(GraphRenderer.config.textLineHeight) + 'em');
-    tspan2.setAttribute('class', 'graph-object__label-second');
-    tspan2.textContent = lines[1] || '';
+    if (firstSpaceIndex === -1) {
+      // Одна строка по центру
+      text.setAttribute('y', String(object.y + GraphRenderer.config.objectCenterY + 8));
+      text.textContent = label;
+      text.setAttribute('class', 'graph-object__label-single');
+    } else {
+      // Две строки: первое слово и весь остальной текст (со смещением строк)
+      const firstLine = label.slice(0, Math.max(0, firstSpaceIndex));
+      const secondLine = label.slice(Math.max(0, firstSpaceIndex + 1));
 
-    text.append(tspan1);
-    text.append(tspan2);
+      const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      tspan1.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
+      tspan1.setAttribute('dy', String(GraphRenderer.config.textOffsetY) + 'em');
+      tspan1.textContent = firstLine;
+      tspan1.setAttribute('class', 'graph-object__label-first');
+
+      const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+      tspan2.setAttribute('x', String(object.x + GraphRenderer.config.objectCenterX));
+      tspan2.setAttribute('dy', String(GraphRenderer.config.textLineHeight) + 'em');
+      tspan2.setAttribute('class', 'graph-object__label-second');
+      tspan2.textContent = secondLine;
+
+      text.append(tspan1);
+      text.append(tspan2);
+    }
 
     return text;
   }

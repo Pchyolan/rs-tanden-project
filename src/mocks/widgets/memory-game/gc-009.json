@@ -9,7 +9,7 @@
     "highlightedLine": 2,
     "objects": [
       { "id": "window-obj", "label": "window", "x": 100, "y": 150 },
-      { "id": "leak-obj", "label": "Object {data:'leak'}", "x": 250, "y": 300 }
+      { "id": "leak-obj", "label": "Object {data:'leak'}", "x": 300, "y": 300 }
     ],
     "links": [{ "from": "window-obj", "to": "leak-obj", "label": "temp" }],
     "rootIds": ["global"],
