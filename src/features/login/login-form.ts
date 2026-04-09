@@ -373,7 +373,6 @@ export class LoginForm implements Page {
 
   private showError(messageComponent: BaseComponent, message: string): void {
     messageComponent.element.textContent = message;
-    messageComponent.element.style.color = '#f44336';
 
     setTimeout(() => {
       if (messageComponent.element.textContent === message) {
