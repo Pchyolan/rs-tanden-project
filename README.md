@@ -12,7 +12,7 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 ## 🌱 Deploy & Demo
 - [Deploy Link](https://tranquil-froyo-550c45.netlify.app/)  
-- [Demo video]()  
+- [Demo video](https://youtu.be/Vk_MvrETp9Q?si=R3sT1_7hyuWviuF4)  
 
 ## 🌟 JustBuildIt Team
 - Pchyolan – [GitHub](https://github.com/pchyolan) - [Дневники](./development-notes/Pchyolan)
