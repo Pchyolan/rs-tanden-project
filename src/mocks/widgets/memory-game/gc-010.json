@@ -9,7 +9,7 @@
     "highlightedLine": 4,
     "objects": [
       { "id": "div-var", "label": "Variable div", "x": 100, "y": 150 },
-      { "id": "dom-div", "label": "DOM <div>", "x": 300, "y": 150 },
+      { "id": "dom-div", "label": "DOM <div>", "x": 400, "y": 150 },
       { "id": "body", "label": "document.body", "x": 100, "y": 300 }
     ],
     "links": [{ "from": "div-var", "to": "dom-div", "label": "ref" }],

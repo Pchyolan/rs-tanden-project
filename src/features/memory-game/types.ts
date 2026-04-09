@@ -2,11 +2,14 @@ import type { BaseWidget } from '@/types';
 import { gameActions, gameStates } from './constants';
 
 // Структура объекта на графе
-export type MemoryObject = {
-  id: string;
-  label: string;
+export type GraphObject = {
   x: number;
   y: number;
+};
+
+export type MemoryObject = GraphObject & {
+  id: string;
+  label: string;
 };
 
 // Связь между объектами

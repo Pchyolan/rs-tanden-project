@@ -2,6 +2,9 @@ import { BaseComponent, Observable, WidgetFactory } from '@/core';
 import { widgetEvents } from '@/constants';
 import type { TicketItem, WidgetComponent } from '@/types';
 
+import { language$ } from '@/store/language-store';
+import { translations } from '@/i18n';
+
 import konturImg from '@/assets/kontur.png';
 import raskrasImg from '@/assets/raskras.png';
 import { createLeftArrow, createRightArrow } from '@/utils/svg-icon';
@@ -19,7 +22,11 @@ export class TicketPageController extends BaseComponent {
 
   private readonly ticketItems: TicketItem[];
   private taskSegments: BaseComponent[] = [];
-  private readonly counterElement: BaseComponent<'span'>;
+
+  private counterPrefix?: BaseComponent<'span'>;
+  private counterNumber?: BaseComponent<'span'>;
+  private completionMessage?: BaseComponent;
+  private readonly unsubscribeLanguage?: () => void;
 
   private readonly leftButton: BaseComponent<'button'>;
   private readonly rightButton: BaseComponent<'button'>;
@@ -33,12 +40,6 @@ export class TicketPageController extends BaseComponent {
     const tasksWrapper = new BaseComponent({
       tag: 'div',
       className: ['task-wrapper'],
-    });
-
-    this.counterElement = new BaseComponent({
-      tag: 'span',
-      className: ['task-counter'],
-      text: `Task 1 / ${widgetsList.length}`,
     });
 
     const segmentsContainer = new BaseComponent({
@@ -55,7 +56,7 @@ export class TicketPageController extends BaseComponent {
       segmentsContainer.append(segment);
     }
 
-    tasksWrapper.append(this.counterElement, segmentsContainer);
+    tasksWrapper.append(this.renderTaskCounter(), segmentsContainer);
 
     const widgetWrapper = new BaseComponent({
       tag: 'div',
@@ -93,7 +94,30 @@ export class TicketPageController extends BaseComponent {
       else this.spinnerComponent.remove();
     });
 
+    this.unsubscribeLanguage = language$.subscribe(() => this.updateTexts());
+
     this.loadNext();
+  }
+
+  private renderTaskCounter(): BaseComponent {
+    const counterContainer = new BaseComponent({
+      tag: 'div',
+      className: ['task-counter'],
+    });
+
+    this.counterPrefix = new BaseComponent({
+      tag: 'span',
+      className: ['task-counter-prefix'],
+      text: translations[language$.value].taskPrefix,
+    });
+    this.counterNumber = new BaseComponent({
+      tag: 'span',
+      className: ['task-counter-number'],
+      text: ` 1 / ${this.taskSegments.length}`,
+    });
+
+    counterContainer.append(this.counterPrefix, this.counterNumber);
+    return counterContainer;
   }
 
   private loadNext() {
@@ -101,7 +125,13 @@ export class TicketPageController extends BaseComponent {
     this.isLoading$.set(true);
 
     if (this.currentIndex >= this.ticketItems.length) {
-      this.counterElement.element.textContent = '';
+      if (this.counterPrefix) {
+        this.counterPrefix.element.textContent = '';
+      }
+      if (this.counterNumber) {
+        this.counterNumber.element.textContent = '';
+      }
+
       this.updateButtonsState();
       this.showCompletionMessage();
       return;
@@ -141,7 +171,9 @@ export class TicketPageController extends BaseComponent {
   }
 
   private updateTaskSegments(): void {
-    this.counterElement.element.textContent = `Task ${this.currentIndex + 1} / ${this.ticketItems.length}`;
+    if (this.counterNumber) {
+      this.counterNumber.element.textContent = ` ${this.currentIndex + 1} / ${this.ticketItems.length}`;
+    }
 
     this.taskSegments.forEach((segment, index) => {
       segment.element.classList.toggle('active', index <= this.currentIndex);
@@ -149,12 +181,12 @@ export class TicketPageController extends BaseComponent {
   }
 
   private showCompletionMessage(): void {
-    const message = new BaseComponent({
+    this.completionMessage = new BaseComponent({
       tag: 'div',
-      text: 'Ticket completed! Well done!',
+      text: translations[language$.value].ticketComplete,
       className: ['ticket-complete'],
     });
-    this.currentWidgetWrapper.append(message);
+    this.currentWidgetWrapper.append(this.completionMessage);
 
     this.updateButtonsState();
   }
@@ -169,7 +201,17 @@ export class TicketPageController extends BaseComponent {
     }
   }
 
+  private updateTexts(): void {
+    if (this.counterPrefix) {
+      this.counterPrefix.element.textContent = translations[language$.value].taskPrefix;
+    }
+    if (this.completionMessage) {
+      this.completionMessage.element.textContent = translations[language$.value].ticketComplete;
+    }
+  }
+
   public override remove(): void {
+    this.unsubscribeLanguage?.();
     this.currentWidget?.destroy();
     super.remove();
   }

@@ -17,6 +17,8 @@
   background-color: $color-primary;
 
   .logo {
+    @include no-select;
+
     font-weight: 700;
     font-size: 1.5rem;
   }
@@ -97,6 +99,8 @@
 }
 
 .app-footer {
+  @include no-select;
+
   color: $color-text-primary;
   background-color: $color-primary;
   text-align: center;

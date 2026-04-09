@@ -9,8 +9,8 @@
     "highlightedLine": 4,
     "objects": [
       { "id": "user-var", "label": "Variable user", "x": 100, "y": 150 },
-      { "id": "admin-var", "label": "Variable admin", "x": 400, "y": 150 },
-      { "id": "user-obj", "label": "Object {name:'Alice'}", "x": 250, "y": 300 }
+      { "id": "admin-var", "label": "Variable admin", "x": 500, "y": 150 },
+      { "id": "user-obj", "label": "Object {name:'Alice'}", "x": 300, "y": 300 }
     ],
     "links": [
       { "from": "user-var", "to": "user-obj", "label": "ref" },

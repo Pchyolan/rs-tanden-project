@@ -12,7 +12,7 @@ import { SoundKey, SoundService } from '@/services/sound-service';
 
 import { GameState } from '@/features/memory-game/core/game-state';
 import { GameMachine } from '@/features/memory-game/core/game-machine';
-import { MemoryGameRenderer } from '@/features/memory-game/components/game-renderer';
+import { MemoryGameRenderer } from '@/features/memory-game/components';
 
 export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComponent {
   private readonly widgetId: string;
@@ -70,12 +70,12 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
 
       this.clear();
       this.append(header, this.renderer);
-      this.renderer.highlightCode();
 
       this.gameMachine.transition({ type: gameActions.loadSuccess });
 
       this.subscribeToMarkedGarbage();
 
+      setTimeout(() => this.renderer?.highlightCode(), 0);
       this.readyHandler?.();
     } catch (error) {
       console.log('Failed to load memory game widget', error);
@@ -109,25 +109,26 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
     try {
       const verdict = await widgetDataSource.submitAnswer('memory-game', this.widgetId, answer);
 
+      // Показываем уведомление о результате
       if (verdict.isCorrect) {
-        this.gameMachine.transition({ type: gameActions.submitSuccess });
         this.showNotification('✅ Perfect! All garbage collected.', 'success');
-
-        await this.renderer?.playAnimation();
-        this.gameMachine.transition({ type: gameActions.animationEnd });
-        this.completeHandler?.();
       } else {
-        this.gameMachine.transition({ type: gameActions.submitError });
         this.showNotification(
           verdict.explanation || '❌ Some objects are still reachable or incorrectly marked.',
           'error'
         );
-        await this.renderer?.playAnimation();
-        this.gameMachine.transition({ type: gameActions.animationEnd });
       }
+
+      // Запускаем анимацию (сборка мусора)
+      await this.renderer?.playAnimation();
+
+      // Переход к следующему виджету в любом случае
+      this.gameMachine.transition({ type: gameActions.animationEnd });
+      this.completeHandler?.();
     } catch {
       this.gameMachine.transition({ type: gameActions.submitError });
       this.showNotification('Network error. Please try again.', 'error');
+      this.completeHandler?.();
     }
   };
 

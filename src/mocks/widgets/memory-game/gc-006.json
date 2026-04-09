@@ -9,8 +9,8 @@
     "highlightedLine": 5,
     "objects": [
       { "id": "holder-var", "label": "Variable holder", "x": 100, "y": 150 },
-      { "id": "closure-fn", "label": "Function (closure)", "x": 300, "y": 150 },
-      { "id": "obj-in-closure", "label": "Object {data:'secret'}", "x": 300, "y": 300 }
+      { "id": "closure-fn", "label": "Function (closure)", "x": 400, "y": 150 },
+      { "id": "obj-in-closure", "label": "Object {data:'secret'}", "x": 400, "y": 300 }
     ],
     "links": [
       { "from": "holder-var", "to": "closure-fn", "label": "ref" },
