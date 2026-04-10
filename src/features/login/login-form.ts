@@ -40,11 +40,16 @@ export class LoginForm implements Page {
   private loginErrorMessage?: BaseComponent;
 
   // Поля и элементы формы регистрации
+  private registerFieldsContainer?: BaseComponent;
   private regEmailInput?: BaseComponent<'input'>;
   private regPasswordInput?: BaseComponent<'input'>;
   private regConfirmPasswordInput?: BaseComponent<'input'>;
   private regSubmitButton?: BaseComponent<'button'>;
   private regErrorMessage?: BaseComponent;
+
+  // Сообщение от Supabase
+  private registerMessageContainer?: BaseComponent;
+  private registerMessageText?: BaseComponent<'p'>;
 
   private readonly ANIMATION_DURATION = 150;
 
@@ -178,6 +183,12 @@ export class LoginForm implements Page {
       className: ['register-fields-container'],
     });
 
+    // --- Контейнер с полями и кнопками ---
+    this.registerFieldsContainer = new BaseComponent({
+      tag: 'div',
+      className: ['register-fields-wrapper'],
+    });
+
     this.regEmailInput = new BaseComponent({
       tag: 'input',
       attrs: { type: 'email', placeholder: 'Email', autocomplete: 'email' },
@@ -239,13 +250,45 @@ export class LoginForm implements Page {
     });
 
     buttonsContainer.append(backButton, this.regSubmitButton);
-    container.append(
+    this.registerFieldsContainer.append(
       this.regEmailInput,
       this.regPasswordInput,
       this.regConfirmPasswordInput,
       buttonsContainer,
       this.regErrorMessage
     );
+
+    // --- Контейнер с сообщением об успехе ---
+    this.registerMessageContainer = new BaseComponent({
+      tag: 'div',
+      className: ['register-message-container', 'hidden'],
+    });
+
+    this.registerMessageText = new BaseComponent({
+      tag: 'p',
+      text: 'Registration successful! ✨ Please check your email to confirm.',
+      className: ['register-message-text'],
+    });
+
+    const okButton = this.createButton({
+      text: 'OK',
+      icon: createBackArrow(),
+      onClick: () => {
+        if (this.registerMessageContainer) {
+          this.registerMessageContainer.hide();
+        }
+
+        if (this.registerFieldsContainer) {
+          this.registerFieldsContainer.show();
+        }
+        this.clearFormsData();
+        this.backToMain();
+      },
+    });
+
+    this.registerMessageContainer.append(this.registerMessageText, okButton);
+
+    container.append(this.registerFieldsContainer, this.registerMessageContainer);
     return container;
   }
 
@@ -387,13 +430,8 @@ export class LoginForm implements Page {
 
     try {
       await registration(email, password);
-      this.regErrorMessage.element.textContent = 'Registration successful! Please check your email.';
-      this.regErrorMessage.element.style.color = '#4caf50';
-
-      // Очистка полей
-      this.regEmailInput.element.value = '';
-      this.regPasswordInput.element.value = '';
-      this.regConfirmPasswordInput.element.value = '';
+      this.registerFieldsContainer?.hide();
+      this.registerMessageContainer?.show();
     } catch (error) {
       this.showError(this.regErrorMessage, this.getFriendlyErrorMessage(error));
     } finally {

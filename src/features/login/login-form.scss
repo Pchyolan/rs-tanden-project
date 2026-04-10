@@ -8,7 +8,7 @@ $ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   align-items: center;
   justify-content: center;
-  gap: $spacing-lg;
+  gap: $spacing-sm;
   width: 100%;
   height: 100%;
 }
@@ -138,8 +138,53 @@ $ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 }
 
+.register-fields-wrapper {
+  @include flex-column;
+  gap: $spacing-xs;
+}
+
 .login-buttons-container {
   @include flex-center;
   gap: $spacing-md;
   margin-top: $spacing-sm;
+}
+
+.register-message-container {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  position: relative;
+  width: 300px;
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  background-color: white;
+  border-radius: $border-radius-lg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: all 0.3s ease;
+
+  // Стрелочка вверх (сообщение персонажа)
+  &::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 70px;
+    width: 12px;
+    height: 20px;
+    background-color: white;
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.register-message-text {
+  margin: 0 0 $spacing-md 0;
+  font-size: 1rem;
+  color: $color-text-secondary;
+  line-height: 1.4;
 }
