@@ -179,11 +179,27 @@ export class LoginForm implements Page {
       attrs: { type: 'email', placeholder: 'Email', autocomplete: 'email' },
       className: ['login-field'],
     });
+    this.regEmailInput.addEventListener('input', () => {
+      if (!this.regEmailInput) return;
+
+      const email = this.regEmailInput.element.value.trim();
+      if (email && !this.isValidEmail(email) && this.regErrorMessage) {
+        this.showError(this.regErrorMessage, 'Enter a valid email address (e.g., name@example.com)');
+      }
+    });
 
     this.regPasswordInput = new BaseComponent({
       tag: 'input',
       attrs: { type: 'password', placeholder: 'Password', autocomplete: 'new-password' },
       className: ['login-field'],
+    });
+    this.regPasswordInput.addEventListener('input', () => {
+      if (!this.regPasswordInput) return;
+
+      const pwd = this.regPasswordInput.element.value;
+      if (pwd && !this.isStrongPassword(pwd) && this.regErrorMessage) {
+        this.showError(this.regErrorMessage, 'Password must be at least 6 characters');
+      }
     });
 
     this.regConfirmPasswordInput = new BaseComponent({
@@ -304,6 +320,14 @@ export class LoginForm implements Page {
       this.showError(this.loginErrorMessage, 'Please fill in both fields');
       return;
     }
+    if (!this.isValidEmail(email)) {
+      this.showError(this.loginErrorMessage, 'Invalid email format');
+      return;
+    }
+    if (!this.isStrongPassword(password)) {
+      this.showError(this.loginErrorMessage, 'Password must be at least 6 characters');
+      return;
+    }
 
     this.setLoading(this.loginSubmitButton, true);
 
@@ -343,7 +367,11 @@ export class LoginForm implements Page {
       return;
     }
 
-    if (password.length < 6) {
+    if (!this.isValidEmail(email)) {
+      this.showError(this.regErrorMessage, 'Invalid email format');
+      return;
+    }
+    if (!this.isStrongPassword(password)) {
       this.showError(this.regErrorMessage, 'Password must be at least 6 characters');
       return;
     }
@@ -370,6 +398,15 @@ export class LoginForm implements Page {
   // ==========================================
   // Вспомогательные методы UI
   // ==========================================
+
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  private isStrongPassword(password: string): boolean {
+    return password.length >= 6;
+  }
 
   private showError(messageComponent: BaseComponent, message: string): void {
     messageComponent.element.textContent = message;
