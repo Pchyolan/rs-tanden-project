@@ -24,11 +24,19 @@ export class CodeCompletionAnswerValidator implements AnswerValidator {
       normalizedUser.length === normalizedCorrect.length &&
       normalizedUser.every((item, index) => item === normalizedCorrect[index]);
 
-    return {
-      isCorrect,
-      explanation: isCorrect ? 'Correct answer' : 'Incorrect answer',
-      xpEarned: isCorrect ? 10 : 0,
-      streakUpdated: isCorrect,
-    };
+    return isCorrect
+      ? {
+          isCorrect: true,
+          explanation: 'Correct answer',
+          xpEarned: 10,
+          streakUpdated: true,
+        }
+      : {
+          isCorrect: false,
+          explanation: 'Incorrect answer',
+          xpEarned: 0,
+          streakUpdated: false,
+          errors: {},
+        };
   }
 }
