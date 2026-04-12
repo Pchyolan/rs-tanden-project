@@ -3,8 +3,16 @@ import { Header } from '../header.ts';
 import { Footer } from '../footer.ts';
 
 import { routes } from '@/constants';
-import { initAuth, logout } from '@/store/auth-store';
-import { apiTestPage, homePage, loginPage, memoryGamePage, notFoundPage, widgetEnginePage } from '@/pages';
+import { initAuth, logoutApi } from '@/store/auth-store';
+import {
+  apiTestPage,
+  homePage,
+  loginPage,
+  memoryGamePage,
+  notFoundPage,
+  ResetPasswordPage,
+  widgetEnginePage,
+} from '@/pages';
 
 import './app.scss';
 
@@ -25,7 +33,7 @@ export class App extends BaseComponent<'div'> {
       onWidgetClick: () => this.router.navigate(routes.widget_engine),
       onMemoryClick: () => this.router.navigate(routes.memory_game),
       onLogout: async () => {
-        await logout();
+        await logoutApi();
         this.router.navigate(routes.login);
       },
     });
@@ -57,7 +65,10 @@ export class App extends BaseComponent<'div'> {
 
   private setupRoutes(): void {
     this.router.addRoute(routes.home, homePage);
+
     this.router.addRoute(routes.login, () => loginPage(this.router));
+    this.router.addRoute(routes.reset_password, () => new ResetPasswordPage(this.router));
+
     this.router.addRoute(routes.api_test, apiTestPage);
     this.router.addRoute(routes.widget_engine, widgetEnginePage);
     this.router.addRoute(routes.memory_game, memoryGamePage);

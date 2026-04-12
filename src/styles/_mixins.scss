@@ -154,6 +154,8 @@
   @include glacier-base;
 
   cursor: pointer;
+  font-size: clamp(0.8rem, 4vw, 1.2rem);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
 
   // Блик (блик-отражение)
   &::after {
@@ -286,5 +288,34 @@
     @media (width >= 901px) {
       @content;
     }
+  }
+}
+
+@mixin cloud-message {
+  @include flex-center;
+  flex-direction: column;
+  gap: vars.$spacing-sm;
+
+  position: relative;
+  width: 300px;
+  margin-top: vars.$spacing-md;
+  padding: vars.$spacing-md;
+  background-color: white;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: all 0.3s ease;
+
+  // Стрелочка вверх
+  &::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 70px;
+    width: 12px;
+    height: 20px;
+    background-color: white;
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
   }
 }

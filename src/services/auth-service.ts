@@ -20,8 +20,10 @@ class AuthService {
         data: { display_name: displayName },
       },
     });
+
     if (error) return { data: null, error };
     if (!data.user || !data.session) return { data: null, error: null };
+
     return { data: { user: data.user, session: data.session }, error: null };
   }
 
@@ -40,8 +42,10 @@ class AuthService {
       email,
       password,
     });
+
     if (error) return { data: null, error };
     if (!data.user || !data.session) return { data: null, error: null };
+
     return { data: { user: data.user, session: data.session }, error: null };
   }
 
@@ -52,22 +56,36 @@ class AuthService {
 
   async getSession(): Promise<AuthResult<{ session: Session }>> {
     const { data, error } = await SupabaseClient.auth.getSession();
+
     if (error) return { data: null, error };
     if (!data.session) return { data: null, error: null };
+
     return { data: { session: data.session }, error: null };
   }
 
   async resetPassword(email: string): Promise<AuthResult<null>> {
-    const { error } = await SupabaseClient.auth.resetPasswordForEmail(email);
+    const redirectTo = `${globalThis.location.origin}/reset-password`;
+    const { error } = await SupabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
     return { data: null, error };
+  }
+
+  async updatePassword(password: string): Promise<AuthResult<{ user: User }>> {
+    const { data, error } = await SupabaseClient.auth.updateUser({ password });
+
+    if (error) return { data: null, error };
+    if (!data.user) return { data: null, error: null };
+
+    return { data: { user: data.user }, error: null };
   }
 
   async updateDisplayName(displayName: string): Promise<AuthResult<{ user: User }>> {
     const { data, error } = await SupabaseClient.auth.updateUser({
       data: { display_name: displayName },
     });
+
     if (error) return { data: null, error };
     if (!data.user) return { data: null, error: null };
+
     return { data: { user: data.user }, error: null };
   }
 

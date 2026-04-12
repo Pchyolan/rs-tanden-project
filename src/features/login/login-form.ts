@@ -1,19 +1,17 @@
 import type { Page } from '@/core';
-import { BaseComponent, Router, SupabaseClient } from '@/core';
+import { BaseComponent, Router } from '@/core';
 
-import { login, registration } from '@/store/auth-store';
+import { createButtonWithIcon } from '@/components';
+import { loginApi, registrationApi, sendResetPasswordEmailApi, user$ } from '@/store/auth-store';
+import { getFriendlyErrorMessage } from '@/utils/supabase-errors';
+import { isStrongPassword, isValidEmail, setButtonLoading, showTemporaryError } from '@/utils/login-helpers';
 
 import welcomeImageUrl from '@/assets/images/brains/welcome.png';
 import welcomeAnimationUrl from '@/assets/video/welcome.webm';
 import { createClipboardIcon, createLockIcon, createBackArrow } from '@/utils/svg-icon';
 
 import './login-form.scss';
-
-type ButtonConfig = {
-  text: string;
-  icon: SVGElement;
-  onClick?: () => void;
-};
+import { passwordRules } from '@/constants';
 
 /**
  * Страница входа/регистрации.
@@ -28,6 +26,7 @@ export class LoginForm implements Page {
   // Контейнеры форм
   private loginContainer?: BaseComponent;
   private registerContainer?: BaseComponent;
+  private resetContainer?: BaseComponent;
 
   // Кнопки выбора действия
   private loginButton?: BaseComponent<'button'>;
@@ -38,6 +37,7 @@ export class LoginForm implements Page {
   private loginPasswordInput?: BaseComponent<'input'>;
   private loginSubmitButton?: BaseComponent<'button'>;
   private loginErrorMessage?: BaseComponent;
+  private loginResetLink?: BaseComponent<'a'>;
 
   // Поля и элементы формы регистрации
   private registerFieldsContainer?: BaseComponent;
@@ -50,6 +50,17 @@ export class LoginForm implements Page {
   // Сообщение от Supabase
   private registerMessageContainer?: BaseComponent;
   private registerMessageText?: BaseComponent<'p'>;
+
+  // Поля и элементы формы восстановления пароля
+  private resetFieldsContainer?: BaseComponent;
+  private resetHeaderText?: BaseComponent<'p'>;
+  private resetEmailInput?: BaseComponent<'input'>;
+  private resetButton?: BaseComponent<'button'>;
+  private resetErrorMessage?: BaseComponent;
+
+  // Сообщение об отправке email
+  private resetMessageContainer?: BaseComponent;
+  private resetMessageText?: BaseComponent<'p'>;
 
   private readonly ANIMATION_DURATION = 150;
 
@@ -166,14 +177,25 @@ export class LoginForm implements Page {
     });
     this.loginSubmitButton.addEventListener('click', this.handleSignIn);
 
-    const backButton = this.createButton({
-      text: 'Back',
-      icon: createBackArrow(),
-      onClick: () => this.backToMain(),
-    });
+    buttonsContainer.append(this.createBackButton(), this.loginSubmitButton);
 
-    buttonsContainer.append(backButton, this.loginSubmitButton);
-    container.append(this.loginEmailInput, this.loginPasswordInput, buttonsContainer, this.loginErrorMessage);
+    this.loginResetLink = new BaseComponent({
+      tag: 'a',
+      text: 'Forgot Password? Reset',
+      className: ['login-reset-link'],
+      attrs: {
+        href: '#',
+      },
+    });
+    this.loginResetLink.addEventListener('click', this.showResetForm);
+
+    container.append(
+      this.loginEmailInput,
+      this.loginPasswordInput,
+      buttonsContainer,
+      this.loginResetLink,
+      this.loginErrorMessage
+    );
     return container;
   }
 
@@ -199,8 +221,8 @@ export class LoginForm implements Page {
       if (!this.regEmailInput) return;
 
       const email = this.regEmailInput.element.value.trim();
-      if (email && !this.isValidEmail(email) && this.regErrorMessage) {
-        this.showError(this.regErrorMessage, 'Enter a valid email address (e.g., name@example.com)');
+      if (email && !isValidEmail(email) && this.regErrorMessage) {
+        showTemporaryError(this.regErrorMessage, 'Enter a valid email address (e.g., name@example.com)');
       }
     });
 
@@ -214,8 +236,8 @@ export class LoginForm implements Page {
       if (!this.regPasswordInput) return;
 
       const pwd = this.regPasswordInput.element.value;
-      if (pwd && !this.isStrongPassword(pwd) && this.regErrorMessage) {
-        this.showError(this.regErrorMessage, 'Password must be at least 6 characters');
+      if (pwd && !isStrongPassword(pwd) && this.regErrorMessage) {
+        showTemporaryError(this.regErrorMessage, `Password must be at least ${passwordRules.minLength} characters`);
       }
     });
 
@@ -243,13 +265,7 @@ export class LoginForm implements Page {
       className: ['login-buttons-container'],
     });
 
-    const backButton = this.createButton({
-      text: 'Back',
-      icon: createBackArrow(),
-      onClick: () => this.backToMain(),
-    });
-
-    buttonsContainer.append(backButton, this.regSubmitButton);
+    buttonsContainer.append(this.createBackButton(), this.regSubmitButton);
     this.registerFieldsContainer.append(
       this.regEmailInput,
       this.regPasswordInput,
@@ -270,19 +286,16 @@ export class LoginForm implements Page {
       className: ['register-message-text'],
     });
 
-    const okButton = this.createButton({
+    const okButton = createButtonWithIcon({
       text: 'OK',
       icon: createBackArrow(),
-      onClick: () => {
+      onClick: async () => {
         if (this.registerMessageContainer) {
           this.registerMessageContainer.hide();
         }
 
-        if (this.registerFieldsContainer) {
-          this.registerFieldsContainer.show();
-        }
         this.clearFormsData();
-        this.backToMain();
+        await this.backToMain();
       },
     });
 
@@ -292,19 +305,100 @@ export class LoginForm implements Page {
     return container;
   }
 
+  private createResetFields(): BaseComponent {
+    const container = new BaseComponent({
+      tag: 'div',
+      className: ['reset-fields-container'],
+    });
+
+    this.resetFieldsContainer = new BaseComponent({
+      tag: 'div',
+      className: ['reset-fields-wrapper'],
+    });
+
+    this.resetHeaderText = new BaseComponent({
+      tag: 'p',
+      text: 'Enter your email to reset password:',
+      className: ['login-reset-link'],
+    });
+
+    this.resetEmailInput = new BaseComponent({
+      tag: 'input',
+      attrs: { type: 'email', placeholder: 'Email', autocomplete: 'email' },
+      className: ['login-field'],
+    });
+    this.resetEmailInput.element.addEventListener('keypress', this.handleEnterInReset);
+
+    this.resetErrorMessage = new BaseComponent({
+      tag: 'div',
+      className: ['error-message'],
+    });
+
+    const buttonsContainer = new BaseComponent({
+      tag: 'div',
+      className: ['login-buttons-container'],
+    });
+
+    this.resetButton = new BaseComponent({
+      tag: 'button',
+      text: 'Reset',
+      className: ['login-submit-btn'],
+    });
+    this.resetButton.addEventListener('click', this.handleResetPassword);
+
+    buttonsContainer.append(this.createBackButton(), this.resetButton);
+
+    // --- Контейнер с сообщением об отправке письма ---
+    this.resetMessageContainer = new BaseComponent({
+      tag: 'div',
+      className: ['register-message-container', 'hidden'],
+    });
+
+    this.resetMessageText = new BaseComponent({
+      tag: 'p',
+      text: 'Reset mail successfully sent! 🚀 Please check your email.',
+      className: ['register-message-text'],
+    });
+
+    const okButton = createButtonWithIcon({
+      text: 'OK',
+      icon: createBackArrow(),
+      onClick: () => {
+        if (this.resetMessageContainer) {
+          this.resetMessageContainer.hide();
+        }
+
+        this.clearFormsData();
+        this.backToMain();
+      },
+    });
+
+    this.resetMessageContainer.append(this.resetMessageText, okButton);
+
+    this.resetFieldsContainer.append(
+      this.resetHeaderText,
+      this.resetEmailInput,
+      buttonsContainer,
+      this.resetErrorMessage
+    );
+
+    container.append(this.resetFieldsContainer, this.resetMessageContainer);
+    return container;
+  }
+
   private createButtonWrapper(): BaseComponent {
     const wrapper = new BaseComponent({
       tag: 'div',
       className: ['welcome-page__wrapper'],
     });
 
-    this.registerButton = this.createButton({
+    this.registerButton = createButtonWithIcon({
       text: 'Register',
       icon: createClipboardIcon(),
       onClick: () => this.showRegisterForm(),
     });
 
-    this.loginButton = this.createButton({
+    this.loginButton = createButtonWithIcon({
       text: 'Log In',
       icon: createLockIcon(),
       onClick: () => this.showLoginForm(),
@@ -312,45 +406,29 @@ export class LoginForm implements Page {
 
     this.loginContainer = this.createLoginFields();
     this.registerContainer = this.createRegisterFields();
+    this.resetContainer = this.createResetFields();
 
-    // Изначально обе формы скрыты
+    // Изначально все формы скрыты
     this.loginContainer.element.classList.remove('show');
     this.registerContainer.element.classList.remove('show');
+    this.resetContainer.element.classList.remove('show');
 
-    wrapper.append(this.registerButton, this.loginButton, this.loginContainer, this.registerContainer);
+    wrapper.append(
+      this.registerButton,
+      this.loginButton,
+      this.loginContainer,
+      this.registerContainer,
+      this.resetContainer
+    );
     return wrapper;
   }
 
-  private createButton(config: ButtonConfig): BaseComponent<'button'> {
-    const button = new BaseComponent({
-      tag: 'button',
-      className: ['welcome-page__button'],
+  private createBackButton(): BaseComponent<'button'> {
+    return createButtonWithIcon({
+      text: 'Back',
+      icon: createBackArrow(),
+      onClick: () => this.backToMain(),
     });
-
-    const buttonContent = new BaseComponent({
-      tag: 'span',
-      className: ['welcome-page__button-content'],
-    });
-
-    const iconWrapper = new BaseComponent({
-      tag: 'span',
-      className: ['welcome-page__button-image'],
-    });
-    iconWrapper.element.append(config.icon);
-
-    const buttonSpan = new BaseComponent({
-      tag: 'span',
-      text: config.text,
-    });
-
-    buttonContent.append(iconWrapper, buttonSpan);
-    button.append(buttonContent);
-
-    if (config.onClick) {
-      button.addEventListener('click', config.onClick);
-    }
-
-    return button;
   }
 
   // ==========================================
@@ -367,27 +445,27 @@ export class LoginForm implements Page {
     const password = this.loginPasswordInput.element.value;
 
     if (!email || !password) {
-      this.showError(this.loginErrorMessage, 'Please fill in both fields');
+      showTemporaryError(this.loginErrorMessage, 'Please fill in both fields');
       return;
     }
-    if (!this.isValidEmail(email)) {
-      this.showError(this.loginErrorMessage, 'Invalid email format');
+    if (!isValidEmail(email)) {
+      showTemporaryError(this.loginErrorMessage, 'Invalid email format');
       return;
     }
-    if (!this.isStrongPassword(password)) {
-      this.showError(this.loginErrorMessage, 'Password must be at least 6 characters');
+    if (!isStrongPassword(password)) {
+      showTemporaryError(this.loginErrorMessage, `Password must be at least ${passwordRules.minLength} characters`);
       return;
     }
 
-    this.setLoading(this.loginSubmitButton, true);
+    setButtonLoading(this.loginSubmitButton, true);
 
     try {
-      await login(email, password);
+      await loginApi(email, password);
       this.router.navigate('/dashboard');
     } catch (error) {
-      this.showError(this.loginErrorMessage, this.getFriendlyErrorMessage(error));
+      showTemporaryError(this.loginErrorMessage, getFriendlyErrorMessage(error));
     } finally {
-      this.setLoading(this.loginSubmitButton, false);
+      setButtonLoading(this.loginSubmitButton, false);
     }
   };
 
@@ -408,48 +486,85 @@ export class LoginForm implements Page {
     const confirm = this.regConfirmPasswordInput.element.value;
 
     if (!email || !password || !confirm) {
-      this.showError(this.regErrorMessage, 'Please fill in all fields');
+      showTemporaryError(this.regErrorMessage, 'Please fill in all fields');
       return;
     }
 
     if (password !== confirm) {
-      this.showError(this.regErrorMessage, 'Passwords do not match');
+      showTemporaryError(this.regErrorMessage, 'Passwords do not match');
       return;
     }
 
-    if (!this.isValidEmail(email)) {
-      this.showError(this.regErrorMessage, 'Invalid email format');
+    if (!isValidEmail(email)) {
+      showTemporaryError(this.regErrorMessage, 'Invalid email format');
       return;
     }
-    if (!this.isStrongPassword(password)) {
-      this.showError(this.regErrorMessage, 'Password must be at least 6 characters');
+    if (!isStrongPassword(password)) {
+      showTemporaryError(this.regErrorMessage, `Password must be at least ${passwordRules.minLength} characters`);
       return;
     }
 
-    this.setLoading(this.regSubmitButton, true);
+    setButtonLoading(this.regSubmitButton, true);
 
     try {
-      await registration(email, password);
+      await registrationApi(email, password);
       this.registerFieldsContainer?.hide();
       this.registerMessageContainer?.show();
     } catch (error) {
-      this.showError(this.regErrorMessage, this.getFriendlyErrorMessage(error));
+      showTemporaryError(this.regErrorMessage, getFriendlyErrorMessage(error));
     } finally {
-      this.setLoading(this.regSubmitButton, false);
+      setButtonLoading(this.regSubmitButton, false);
     }
   };
 
-  handleEnterInLogin = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      this.handleSignIn();
+  private handleResetPassword = async () => {
+    const email = this.resetEmailInput?.element.value.trim();
+
+    if (this.resetErrorMessage) {
+      if (!email) {
+        showTemporaryError(this.resetErrorMessage, 'Please enter your email address first.');
+        return;
+      }
+      if (!isValidEmail(email)) {
+        showTemporaryError(this.resetErrorMessage, 'Invalid email format.');
+        return;
+      }
+    }
+
+    if (this.resetButton && email) {
+      setButtonLoading(this.resetButton, true);
+      try {
+        await sendResetPasswordEmailApi(email);
+        this.resetFieldsContainer?.hide();
+        this.resetMessageContainer?.show();
+      } catch (error) {
+        if (this.resetErrorMessage) {
+          showTemporaryError(this.resetErrorMessage, getFriendlyErrorMessage(error));
+        }
+      } finally {
+        setButtonLoading(this.resetButton, false);
+      }
     }
   };
 
-  handleEnterInRegister = (event: KeyboardEvent) => {
+  handleEnterInLogin = async (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      this.handleSignUp();
+      await this.handleSignIn();
+    }
+  };
+
+  handleEnterInRegister = async (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      await this.handleSignUp();
+    }
+  };
+
+  handleEnterInReset = async (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      await this.handleResetPassword();
     }
   };
 
@@ -457,90 +572,35 @@ export class LoginForm implements Page {
   // Вспомогательные методы UI
   // ==========================================
 
-  private isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
-    return emailRegex.test(email);
-  }
+  private async switchToForm(targetForm?: BaseComponent, focusInput?: BaseComponent<'input'>): Promise<void> {
+    if (!targetForm) return;
 
-  private isStrongPassword(password: string): boolean {
-    return password.length >= 6;
-  }
-
-  private showError(messageComponent: BaseComponent, message: string): void {
-    messageComponent.element.textContent = message;
-
-    setTimeout(() => {
-      if (messageComponent.element.textContent === message) {
-        messageComponent.element.textContent = '';
-      }
-    }, 5000);
-  }
-
-  private getFriendlyErrorMessage(error: unknown): string {
-    if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
-      const message = error.message;
-      if (message.includes('Invalid login credentials')) {
-        return 'Incorrect email or password. Please try again.';
-      }
-      if (message.includes('User already registered')) {
-        return 'This email is already registered. Please sign in.';
-      }
-      if (message.includes('Email not confirmed')) {
-        return 'Please confirm your email address before signing in.';
-      }
-      if (message.includes('Password should be at least 6 characters')) {
-        return 'Password must be at least 6 characters.';
-      }
-      return message;
-    }
-
-    return 'An unknown error occurred. Please try again.';
-  }
-
-  private setLoading(button: BaseComponent<'button'>, isLoading: boolean): void {
-    if (isLoading) {
-      button.element.dataset.originalText = button.element.textContent || '';
-      button.element.setAttribute('disabled', 'true');
-      button.element.textContent = 'Loading...';
-    } else {
-      button.element.removeAttribute('disabled');
-
-      button.element.textContent =
-        button.element.dataset.originalText ||
-        (button.element.classList.contains('login-submit-btn') ? 'Sign In' : 'Submit');
-
-      delete button.element.dataset.originalText;
-    }
-  }
-
-  private showLoginForm = async (): Promise<void> => {
-    if (!this.loginContainer || !this.loginEmailInput) {
-      console.error('Login container or email input not initialized');
-      return;
-    }
-
+    const allForms = [this.loginContainer, this.registerContainer, this.resetContainer].filter(Boolean);
     await this.animateHideButtons();
-    if (this.registerContainer) {
-      await this.animateHideForm(this.registerContainer);
-    }
-    await this.animateShowForm(this.loginContainer);
 
-    this.loginEmailInput.element.focus();
+    for (const form of allForms) {
+      if (form && form !== targetForm && form.element.classList.contains('show')) {
+        await this.animateHideForm(form);
+      }
+    }
+
+    if (!targetForm.element.classList.contains('show')) {
+      await this.animateShowForm(targetForm);
+    }
+
+    focusInput?.element.focus();
+  }
+
+  private showLoginForm = async () => {
+    await this.switchToForm(this.loginContainer, this.loginEmailInput);
   };
 
   private showRegisterForm = async (): Promise<void> => {
-    if (!this.registerContainer || !this.regEmailInput) {
-      console.error('Register container or email input not initialized');
-      return;
-    }
+    await this.switchToForm(this.registerContainer, this.regEmailInput);
+  };
 
-    await this.animateHideButtons();
-    if (this.loginContainer) {
-      await this.animateHideForm(this.loginContainer);
-    }
-    await this.animateShowForm(this.registerContainer);
-
-    this.regEmailInput.element.focus();
+  private showResetForm = async (): Promise<void> => {
+    await this.switchToForm(this.resetContainer, this.resetEmailInput);
   };
 
   private backToMain = async (): Promise<void> => {
@@ -548,6 +608,8 @@ export class LoginForm implements Page {
       await this.animateHideForm(this.loginContainer);
     } else if (this.registerContainer?.element.classList.contains('show')) {
       await this.animateHideForm(this.registerContainer);
+    } else if (this.resetContainer?.element.classList.contains('show')) {
+      await this.animateHideForm(this.resetContainer);
     }
 
     await this.animateShowButtons();
@@ -557,16 +619,20 @@ export class LoginForm implements Page {
   private clearFormsData(): void {
     if (this.loginErrorMessage) this.loginErrorMessage.element.textContent = '';
     if (this.regErrorMessage) this.regErrorMessage.element.textContent = '';
+    if (this.resetErrorMessage) this.resetErrorMessage.element.textContent = '';
+
     if (this.loginEmailInput) this.loginEmailInput.element.value = '';
     if (this.loginPasswordInput) this.loginPasswordInput.element.value = '';
+
     if (this.regEmailInput) this.regEmailInput.element.value = '';
     if (this.regPasswordInput) this.regPasswordInput.element.value = '';
     if (this.regConfirmPasswordInput) this.regConfirmPasswordInput.element.value = '';
+
+    if (this.resetEmailInput) this.resetEmailInput.element.value = '';
   }
 
   private async checkAndRedirectIfLoggedIn(): Promise<void> {
-    const { data } = await SupabaseClient.auth.getSession();
-    if (data.session) {
+    if (user$.value) {
       this.router.navigate('/dashboard');
     }
   }

@@ -19,7 +19,7 @@ export async function initAuth() {
   authLoading$.set(false);
 }
 
-export async function login(email: string, password: string): Promise<void> {
+export async function loginApi(email: string, password: string): Promise<void> {
   authLoading$.set(true);
   try {
     const { data, error } = await authService.signIn(email, password);
@@ -31,7 +31,7 @@ export async function login(email: string, password: string): Promise<void> {
   }
 }
 
-export async function registration(email: string, password: string, displayName?: string): Promise<void> {
+export async function registrationApi(email: string, password: string, displayName?: string): Promise<void> {
   authLoading$.set(true);
   try {
     const { data, error } = await authService.registration(email, password, displayName);
@@ -43,9 +43,26 @@ export async function registration(email: string, password: string, displayName?
   }
 }
 
-export async function logout(): Promise<void> {
+export async function logoutApi(): Promise<void> {
   authLoading$.set(true);
+
   await authService.signOut();
   user$.set(null);
+
   authLoading$.set(false);
+}
+
+export async function sendResetPasswordEmailApi(email: string): Promise<void> {
+  const { error } = await authService.resetPassword(email);
+  if (error) throw new Error(error.message);
+}
+
+export async function updatePasswordApi(password: string): Promise<void> {
+  authLoading$.set(true);
+  try {
+    const { error } = await authService.updatePassword(password);
+    if (error) throw new Error(error.message);
+  } finally {
+    authLoading$.set(false);
+  }
 }

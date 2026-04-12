@@ -1,8 +1,6 @@
 @use '@/styles/mixins' as *;
 @use '@/styles/variables' as *;
 
-$ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
 .welcome-page {
   @include flex-column;
 
@@ -60,41 +58,6 @@ $ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   width: 100%;
 }
 
-.welcome-page__button {
-  @include button-primary;
-  @include flex-center;
-
-  gap: $spacing-sm;
-  font-size: clamp(0.8rem, 4vw, 1.2rem);
-  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
-  width: 100%;
-
-  transition: opacity 0.4s $ease-spring,
-              transform 0.35s $ease-spring,
-              visibility 0.4s $ease-spring;
-
-  &.fade-out {
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.92) translateY(4px);
-    pointer-events: none;
-  }
-}
-
-.welcome-page__button-content {
-  display: inline-flex;
-  align-items: center;
-  gap: $spacing-sm;
-}
-
-.welcome-page__button-image {
-  display: inline-flex;
-  align-items: center;
-  line-height: 0;
-  width: clamp(16px, 3vw, 24px);
-  height: clamp(16px, 3vw, 24px);
-}
-
 .login-field {
   @include input-base;
 }
@@ -103,7 +66,6 @@ $ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   @include button-success;
   width: 100%;
   line-height: 24px;
-  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 5vw, 2rem);
 }
 
 .error-message {
@@ -116,9 +78,12 @@ $ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   color: $color-warning;
 }
 
+
+.login-fields-container,
 .register-fields-container,
-.login-fields-container {
+.reset-fields-container {
   @include flex-column;
+  align-items: center;
   gap: $spacing-sm;
 
   position: absolute;
@@ -146,36 +111,12 @@ $ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 .login-buttons-container {
   @include flex-center;
   gap: $spacing-md;
-  margin-top: $spacing-sm;
+  margin: $spacing-sm 0;
 }
 
 .register-message-container {
-  @include flex-center;
-  flex-direction: column;
-  gap: $spacing-sm;
-
-  position: relative;
+  @include cloud-message;
   width: 300px;
-  margin-top: $spacing-md;
-  padding: $spacing-md;
-  background-color: white;
-  border-radius: $border-radius-lg;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  transition: all 0.3s ease;
-
-  // Стрелочка вверх (сообщение персонажа)
-  &::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 70px;
-    width: 12px;
-    height: 20px;
-    background-color: white;
-    transform: rotate(45deg);
-    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
-  }
 
   &.hidden {
     display: none;
@@ -185,6 +126,19 @@ $ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 .register-message-text {
   margin: 0 0 $spacing-md 0;
   font-size: 1rem;
-  color: $color-text-secondary;
+  color: $color-text-muted;
   line-height: 1.4;
+}
+
+.login-reset-link {
+  color: $color-text-muted;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.reset-fields-wrapper {
+  @include flex-column;
+  align-items: center;
+  gap: $spacing-sm;
 }

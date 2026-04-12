@@ -1,0 +1,37 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+$ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+.button-with-image__button {
+  @include button-primary;
+  @include flex-center;
+
+  gap: $spacing-sm;
+  width: 100%;
+
+  transition: opacity 0.4s $ease-spring,
+  transform 0.35s $ease-spring,
+  visibility 0.4s $ease-spring;
+
+  &.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.92) translateY(4px);
+    pointer-events: none;
+  }
+}
+
+.button-with-image__button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.button-with-image__button-image {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  width: clamp(16px, 3vw, 24px);
+  height: clamp(16px, 3vw, 24px);
+}
