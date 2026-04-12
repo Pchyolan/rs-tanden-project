@@ -22,10 +22,17 @@ export class TrueFalseAnswerValidator implements AnswerValidator {
 
     const isCorrect = answer.value === correctAnswer;
 
-    return {
-      isCorrect,
-      xpEarned: isCorrect ? 10 : 0,
-      streakUpdated: false,
-    };
+    return isCorrect
+      ? {
+          isCorrect: true,
+          xpEarned: 10,
+          streakUpdated: false,
+        }
+      : {
+          isCorrect: false,
+          xpEarned: 0,
+          streakUpdated: false,
+          errors: {},
+        };
   }
 }

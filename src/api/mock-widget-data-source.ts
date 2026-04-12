@@ -10,7 +10,7 @@ import { TrueFalseAnswerValidator } from '@/api/validators/true-false-validator'
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const randomDelay = () => delay(300 + Math.random() * 700);
 
-const validators = new Map<WidgetType, AnswerValidator>([
+const validators = new Map<WidgetType, AnswerValidator<unknown>>([
   ['memory-game', new MemoryGameAnswerValidator()],
   ['quiz', new QuizAnswerValidator()],
   ['true-false', new TrueFalseAnswerValidator()],
