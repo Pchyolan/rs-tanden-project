@@ -1,0 +1,19 @@
+{
+  "id": "gc-028",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["functions-scope"],
+  "payload": {
+    "codeSnippet": "function outer() {\n  let x = {value: 'outer'};\n  function inner() {\n    let y = {value: 'inner'};\n  }\n  inner();\n}\nouter();",
+    "highlightedLine": 6,
+    "objects": [
+      { "id": "x-obj", "label": "Object {value:'outer'}", "x": 100, "y": 150 },
+      { "id": "y-obj", "label": "Object {value:'inner'}", "x": 350, "y": 300 }
+    ],
+    "links": [],
+    "rootIds": ["global"],
+    "rootLinks": []
+  },
+  "correctAnswer": ["x-obj", "y-obj"]
+}

@@ -2,6 +2,9 @@ import type { Page } from '@/core';
 import { BaseComponent, Router } from '@/core';
 
 import { createButtonWithIcon } from '@/components';
+import { passwordRules } from '@/constants';
+
+import { getElementWithType } from '@/utils/selectors';
 import { loginApi, registrationApi, sendResetPasswordEmailApi, user$ } from '@/store/auth-store';
 import { getFriendlyErrorMessage } from '@/utils/supabase-errors';
 import { isStrongPassword, isValidEmail, setButtonLoading, showTemporaryError } from '@/utils/login-helpers';
@@ -10,8 +13,10 @@ import welcomeImageUrl from '@/assets/images/brains/welcome.png';
 import welcomeAnimationUrl from '@/assets/video/welcome.webm';
 import { createClipboardIcon, createLockIcon, createBackArrow } from '@/utils/svg-icon';
 
+import { language$ } from '@/store/language-store';
+import { translations } from '@/i18n';
+
 import './login-form.scss';
-import { passwordRules } from '@/constants';
 
 /**
  * Страница входа/регистрации.
@@ -22,6 +27,7 @@ export class LoginForm implements Page {
 
   // Корневой компонент страницы
   private component?: BaseComponent;
+  private welcomeMessage?: BaseComponent<'p'>;
 
   // Контейнеры форм
   private loginContainer?: BaseComponent;
@@ -36,6 +42,7 @@ export class LoginForm implements Page {
   private loginEmailInput?: BaseComponent<'input'>;
   private loginPasswordInput?: BaseComponent<'input'>;
   private loginSubmitButton?: BaseComponent<'button'>;
+  private loginBackButton?: BaseComponent<'button'>;
   private loginErrorMessage?: BaseComponent;
   private loginResetLink?: BaseComponent<'a'>;
 
@@ -44,6 +51,7 @@ export class LoginForm implements Page {
   private regEmailInput?: BaseComponent<'input'>;
   private regPasswordInput?: BaseComponent<'input'>;
   private regConfirmPasswordInput?: BaseComponent<'input'>;
+  private regBackButton?: BaseComponent<'button'>;
   private regSubmitButton?: BaseComponent<'button'>;
   private regErrorMessage?: BaseComponent;
 
@@ -55,12 +63,15 @@ export class LoginForm implements Page {
   private resetFieldsContainer?: BaseComponent;
   private resetHeaderText?: BaseComponent<'p'>;
   private resetEmailInput?: BaseComponent<'input'>;
-  private resetButton?: BaseComponent<'button'>;
+  private resetBackButton?: BaseComponent<'button'>;
+  private resetSubmitButton?: BaseComponent<'button'>;
   private resetErrorMessage?: BaseComponent;
 
   // Сообщение об отправке email
   private resetMessageContainer?: BaseComponent;
   private resetMessageText?: BaseComponent<'p'>;
+
+  private unsubscribeLanguage?: () => void;
 
   private readonly ANIMATION_DURATION = 150;
 
@@ -75,16 +86,18 @@ export class LoginForm implements Page {
     });
 
     this.component.append(this.createImageWrapper(), this.createButtonWrapper());
+
+    this.unsubscribeLanguage = language$.subscribe(() => this.updateTexts());
+
     return this.component;
   }
 
   async onMount(): Promise<void> {
-    console.log('Login page mounted');
     await this.checkAndRedirectIfLoggedIn();
   }
 
   onDestroy(): void {
-    console.log('Login page destroyed');
+    this.unsubscribeLanguage?.();
   }
 
   // ==========================================
@@ -97,13 +110,13 @@ export class LoginForm implements Page {
       className: ['welcome-page__wrapper'],
     });
 
-    const message = new BaseComponent({
+    this.welcomeMessage = new BaseComponent({
       tag: 'p',
-      text: 'Welcome stranger!',
+      text: translations[language$.value].welcome,
       className: ['welcome-page__header'],
     });
 
-    wrapper.append(message, this.renderWelcomeVideo());
+    wrapper.append(this.welcomeMessage, this.renderWelcomeVideo());
     return wrapper;
   }
 
@@ -148,14 +161,18 @@ export class LoginForm implements Page {
 
     this.loginEmailInput = new BaseComponent({
       tag: 'input',
-      attrs: { type: 'email', placeholder: 'Email', autocomplete: 'email' },
+      attrs: { type: 'email', placeholder: translations[language$.value].emailPlaceholder, autocomplete: 'email' },
       className: ['login-field'],
     });
     this.loginEmailInput.element.addEventListener('keypress', this.handleEnterInLogin);
 
     this.loginPasswordInput = new BaseComponent({
       tag: 'input',
-      attrs: { type: 'password', placeholder: 'Password', autocomplete: 'current-password' },
+      attrs: {
+        type: 'password',
+        placeholder: translations[language$.value].passwordPlaceholder,
+        autocomplete: 'current-password',
+      },
       className: ['login-field'],
     });
     this.loginPasswordInput.element.addEventListener('keypress', this.handleEnterInLogin);
@@ -172,16 +189,18 @@ export class LoginForm implements Page {
 
     this.loginSubmitButton = new BaseComponent({
       tag: 'button',
-      text: 'Sign In',
-      className: ['login-submit-btn'],
+      text: translations[language$.value].signIn,
+      className: ['login-submit-btn', 'translated-text'],
     });
     this.loginSubmitButton.addEventListener('click', this.handleSignIn);
 
-    buttonsContainer.append(this.createBackButton(), this.loginSubmitButton);
+    this.loginBackButton = this.createBackButton();
+
+    buttonsContainer.append(this.loginBackButton, this.loginSubmitButton);
 
     this.loginResetLink = new BaseComponent({
       tag: 'a',
-      text: 'Forgot Password? Reset',
+      text: translations[language$.value].forgotPassword,
       className: ['login-reset-link'],
       attrs: {
         href: '#',
@@ -213,7 +232,7 @@ export class LoginForm implements Page {
 
     this.regEmailInput = new BaseComponent({
       tag: 'input',
-      attrs: { type: 'email', placeholder: 'Email', autocomplete: 'email' },
+      attrs: { type: 'email', placeholder: translations[language$.value].emailPlaceholder, autocomplete: 'email' },
       className: ['login-field'],
     });
     this.regEmailInput.element.addEventListener('keypress', this.handleEnterInRegister);
@@ -228,7 +247,11 @@ export class LoginForm implements Page {
 
     this.regPasswordInput = new BaseComponent({
       tag: 'input',
-      attrs: { type: 'password', placeholder: 'Password', autocomplete: 'new-password' },
+      attrs: {
+        type: 'password',
+        placeholder: translations[language$.value].passwordPlaceholder,
+        autocomplete: 'new-password',
+      },
       className: ['login-field'],
     });
     this.regPasswordInput.element.addEventListener('keypress', this.handleEnterInRegister);
@@ -243,7 +266,11 @@ export class LoginForm implements Page {
 
     this.regConfirmPasswordInput = new BaseComponent({
       tag: 'input',
-      attrs: { type: 'password', placeholder: 'Confirm Password', autocomplete: 'new-password' },
+      attrs: {
+        type: 'password',
+        placeholder: translations[language$.value].confirmPasswordPlaceholder,
+        autocomplete: 'new-password',
+      },
       className: ['login-field'],
     });
     this.regConfirmPasswordInput.element.addEventListener('keypress', this.handleEnterInRegister);
@@ -255,8 +282,8 @@ export class LoginForm implements Page {
 
     this.regSubmitButton = new BaseComponent({
       tag: 'button',
-      text: 'Register',
-      className: ['login-submit-btn'],
+      text: translations[language$.value].register,
+      className: ['login-submit-btn', 'translated-text'],
     });
     this.regSubmitButton.addEventListener('click', this.handleSignUp);
 
@@ -265,7 +292,9 @@ export class LoginForm implements Page {
       className: ['login-buttons-container'],
     });
 
-    buttonsContainer.append(this.createBackButton(), this.regSubmitButton);
+    this.regBackButton = this.createBackButton();
+
+    buttonsContainer.append(this.regBackButton, this.regSubmitButton);
     this.registerFieldsContainer.append(
       this.regEmailInput,
       this.regPasswordInput,
@@ -282,7 +311,7 @@ export class LoginForm implements Page {
 
     this.registerMessageText = new BaseComponent({
       tag: 'p',
-      text: 'Registration successful! ✨ Please check your email to confirm.',
+      text: translations[language$.value].registerSuccess,
       className: ['register-message-text'],
     });
 
@@ -318,13 +347,13 @@ export class LoginForm implements Page {
 
     this.resetHeaderText = new BaseComponent({
       tag: 'p',
-      text: 'Enter your email to reset password:',
+      text: translations[language$.value].resetPasswordTitle,
       className: ['login-reset-link'],
     });
 
     this.resetEmailInput = new BaseComponent({
       tag: 'input',
-      attrs: { type: 'email', placeholder: 'Email', autocomplete: 'email' },
+      attrs: { type: 'email', placeholder: translations[language$.value].emailPlaceholder, autocomplete: 'email' },
       className: ['login-field'],
     });
     this.resetEmailInput.element.addEventListener('keypress', this.handleEnterInReset);
@@ -339,14 +368,16 @@ export class LoginForm implements Page {
       className: ['login-buttons-container'],
     });
 
-    this.resetButton = new BaseComponent({
+    this.resetSubmitButton = new BaseComponent({
       tag: 'button',
-      text: 'Reset',
-      className: ['login-submit-btn'],
+      text: translations[language$.value].resetButton,
+      className: ['login-submit-btn', 'translated-text'],
     });
-    this.resetButton.addEventListener('click', this.handleResetPassword);
+    this.resetSubmitButton.addEventListener('click', this.handleResetPassword);
 
-    buttonsContainer.append(this.createBackButton(), this.resetButton);
+    this.resetBackButton = this.createBackButton();
+
+    buttonsContainer.append(this.resetBackButton, this.resetSubmitButton);
 
     // --- Контейнер с сообщением об отправке письма ---
     this.resetMessageContainer = new BaseComponent({
@@ -356,20 +387,20 @@ export class LoginForm implements Page {
 
     this.resetMessageText = new BaseComponent({
       tag: 'p',
-      text: 'Reset mail successfully sent! 🚀 Please check your email.',
+      text: translations[language$.value].resetMailSent,
       className: ['register-message-text'],
     });
 
     const okButton = createButtonWithIcon({
       text: 'OK',
       icon: createBackArrow(),
-      onClick: () => {
+      onClick: async () => {
         if (this.resetMessageContainer) {
           this.resetMessageContainer.hide();
         }
 
         this.clearFormsData();
-        this.backToMain();
+        await this.backToMain();
       },
     });
 
@@ -393,13 +424,13 @@ export class LoginForm implements Page {
     });
 
     this.registerButton = createButtonWithIcon({
-      text: 'Register',
+      text: translations[language$.value].register,
       icon: createClipboardIcon(),
       onClick: () => this.showRegisterForm(),
     });
 
     this.loginButton = createButtonWithIcon({
-      text: 'Log In',
+      text: translations[language$.value].logIn,
       icon: createLockIcon(),
       onClick: () => this.showLoginForm(),
     });
@@ -425,7 +456,7 @@ export class LoginForm implements Page {
 
   private createBackButton(): BaseComponent<'button'> {
     return createButtonWithIcon({
-      text: 'Back',
+      text: translations[language$.value].back,
       icon: createBackArrow(),
       onClick: () => this.backToMain(),
     });
@@ -445,11 +476,11 @@ export class LoginForm implements Page {
     const password = this.loginPasswordInput.element.value;
 
     if (!email || !password) {
-      showTemporaryError(this.loginErrorMessage, 'Please fill in both fields');
+      showTemporaryError(this.loginErrorMessage, translations[language$.value].fillBothFields);
       return;
     }
     if (!isValidEmail(email)) {
-      showTemporaryError(this.loginErrorMessage, 'Invalid email format');
+      showTemporaryError(this.loginErrorMessage, translations[language$.value].invalidEmail);
       return;
     }
     if (!isStrongPassword(password)) {
@@ -486,17 +517,17 @@ export class LoginForm implements Page {
     const confirm = this.regConfirmPasswordInput.element.value;
 
     if (!email || !password || !confirm) {
-      showTemporaryError(this.regErrorMessage, 'Please fill in all fields');
+      showTemporaryError(this.regErrorMessage, translations[language$.value].fillBothFields);
       return;
     }
 
     if (password !== confirm) {
-      showTemporaryError(this.regErrorMessage, 'Passwords do not match');
+      showTemporaryError(this.regErrorMessage, translations[language$.value].passwordsDoNotMatch);
       return;
     }
 
     if (!isValidEmail(email)) {
-      showTemporaryError(this.regErrorMessage, 'Invalid email format');
+      showTemporaryError(this.regErrorMessage, translations[language$.value].invalidEmail);
       return;
     }
     if (!isStrongPassword(password)) {
@@ -522,17 +553,17 @@ export class LoginForm implements Page {
 
     if (this.resetErrorMessage) {
       if (!email) {
-        showTemporaryError(this.resetErrorMessage, 'Please enter your email address first.');
+        showTemporaryError(this.resetErrorMessage, translations[language$.value].enterEmailFirst);
         return;
       }
       if (!isValidEmail(email)) {
-        showTemporaryError(this.resetErrorMessage, 'Invalid email format.');
+        showTemporaryError(this.resetErrorMessage, translations[language$.value].invalidEmail);
         return;
       }
     }
 
-    if (this.resetButton && email) {
-      setButtonLoading(this.resetButton, true);
+    if (this.resetSubmitButton && email) {
+      setButtonLoading(this.resetSubmitButton, true);
       try {
         await sendResetPasswordEmailApi(email);
         this.resetFieldsContainer?.hide();
@@ -542,7 +573,7 @@ export class LoginForm implements Page {
           showTemporaryError(this.resetErrorMessage, getFriendlyErrorMessage(error));
         }
       } finally {
-        setButtonLoading(this.resetButton, false);
+        setButtonLoading(this.resetSubmitButton, false);
       }
     }
   };
@@ -634,6 +665,65 @@ export class LoginForm implements Page {
   private async checkAndRedirectIfLoggedIn(): Promise<void> {
     if (user$.value) {
       this.router.navigate('/settings');
+    }
+  }
+
+  private updateTexts(): void {
+    if (this.welcomeMessage) {
+      this.welcomeMessage.element.textContent = translations[language$.value].welcome;
+    }
+
+    this.updateButtonText(translations[language$.value].register, this.registerButton);
+    this.updateButtonText(translations[language$.value].logIn, this.loginButton);
+
+    if (this.loginEmailInput) {
+      this.loginEmailInput.element.placeholder = translations[language$.value].emailPlaceholder;
+    }
+    if (this.loginPasswordInput) {
+      this.loginPasswordInput.element.placeholder = translations[language$.value].passwordPlaceholder;
+    }
+    if (this.regEmailInput) {
+      this.regEmailInput.element.placeholder = translations[language$.value].emailPlaceholder;
+    }
+    if (this.regPasswordInput) {
+      this.regPasswordInput.element.placeholder = translations[language$.value].passwordPlaceholder;
+    }
+    if (this.regConfirmPasswordInput) {
+      this.regConfirmPasswordInput.element.placeholder = translations[language$.value].confirmPasswordPlaceholder;
+    }
+
+    if (this.resetHeaderText) {
+      this.resetHeaderText.element.textContent = translations[language$.value].resetPasswordTitle;
+    }
+    if (this.resetEmailInput) {
+      this.resetEmailInput.element.placeholder = translations[language$.value].emailPlaceholder;
+    }
+
+    if (this.loginSubmitButton) {
+      this.loginSubmitButton.element.textContent = translations[language$.value].signIn;
+    }
+    if (this.resetSubmitButton) {
+      this.resetSubmitButton.element.textContent = translations[language$.value].resetButton;
+    }
+    if (this.regSubmitButton) {
+      this.regSubmitButton.element.textContent = translations[language$.value].register;
+    }
+
+    this.updateButtonText(translations[language$.value].back, this.loginBackButton);
+    this.updateButtonText(translations[language$.value].back, this.regBackButton);
+    this.updateButtonText(translations[language$.value].back, this.resetBackButton);
+
+    if (this.loginResetLink) {
+      this.loginResetLink.element.textContent = translations[language$.value].forgotPassword;
+    }
+  }
+
+  private updateButtonText(translation: string, buttonComponent?: BaseComponent<'button'>): void {
+    if (buttonComponent) {
+      console.log('translation', translation);
+      const span = getElementWithType(HTMLSpanElement, 'button-with-image__span', buttonComponent.element);
+      console.log('span', span);
+      span.textContent = translation;
     }
   }
 

@@ -1,0 +1,17 @@
+{
+  "id": "quiz-6",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["async"],
+  "payload": {
+    "question": "Что выполняется раньше после завершения текущего стека?",
+    "options": [
+      { "index": 0, "text": "macrotask" },
+      { "index": 1, "text": "microtask" },
+      { "index": 2, "text": "setTimeout всегда раньше" },
+      { "index": 3, "text": "requestAnimationFrame всегда раньше" }
+    ]
+  },
+  "correctAnswer": 1
+}

@@ -1,0 +1,25 @@
+{
+  "id": "gc-037",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["async"],
+  "payload": {
+    "codeSnippet": "let p = new Promise((resolve) => {\n  let data = {loaded: true};\n  resolve(data);\n});\np = null;",
+    "highlightedLine": 5,
+    "objects": [
+      { "id": "p-var", "label": "Variable p", "x": 100, "y": 120 },
+      { "id": "promise-obj", "label": "Promise", "x": 400, "y": 120 },
+      { "id": "executor-fn", "label": "Executor function", "x": 400, "y": 250 },
+      { "id": "data-obj", "label": "Object {loaded:true}", "x": 400, "y": 370 }
+    ],
+    "links": [
+      { "from": "p-var", "to": "promise-obj", "label": "ref" },
+      { "from": "promise-obj", "to": "executor-fn", "label": "[[executor]]" },
+      { "from": "executor-fn", "to": "data-obj", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "p-var" }]
+  },
+  "correctAnswer": ["promise-obj", "executor-fn", "data-obj"]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "tf-15",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["memory-management"],
+  "payload": {
+    "statement": "Циклические ссылки гарантированно вызывают утечку памяти в современном JavaScript",
+    "explanation": "Нет, современные сборщики мусора умеют убирать циклические ссылки, если объекты недостижимы."
+  },
+  "correctAnswer": false
+}

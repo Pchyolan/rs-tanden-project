@@ -1,0 +1,30 @@
+{
+  "id": "gc-021",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "codeSnippet": "let a = {val:1};\nlet b = {val:1};\nlet same = a === b;\na = null;\nb = null;",
+    "highlightedLine": 4,
+    "objects": [
+      { "id": "var-a", "label": "Variable a", "x": 50, "y": 150 },
+      { "id": "var-b", "label": "Variable b", "x": 300, "y": 150 },
+      { "id": "obj-a", "label": "Object A", "x": 50, "y": 300 },
+      { "id": "obj-b", "label": "Object B", "x": 300, "y": 300 },
+      { "id": "same-var", "label": "Variable same", "x": 550, "y": 150 }
+    ],
+    "links": [
+      { "from": "var-a", "to": "obj-a", "label": "ref" },
+      { "from": "var-b", "to": "obj-b", "label": "ref" },
+      { "from": "same-var", "to": "false", "label": "value" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-a" },
+      { "from": "global", "to": "var-b" },
+      { "from": "global", "to": "same-var" }
+    ]
+  },
+  "correctAnswer": ["obj-a", "obj-b"]
+}

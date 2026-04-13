@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { MemoryGameRenderer } from '@/features/memory-game/components/game-renderer';
+import { MemoryGameRenderer } from '@/features/memory-game/components';
 import { Observable } from '@/core';
 import { gameStates } from '@/features/memory-game/constants';
 import type { GameState, MemoryGamePayload } from '@/features/memory-game/types';

@@ -3,7 +3,7 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 2,
-  "tags": ["garbage-collection", "nested"],
+  "tags": ["objects-prototypes"],
   "payload": {
     "codeSnippet": "let container = { inner: { value: 10 } };\ncontainer = null;",
     "highlightedLine": 2,

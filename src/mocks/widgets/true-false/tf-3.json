@@ -1,0 +1,12 @@
+{
+  "id": "tf-3",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "statement": "Оператор === выполняет приведение типов перед сравнением",
+    "explanation": "Нет, === сравнивает значения без приведения типов."
+  },
+  "correctAnswer": false
+}

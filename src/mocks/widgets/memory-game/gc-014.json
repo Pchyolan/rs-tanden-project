@@ -1,0 +1,25 @@
+{
+  "id": "gc-014",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["js-basics"],
+  "payload": {
+    "codeSnippet": "let arr = [1, 2];\narr = null;",
+    "highlightedLine": 2,
+    "objects": [
+      { "id": "var-arr", "label": "Variable arr", "x": 100, "y": 150 },
+      { "id": "arr-obj", "label": "Array [1, 2]", "x": 450, "y": 150 },
+      { "id": "elem1", "label": "Number 1", "x": 150, "y": 300 },
+      { "id": "elem2", "label": "Number 2", "x": 450, "y": 300 }
+    ],
+    "links": [
+      { "from": "var-arr", "to": "arr-obj", "label": "ref" },
+      { "from": "arr-obj", "to": "elem1", "label": "0" },
+      { "from": "arr-obj", "to": "elem2", "label": "1" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "var-arr" }]
+  },
+  "correctAnswer": ["arr-obj", "elem1", "elem2"]
+}

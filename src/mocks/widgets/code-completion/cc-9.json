@@ -1,0 +1,12 @@
+{
+  "id": "cc-9",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "code": "arr.___(item => item > 10);",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["filter"]
+}

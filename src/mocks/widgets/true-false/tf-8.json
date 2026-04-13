@@ -1,0 +1,12 @@
+{
+  "id": "tf-8",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["memory-management"],
+  "payload": {
+    "statement": "Недостижимые объекты могут быть удалены сборщиком мусора",
+    "explanation": "Да, недостижимость из корней — основа для GC."
+  },
+  "correctAnswer": true
+}

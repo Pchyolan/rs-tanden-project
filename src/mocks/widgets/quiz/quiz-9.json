@@ -1,0 +1,17 @@
+{
+  "id": "quiz-9",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "question": "Какой метод возвращает новый массив только с элементами, прошедшими условие?",
+    "options": [
+      { "index": 0, "text": "map()" },
+      { "index": 1, "text": "filter()" },
+      { "index": 2, "text": "forEach()" },
+      { "index": 3, "text": "some()" }
+    ]
+  },
+  "correctAnswer": 1
+}

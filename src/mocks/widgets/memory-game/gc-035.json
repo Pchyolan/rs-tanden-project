@@ -1,0 +1,28 @@
+{
+  "id": "gc-035",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["closures"],
+  "payload": {
+    "codeSnippet": "function outer() {\n  let data = {name: 'persistent'};\n  return {\n    getData: function() { return data; },\n    clearData: function() { data = null; }\n  };\n}\nlet obj = outer();\nobj.clearData();\nobj = null;",
+    "highlightedLine": 10,
+    "objects": [
+      { "id": "obj-var", "label": "Variable obj", "x": 50, "y": 120 },
+      { "id": "obj-wrapper", "label": "Object {getData, clearData}", "x": 300, "y": 120 },
+      { "id": "getData-fn", "label": "Function getData", "x": 300, "y": 250 },
+      { "id": "clearData-fn", "label": "Function clearData", "x": 300, "y": 370 },
+      { "id": "data-obj", "label": "Object {name:'persistent'}", "x": 550, "y": 250 }
+    ],
+    "links": [
+      { "from": "obj-var", "to": "obj-wrapper", "label": "ref" },
+      { "from": "obj-wrapper", "to": "getData-fn", "label": "getData" },
+      { "from": "obj-wrapper", "to": "clearData-fn", "label": "clearData" },
+      { "from": "getData-fn", "to": "data-obj", "label": "[[scope]]" },
+      { "from": "clearData-fn", "to": "data-obj", "label": "[[scope]]" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "obj-var" }]
+  },
+  "correctAnswer": ["obj-wrapper", "getData-fn", "clearData-fn"]
+}

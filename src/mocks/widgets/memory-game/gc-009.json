@@ -3,7 +3,7 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 1,
-  "tags": ["garbage-collection", "global"],
+  "tags": ["js-basics", "objects-prototypes"],
   "payload": {
     "codeSnippet": "window.temp = { data: 'leak' };\nwindow.temp = null;",
     "highlightedLine": 2,

@@ -1,0 +1,12 @@
+{
+  "id": "cc-3",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "code": "if (a ___ b) { console.log('strict equal'); }",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["==="]
+}

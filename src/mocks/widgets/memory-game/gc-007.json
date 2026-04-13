@@ -3,7 +3,7 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 3,
-  "tags": ["garbage-collection", "cycles"],
+  "tags": ["objects-prototypes"],
   "payload": {
     "codeSnippet": "let a = {};\nlet b = { ref: a };\na.ref = b;\na = null;\nb = null;",
     "highlightedLine": 5,

@@ -1,0 +1,12 @@
+{
+  "id": "cc-13",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["async"],
+  "payload": {
+    "code": "setTimeout(() => console.log('macro'), ___);",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["0"]
+}

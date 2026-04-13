@@ -4,6 +4,9 @@ import { memoryGamePageTranslations } from './memory-game-page';
 import { difficultyTranslations } from './difficulty';
 import { widgetsTranslations } from './widgets';
 import { ticketPageTranslations } from '@/i18n/ticket-page.ts';
+import { errorTranslations } from '@/i18n/supabase-errors.ts';
+import { loginPageTranslations } from '@/i18n/login-page.ts';
+import { notFoundPageTranslations } from '@/i18n/not-found-page.ts';
 
 export const translations = {
   en: {
@@ -13,6 +16,9 @@ export const translations = {
     ...widgetsTranslations.en,
     ...difficultyTranslations.en,
     ...ticketPageTranslations.en,
+    ...errorTranslations.en,
+    ...loginPageTranslations.en,
+    ...notFoundPageTranslations.en,
   },
   ru: {
     ...headerTranslations.ru,
@@ -21,6 +27,9 @@ export const translations = {
     ...widgetsTranslations.ru,
     ...difficultyTranslations.ru,
     ...ticketPageTranslations.ru,
+    ...errorTranslations.ru,
+    ...loginPageTranslations.ru,
+    ...notFoundPageTranslations.ru,
   },
 } as const;
 

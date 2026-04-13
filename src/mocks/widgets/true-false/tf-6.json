@@ -1,0 +1,12 @@
+{
+  "id": "tf-6",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["async"],
+  "payload": {
+    "statement": "then() у Promise добавляет callback в очередь microtasks",
+    "explanation": "Да, обработчики промисов выполняются через очередь microtasks."
+  },
+  "correctAnswer": true
+}

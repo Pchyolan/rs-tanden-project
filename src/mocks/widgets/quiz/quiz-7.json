@@ -1,0 +1,17 @@
+{
+  "id": "quiz-7",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "question": "Что делает Object.create(proto)?",
+    "options": [
+      { "index": 0, "text": "Создаёт массив с proto внутри" },
+      { "index": 1, "text": "Создаёт объект с указанным прототипом" },
+      { "index": 2, "text": "Замораживает объект" },
+      { "index": 3, "text": "Клонирует только собственные свойства" }
+    ]
+  },
+  "correctAnswer": 1
+}

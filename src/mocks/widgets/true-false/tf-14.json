@@ -1,0 +1,12 @@
+{
+  "id": "tf-14",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "statement": "Свойство, найденное через прототип, считается собственным свойством объекта",
+    "explanation": "Нет, собственным считается только то, что находится прямо на самом объекте."
+  },
+  "correctAnswer": false
+}

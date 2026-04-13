@@ -1,0 +1,39 @@
+{
+  "id": "gc-024",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "codeSnippet": "let shared = {id: 1};\nlet a = [shared, {x: 2}];\nlet b = [shared, {x: 3}];\nlet same = a === b;\na = null;\nb = null;",
+    "highlightedLine": 5,
+    "objects": [
+      { "id": "shared-var", "label": "Variable shared", "x": 50, "y": 120 },
+      { "id": "shared-obj", "label": "Object {id:1}", "x": 300, "y": 120 },
+      { "id": "var-a", "label": "Variable a", "x": 50, "y": 250 },
+      { "id": "var-b", "label": "Variable b", "x": 50, "y": 370 },
+      { "id": "arr-a", "label": "Array [shared, objA]", "x": 300, "y": 250 },
+      { "id": "arr-b", "label": "Array [shared, objB]", "x": 300, "y": 370 },
+      { "id": "objA", "label": "{x:2}", "x": 550, "y": 250 },
+      { "id": "objB", "label": "{x:3}", "x": 550, "y": 370 },
+      { "id": "same-var", "label": "Variable same", "x": 550, "y": 120 }
+    ],
+    "links": [
+      { "from": "shared-var", "to": "shared-obj", "label": "ref" },
+      { "from": "var-a", "to": "arr-a", "label": "ref" },
+      { "from": "var-b", "to": "arr-b", "label": "ref" },
+      { "from": "arr-a", "to": "shared-obj", "label": "0" },
+      { "from": "arr-a", "to": "objA", "label": "1" },
+      { "from": "arr-b", "to": "shared-obj", "label": "0" },
+      { "from": "arr-b", "to": "objB", "label": "1" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "shared-var" },
+      { "from": "global", "to": "var-a" },
+      { "from": "global", "to": "var-b" },
+      { "from": "global", "to": "same-var" }
+    ]
+  },
+  "correctAnswer": ["arr-a", "arr-b", "objA", "objB"]
+}

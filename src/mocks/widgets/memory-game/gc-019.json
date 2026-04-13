@@ -1,0 +1,35 @@
+{
+  "id": "gc-019",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "codeSnippet": "let original = [{x:1}, {x:2}, {x:3}];\nlet filtered = original.filter(item => item.x > 1);\noriginal = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "original-var", "label": "Variable original", "x": 50, "y": 120 },
+      { "id": "filtered-var", "label": "Variable filtered", "x": 50, "y": 230 },
+      { "id": "original-array", "label": "Array [obj1, obj2, obj3]", "x": 300, "y": 120 },
+      { "id": "filtered-array", "label": "Array [obj2, obj3]", "x": 300, "y": 230 },
+      { "id": "obj1", "label": "{x:1}", "x": 50, "y": 350 },
+      { "id": "obj2", "label": "{x:2}", "x": 300, "y": 350 },
+      { "id": "obj3", "label": "{x:3}", "x": 550, "y": 350 }
+    ],
+    "links": [
+      { "from": "original-var", "to": "original-array", "label": "ref" },
+      { "from": "filtered-var", "to": "filtered-array", "label": "ref" },
+      { "from": "original-array", "to": "obj1", "label": "0" },
+      { "from": "original-array", "to": "obj2", "label": "1" },
+      { "from": "original-array", "to": "obj3", "label": "2" },
+      { "from": "filtered-array", "to": "obj2", "label": "0" },
+      { "from": "filtered-array", "to": "obj3", "label": "1" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "original-var" },
+      { "from": "global", "to": "filtered-var" }
+    ]
+  },
+  "correctAnswer": ["original-array", "obj1"]
+}

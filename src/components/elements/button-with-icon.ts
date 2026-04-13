@@ -28,6 +28,7 @@ export function createButtonWithIcon(config: ButtonConfig): BaseComponent<'butto
   const buttonSpan = new BaseComponent({
     tag: 'span',
     text: config.text,
+    className: ['button-with-image__span'],
   });
 
   buttonContent.append(iconWrapper, buttonSpan);

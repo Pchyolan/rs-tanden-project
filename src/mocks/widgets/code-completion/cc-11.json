@@ -1,0 +1,12 @@
+{
+  "id": "cc-11",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "code": "console.log(Object.is(NaN, ___));",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["NaN"]
+}

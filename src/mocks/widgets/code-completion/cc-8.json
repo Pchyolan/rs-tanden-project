@@ -1,0 +1,12 @@
+{
+  "id": "cc-8",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["memory-management"],
+  "payload": {
+    "code": "const cache = new WeakMap(); cache.___(obj, data);",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["set"]
+}

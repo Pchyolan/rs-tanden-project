@@ -1,0 +1,19 @@
+{
+  "id": "gc-036",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["async"],
+  "payload": {
+    "codeSnippet": "let timer = setTimeout(() => {}, 1000);\nclearTimeout(timer);\ntimer = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "timer-var", "label": "Variable timer", "x": 100, "y": 150 },
+      { "id": "timeout-id", "label": "Timeout ID", "x": 400, "y": 150 }
+    ],
+    "links": [{ "from": "timer-var", "to": "timeout-id", "label": "ref" }],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "timer-var" }]
+  },
+  "correctAnswer": ["timeout-id"]
+}

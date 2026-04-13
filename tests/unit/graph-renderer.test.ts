@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { GraphRenderer } from '@/features/memory-game/components/graph-renderer';
+import { GraphRenderer } from '@/features/memory-game/components';
 import type { MemoryGamePayload } from '@/features/memory-game/types';
 
 const mockPayload: MemoryGamePayload = {

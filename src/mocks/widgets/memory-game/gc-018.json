@@ -1,0 +1,31 @@
+{
+  "id": "gc-018",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "codeSnippet": "let items = [{id:1}, {id:2}, {id:3}];\nlet removed = items.splice(1, 1);",
+    "highlightedLine": 2,
+    "objects": [
+      { "id": "items-var", "label": "Variable items", "x": 50, "y": 150 },
+      { "id": "items-array", "label": "Array [obj1, obj3]", "x": 300, "y": 150 },
+      { "id": "obj1", "label": "{id:1}", "x": 300, "y": 300 },
+      { "id": "obj2", "label": "{id:2}", "x": 50, "y": 300 },
+      { "id": "obj3", "label": "{id:3}", "x": 550, "y": 300 },
+      { "id": "removed-var", "label": "Variable removed", "x": 550, "y": 150 }
+    ],
+    "links": [
+      { "from": "items-var", "to": "items-array", "label": "ref" },
+      { "from": "items-array", "to": "obj1", "label": "0" },
+      { "from": "items-array", "to": "obj3", "label": "1" },
+      { "from": "removed-var", "to": "obj2", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "items-var" },
+      { "from": "global", "to": "removed-var" }
+    ]
+  },
+  "correctAnswer": []
+}

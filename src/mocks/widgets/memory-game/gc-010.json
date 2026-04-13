@@ -3,7 +3,7 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 2,
-  "tags": ["garbage-collection", "dom"],
+  "tags": ["js-basics"],
   "payload": {
     "codeSnippet": "let div = document.createElement('div');\ndocument.body.appendChild(div);\ndocument.body.removeChild(div);\n// div still referenced",
     "highlightedLine": 4,

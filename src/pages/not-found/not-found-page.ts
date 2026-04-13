@@ -1,6 +1,9 @@
 import { BaseComponent } from '@/core';
 import type { Page } from '@/core';
 
+import { language$ } from '@/store/language-store';
+import { translations } from '@/i18n';
+
 import { createBackArrow } from '@/utils/svg-icon.ts';
 import notFoundImageUrl from '@/assets/images/brains/not-found.png';
 
@@ -9,6 +12,9 @@ import './curved-text.scss';
 
 export function notFoundPage(navigate: (path: string) => void): Page {
   let component: BaseComponent;
+  let messageComponent: BaseComponent<'p'>;
+  let buttonTextSpan: HTMLSpanElement;
+  let unsubscribe: () => void;
 
   /**
    * Создаёт кнопку возврата на главную.
@@ -31,12 +37,13 @@ export function notFoundPage(navigate: (path: string) => void): Page {
     });
     arrowWrapper.element.append(arrowIcon);
 
-    const buttonText = new BaseComponent({
+    const textSpan = new BaseComponent({
       tag: 'span',
-      text: 'Go Home',
+      text: translations[language$.value].goHome,
     });
+    buttonTextSpan = textSpan.element;
 
-    buttonContent.append(arrowWrapper, buttonText);
+    buttonContent.append(arrowWrapper, textSpan);
     button.append(buttonContent);
     button.addEventListener('click', () => navigate('/'));
 
@@ -46,7 +53,7 @@ export function notFoundPage(navigate: (path: string) => void): Page {
   /**
    * Создаёт изогнутый текст "404".
    */
-  const createCurvedText = (): BaseComponent<'div'> => {
+  const createCurvedText = (): BaseComponent => {
     const curvedText = new BaseComponent({
       tag: 'div',
       className: ['curved-text'],
@@ -67,7 +74,7 @@ export function notFoundPage(navigate: (path: string) => void): Page {
   /**
    * Создаёт анимационную обёртку с текстом и изображением.
    */
-  const createAnimationWrapper = (): BaseComponent<'div'> => {
+  const createAnimationWrapper = (): BaseComponent => {
     const wrapper = new BaseComponent({
       tag: 'div',
       className: ['animation-wrapper'],
@@ -86,20 +93,30 @@ export function notFoundPage(navigate: (path: string) => void): Page {
   /**
    * Создаёт нижнюю часть страницы с текстом и кнопкой.
    */
-  const createButtonWrapper = (): BaseComponent<'div'> => {
+  const createButtonWrapper = (): BaseComponent => {
     const wrapper = new BaseComponent({
       tag: 'div',
       className: ['button-wrapper'],
     });
 
-    const message = new BaseComponent({
+    messageComponent = new BaseComponent({
       tag: 'p',
-      text: 'Oh no! Page not found',
+      text: translations[language$.value].notFoundMessage,
       className: ['not-found-page__text'],
     });
 
-    wrapper.append(message, createReturnButton());
+    wrapper.append(messageComponent, createReturnButton());
     return wrapper;
+  };
+
+  const updateTexts = () => {
+    const lang = language$.value;
+    if (messageComponent) {
+      messageComponent.element.textContent = translations[lang].notFoundMessage;
+    }
+    if (buttonTextSpan) {
+      buttonTextSpan.textContent = translations[lang].goHome;
+    }
   };
 
   return {
@@ -112,11 +129,13 @@ export function notFoundPage(navigate: (path: string) => void): Page {
       component.append(createAnimationWrapper(), createButtonWrapper());
       return component;
     },
+
     onMount() {
-      console.log('404 page mounted');
+      unsubscribe = language$.subscribe(() => updateTexts());
     },
+
     onDestroy() {
-      console.log('404 page destroyed');
+      unsubscribe?.();
     },
   };
 }

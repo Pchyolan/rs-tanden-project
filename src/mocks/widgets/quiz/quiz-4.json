@@ -1,0 +1,17 @@
+{
+  "id": "quiz-4",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["functions-scope"],
+  "payload": {
+    "question": "Что из перечисленного поднимается (hoisting) целиком?",
+    "options": [
+      { "index": 0, "text": "function declaration" },
+      { "index": 1, "text": "const functionExpr = function() {}" },
+      { "index": 2, "text": "arrow function в const" },
+      { "index": 3, "text": "ничего не поднимается" }
+    ]
+  },
+  "correctAnswer": 0
+}

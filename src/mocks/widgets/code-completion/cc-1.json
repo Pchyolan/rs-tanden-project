@@ -1,0 +1,12 @@
+{
+  "id": "cc-1",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "code": "const result = arr.___(x => x * 2);",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["map"]
+}

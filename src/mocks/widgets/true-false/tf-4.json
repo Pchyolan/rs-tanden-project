@@ -1,0 +1,12 @@
+{
+  "id": "tf-4",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["functions-scope"],
+  "payload": {
+    "statement": "Переменная, объявленная через let, имеет блочную область видимости",
+    "explanation": "Да, let ограничен ближайшим блоком."
+  },
+  "correctAnswer": true
+}

@@ -1,0 +1,12 @@
+{
+  "id": "cc-7",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "code": "const user = Object.___(proto);",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["create"]
+}

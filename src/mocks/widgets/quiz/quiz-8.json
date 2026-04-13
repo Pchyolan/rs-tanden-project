@@ -1,0 +1,17 @@
+{
+  "id": "quiz-8",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["memory-management"],
+  "payload": {
+    "question": "Когда объект становится кандидатом на сборку мусора?",
+    "options": [
+      { "index": 0, "text": "Когда у него пустой объектный литерал" },
+      { "index": 1, "text": "Когда он больше не достижим из корней" },
+      { "index": 2, "text": "Когда у него нет методов" },
+      { "index": 3, "text": "Когда он старше одного тика event loop" }
+    ]
+  },
+  "correctAnswer": 1
+}

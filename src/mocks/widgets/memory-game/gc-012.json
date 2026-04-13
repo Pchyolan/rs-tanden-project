@@ -1,0 +1,19 @@
+{
+  "id": "gc-012",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["js-basics"],
+  "payload": {
+    "codeSnippet": "let x = {val: 1};\nx = null;",
+    "highlightedLine": 2,
+    "objects": [
+      { "id": "var-x", "label": "Variable x", "x": 100, "y": 150 },
+      { "id": "obj", "label": "Object {val: 1}", "x": 350, "y": 250 }
+    ],
+    "links": [{ "from": "var-x", "to": "obj", "label": "ref" }],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "var-x" }]
+  },
+  "correctAnswer": ["obj"]
+}

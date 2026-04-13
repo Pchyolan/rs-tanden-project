@@ -1,0 +1,12 @@
+{
+  "id": "tf-5",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["closures"],
+  "payload": {
+    "statement": "Замыкание позволяет функции использовать переменные из внешней функции даже после её завершения",
+    "explanation": "Да, именно это и делает замыкание."
+  },
+  "correctAnswer": true
+}

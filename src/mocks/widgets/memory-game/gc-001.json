@@ -3,7 +3,7 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 2,
-  "tags": ["garbage-collection", "memory", "reachability"],
+  "tags": ["js-basics", "objects-prototypes"],
   "payload": {
     "codeSnippet": "let a = {val: 1};\nlet b = a;\na = null;",
     "highlightedLine": 3,

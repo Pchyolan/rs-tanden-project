@@ -1,0 +1,17 @@
+{
+  "id": "quiz-15",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["memory-management"],
+  "payload": {
+    "question": "Что верно про циклические ссылки в JavaScript?",
+    "options": [
+      { "index": 0, "text": "Они никогда не собираются GC" },
+      { "index": 1, "text": "Они собираются, если недостижимы из корней" },
+      { "index": 2, "text": "Они автоматически ломают приложение" },
+      { "index": 3, "text": "Они запрещены в strict mode" }
+    ]
+  },
+  "correctAnswer": 1
+}

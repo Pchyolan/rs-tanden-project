@@ -3,7 +3,7 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 3,
-  "tags": ["garbage-collection", "closure"],
+  "tags": ["closures"],
   "payload": {
     "codeSnippet": "function createHolder() {\n  let obj = { data: 'secret' };\n  return function() { return obj; };\n}\nconst holder = createHolder();",
     "highlightedLine": 5,

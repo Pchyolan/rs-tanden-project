@@ -1,0 +1,12 @@
+{
+  "id": "cc-5",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["closures"],
+  "payload": {
+    "code": "function outer() { let count = 0; return function() { count++; return ___; }; }",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["count"]
+}

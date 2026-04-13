@@ -1,0 +1,12 @@
+{
+  "id": "tf-10",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "statement": "filter() возвращает массив той же длины, что и исходный",
+    "explanation": "Нет, filter() возвращает только элементы, прошедшие условие, поэтому длина может измениться."
+  },
+  "correctAnswer": false
+}

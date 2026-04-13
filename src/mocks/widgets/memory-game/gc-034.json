@@ -1,0 +1,31 @@
+{
+  "id": "gc-034",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["closures"],
+  "payload": {
+    "codeSnippet": "let handlers = [];\nfor (var i = 0; i < 3; i++) {\n  handlers.push(function() { return i; });\n}\nhandlers = null;",
+    "highlightedLine": 5,
+    "objects": [
+      { "id": "handlers-var", "label": "Variable handlers", "x": 50, "y": 120 },
+      { "id": "handlers-array", "label": "Array [fn1, fn2, fn3]", "x": 50, "y": 250 },
+      { "id": "fn1", "label": "Function 0", "x": 300, "y": 120 },
+      { "id": "fn2", "label": "Function 1", "x": 300, "y": 250 },
+      { "id": "fn3", "label": "Function 2", "x": 300, "y": 370 },
+      { "id": "i-value", "label": "Variable i (value 3)", "x": 550, "y": 250 }
+    ],
+    "links": [
+      { "from": "handlers-var", "to": "handlers-array", "label": "ref" },
+      { "from": "handlers-array", "to": "fn1", "label": "0" },
+      { "from": "handlers-array", "to": "fn2", "label": "1" },
+      { "from": "handlers-array", "to": "fn3", "label": "2" },
+      { "from": "fn1", "to": "i-value", "label": "[[scope]]" },
+      { "from": "fn2", "to": "i-value", "label": "[[scope]]" },
+      { "from": "fn3", "to": "i-value", "label": "[[scope]]" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "handlers-var" }]
+  },
+  "correctAnswer": ["handlers-array", "fn1", "fn2", "fn3", "i-value"]
+}

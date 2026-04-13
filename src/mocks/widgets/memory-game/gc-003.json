@@ -3,7 +3,7 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 1,
-  "tags": ["garbage-collection", "simple"],
+  "tags": ["js-basics"],
   "payload": {
     "codeSnippet": "let user = {name: 'Alice'};\nlet admin = user;\nadmin = null;\nuser = null;",
     "highlightedLine": 4,

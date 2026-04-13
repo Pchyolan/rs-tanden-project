@@ -1,0 +1,17 @@
+{
+  "id": "quiz-1",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["functions-scope"],
+  "payload": {
+    "question": "Что содержит rest-параметр ...args?",
+    "options": [
+      { "index": 0, "text": "Объект со всеми аргументами" },
+      { "index": 1, "text": "Массив оставшихся аргументов" },
+      { "index": 2, "text": "Только первый аргумент" },
+      { "index": 3, "text": "Только именованные аргументы" }
+    ]
+  },
+  "correctAnswer": 1
+}

@@ -3,7 +3,7 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 2,
-  "tags": ["garbage-collection", "array"],
+  "tags": ["arrays-methods"],
   "payload": {
     "codeSnippet": "let arr = [{x:1}, {x:2}];\nlet last = arr.pop();",
     "highlightedLine": 2,
