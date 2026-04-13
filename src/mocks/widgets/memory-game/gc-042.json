@@ -1,0 +1,28 @@
+{
+  "id": "gc-042",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "codeSnippet": "let proto = {value: 100};\nlet obj = Object.create(proto);\nproto = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "proto-var", "label": "Variable proto", "x": 100, "y": 150 },
+      { "id": "obj-var", "label": "Variable obj", "x": 100, "y": 300 },
+      { "id": "proto-obj", "label": "Object {value:100}", "x": 400, "y": 150 },
+      { "id": "obj-entity", "label": "Object (prototype proto)", "x": 400, "y": 300 }
+    ],
+    "links": [
+      { "from": "proto-var", "to": "proto-obj", "label": "ref" },
+      { "from": "obj-var", "to": "obj-entity", "label": "ref" },
+      { "from": "obj-entity", "to": "proto-obj", "label": "__proto__" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "proto-var" },
+      { "from": "global", "to": "obj-var" }
+    ]
+  },
+  "correctAnswer": ["proto-obj"]
+}

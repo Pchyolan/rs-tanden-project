@@ -1,0 +1,29 @@
+{
+  "id": "gc-044",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "codeSnippet": "let obj1 = {};\nlet obj2 = {};\nobj1.__proto__ = obj2;\nobj2.__proto__ = obj1;\nobj1 = null;\nobj2 = null;",
+    "highlightedLine": 6,
+    "objects": [
+      { "id": "var-obj1", "label": "Variable obj1", "x": 100, "y": 150 },
+      { "id": "var-obj2", "label": "Variable obj2", "x": 100, "y": 300 },
+      { "id": "heap-obj1", "label": "Object 1", "x": 400, "y": 150 },
+      { "id": "heap-obj2", "label": "Object 2", "x": 400, "y": 300 }
+    ],
+    "links": [
+      { "from": "var-obj1", "to": "heap-obj1", "label": "ref" },
+      { "from": "var-obj2", "to": "heap-obj2", "label": "ref" },
+      { "from": "heap-obj1", "to": "heap-obj2", "label": "__proto__" },
+      { "from": "heap-obj2", "to": "heap-obj1", "label": "__proto__" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-obj1" },
+      { "from": "global", "to": "var-obj2" }
+    ]
+  },
+  "correctAnswer": ["heap-obj1", "heap-obj2"]
+}

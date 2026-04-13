@@ -1,0 +1,28 @@
+{
+  "id": "gc-041",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "codeSnippet": "let parent = {x:1};\nlet child = Object.create(parent);\nparent = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "parent-var", "label": "Variable parent", "x": 100, "y": 150 },
+      { "id": "child-var", "label": "Variable child", "x": 100, "y": 300 },
+      { "id": "parent-obj", "label": "Object {x:1}", "x": 400, "y": 150 },
+      { "id": "child-obj", "label": "Object (prototype parent)", "x": 400, "y": 300 }
+    ],
+    "links": [
+      { "from": "parent-var", "to": "parent-obj", "label": "ref" },
+      { "from": "child-var", "to": "child-obj", "label": "ref" },
+      { "from": "child-obj", "to": "parent-obj", "label": "__proto__" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "parent-var" },
+      { "from": "global", "to": "child-var" }
+    ]
+  },
+  "correctAnswer": ["parent-obj"]
+}
