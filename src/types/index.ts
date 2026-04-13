@@ -1,5 +1,5 @@
 export type { Verdict } from './verdict-types';
-export type { LanguageType } from './language-type';
+export type { LanguageType, ThemeType, UserSettings } from './user-types';
 
 export type {
   BaseWidget,

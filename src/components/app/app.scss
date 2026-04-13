@@ -112,30 +112,3 @@
   width: 100%;
   max-width: $content-wrapper-width;
 }
-
-.lang-buttons {
-  display: flex;
-  gap: $spacing-xs;
-  margin-left: $spacing-md;
-
-  button {
-    padding: $spacing-xs $spacing-sm;
-    color: $color-text-primary;
-    background: transparent;
-    border: 1px solid $color-text-primary;
-    transition: background-color $transition-speed;
-    border-radius: $border-radius;
-    cursor: pointer;
-    font-weight: 500;
-
-    &:hover {
-      background-color: rgb(255 255 255 / 20%);
-    }
-
-    &.active {
-      background-color: white;
-      color: $color-primary;
-      border-color: white;
-    }
-  }
-}

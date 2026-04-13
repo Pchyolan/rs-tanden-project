@@ -3,10 +3,10 @@ import type { WidgetDataSource } from './types';
 
 import { randomDelay } from '@/utils/delays';
 
-import type { AnswerValidator } from '@/api/validators/answer-validator';
-import { MemoryGameAnswerValidator } from '@/api/validators/memory-game-validator';
-import { QuizAnswerValidator } from '@/api/validators/quiz-validator';
-import { TrueFalseAnswerValidator } from '@/api/validators/true-false-validator';
+import type { AnswerValidator } from '@/api/widget-data-source/validators/answer-validator';
+import { MemoryGameAnswerValidator } from '@/api/widget-data-source/validators/memory-game-validator';
+import { QuizAnswerValidator } from '@/api/widget-data-source/validators/quiz-validator';
+import { TrueFalseAnswerValidator } from '@/api/widget-data-source/validators/true-false-validator';
 
 const validators = new Map<WidgetType, AnswerValidator>([
   ['memory-game', new MemoryGameAnswerValidator()],

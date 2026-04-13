@@ -461,7 +461,7 @@ export class LoginForm implements Page {
 
     try {
       await loginApi(email, password);
-      this.router.navigate('/dashboard');
+      this.router.navigate('/settings');
     } catch (error) {
       showTemporaryError(this.loginErrorMessage, getFriendlyErrorMessage(error));
     } finally {
@@ -633,7 +633,7 @@ export class LoginForm implements Page {
 
   private async checkAndRedirectIfLoggedIn(): Promise<void> {
     if (user$.value) {
-      this.router.navigate('/dashboard');
+      this.router.navigate('/settings');
     }
   }
 

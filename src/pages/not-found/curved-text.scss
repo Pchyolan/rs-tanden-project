@@ -36,9 +36,9 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow:
-          0 2px 10px rgb(255 255 255 / 60%),
-          0 10px 30px rgb(79 195 247 / 50%),
-          0 0 60px rgb(66 165 245 / 30%);
+    0 2px 10px rgb(255 255 255 / 60%),
+    0 10px 30px rgb(79 195 247 / 50%),
+    0 0 60px rgb(66 165 245 / 30%);
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
   transform-origin: center;
 }
@@ -46,8 +46,8 @@
 // Цифра слева
 .curved-text__digit.digit-0 {
   animation:
-          slide-in-left 0.6s ease-out forwards,
-          floating-left 4s ease-in-out infinite 0.6s;
+    slide-in-left 0.6s ease-out forwards,
+    floating-left 4s ease-in-out infinite 0.6s;
 }
 
 @keyframes slide-in-left {
@@ -62,7 +62,8 @@
 }
 
 @keyframes floating-left {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(var(--pos-left-x), var(--pos-left-y)) rotate(var(--pos-left-rotate));
   }
   50% {
@@ -73,8 +74,8 @@
 // Цифра в середине
 .curved-text__digit.digit-1 {
   animation:
-          slide-in-center 0.6s ease-out forwards,
-          floating-center 4s ease-in-out infinite 0.6s;
+    slide-in-center 0.6s ease-out forwards,
+    floating-center 4s ease-in-out infinite 0.6s;
 }
 
 @keyframes slide-in-center {
@@ -89,19 +90,21 @@
 }
 
 @keyframes floating-center {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(var(--pos-center-x), var(--pos-center-y)) rotate(var(--pos-center-rotate));
   }
   50% {
-    transform: translate(var(--pos-center-x), var(--pos-center-y)) rotate(var(--pos-center-rotate)) scale(var(--float-scale));
+    transform: translate(var(--pos-center-x), var(--pos-center-y)) rotate(var(--pos-center-rotate))
+      scale(var(--float-scale));
   }
 }
 
 // Цифра справа
 .curved-text__digit.digit-2 {
   animation:
-          slide-in-right 0.6s ease-out forwards,
-          floating-right 4s ease-in-out infinite 0.6s;
+    slide-in-right 0.6s ease-out forwards,
+    floating-right 4s ease-in-out infinite 0.6s;
 }
 
 @keyframes slide-in-right {
@@ -116,11 +119,13 @@
 }
 
 @keyframes floating-right {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(var(--pos-right-x), var(--pos-right-y)) rotate(var(--pos-right-rotate));
   }
   50% {
-    transform: translate(var(--pos-right-x), var(--pos-right-y)) rotate(var(--pos-right-rotate)) scale(var(--float-scale));
+    transform: translate(var(--pos-right-x), var(--pos-right-y)) rotate(var(--pos-right-rotate))
+      scale(var(--float-scale));
   }
 }
 
@@ -129,4 +134,3 @@
     --float-scale: 1.05;
   }
 }
-

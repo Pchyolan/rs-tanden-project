@@ -11,6 +11,7 @@ import {
   memoryGamePage,
   notFoundPage,
   ResetPasswordPage,
+  settingsPage,
   widgetEnginePage,
 } from '@/pages';
 
@@ -32,6 +33,7 @@ export class App extends BaseComponent<'div'> {
       onTestApi: () => this.router.navigate(routes.api_test),
       onWidgetClick: () => this.router.navigate(routes.widget_engine),
       onMemoryClick: () => this.router.navigate(routes.memory_game),
+      onSettings: () => this.router.navigate(routes.settings),
       onLogout: async () => {
         await logoutApi();
         this.router.navigate(routes.login);
@@ -73,6 +75,7 @@ export class App extends BaseComponent<'div'> {
     this.router.addRoute(routes.widget_engine, widgetEnginePage);
     this.router.addRoute(routes.memory_game, memoryGamePage);
 
+    this.router.addRoute(routes.settings, settingsPage);
     this.router.setNotFound(() => notFoundPage((path) => this.router.navigate(path)));
 
     this.router.start();

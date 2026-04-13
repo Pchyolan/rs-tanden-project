@@ -5,6 +5,7 @@ export const headerTranslations = {
     testApi: 'Test API',
     home: 'Home',
     logout: 'Logout',
+    settings: 'Settings',
   },
   ru: {
     appName: 'Тренажёр виджетов',
@@ -12,5 +13,6 @@ export const headerTranslations = {
     testApi: 'Тест API',
     home: 'Главная',
     logout: 'Выйти',
+    settings: 'Настройки',
   },
 } as const;
