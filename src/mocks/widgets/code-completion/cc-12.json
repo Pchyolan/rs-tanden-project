@@ -1,0 +1,12 @@
+{
+  "id": "cc-12",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["functions-scope"],
+  "payload": {
+    "code": "const fn = () => this.name; // arrow function берёт this из ___ окружения",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["внешнего"]
+}

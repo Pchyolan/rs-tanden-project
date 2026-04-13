@@ -1,0 +1,17 @@
+{
+  "id": "quiz-14",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "question": "Что проверяет hasOwnProperty?",
+    "options": [
+      { "index": 0, "text": "Есть ли свойство в цепочке прототипов" },
+      { "index": 1, "text": "Является ли свойство собственным у объекта" },
+      { "index": 2, "text": "Можно ли удалить свойство" },
+      { "index": 3, "text": "Является ли объект замороженным" }
+    ]
+  },
+  "correctAnswer": 1
+}

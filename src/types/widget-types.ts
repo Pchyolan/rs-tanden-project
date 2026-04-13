@@ -2,6 +2,8 @@ import { BaseComponent } from '@/core';
 import { widgetEvents, widgetTypes } from '@/constants';
 import type { MemoryGamePayload } from '@/features/memory-game/types';
 import type { QuizPayload } from '@/features/quiz/types';
+import type { TrueFalsePayload } from '@/features/true-false/types';
+import type { CodeCompletionPayload } from '@/features/code-completion/types';
 
 export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
 
@@ -38,8 +40,8 @@ export type BaseWidget = {
 // При реализации конкретного виджета необходимо заменить unknown на соответствующий тип и добавить сюда импорт
 export type Widget =
   | (BaseWidget & { type: typeof widgetTypes.quiz; payload: QuizPayload })
-  | (BaseWidget & { type: typeof widgetTypes.trueFalse; payload: unknown })
-  | (BaseWidget & { type: typeof widgetTypes.codeCompletion; payload: unknown })
+  | (BaseWidget & { type: typeof widgetTypes.trueFalse; payload: TrueFalsePayload })
+  | (BaseWidget & { type: typeof widgetTypes.codeCompletion; payload: CodeCompletionPayload })
   | (BaseWidget & { type: typeof widgetTypes.codeOrdering; payload: unknown })
   | (BaseWidget & { type: typeof widgetTypes.asyncSorter; payload: unknown })
   | (BaseWidget & { type: typeof widgetTypes.memoryGame; payload: MemoryGamePayload })

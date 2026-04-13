@@ -1,0 +1,12 @@
+{
+  "id": "cc-6",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["async"],
+  "payload": {
+    "code": "Promise.___(42).then(console.log);",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["resolve"]
+}

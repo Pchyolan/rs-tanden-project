@@ -31,7 +31,7 @@ export class MockWidgetDataSource implements WidgetDataSource {
       const module = await import(`../mocks/widgets/${widgetType}/${widgetId}.json`);
       const widget = module.default;
 
-      if (!widget.correctAnswer) {
+      if (!('correctAnswer' in widget)) {
         throw new Error('Mock widget has no correctAnswer field');
       }
 

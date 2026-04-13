@@ -3,15 +3,15 @@
   "type": "quiz",
   "version": 1,
   "difficulty": 1,
-  "tags": ["javascript", "array"],
+  "tags": ["arrays-methods"],
   "payload": {
-    "question": "Which method adds an element to the end of an array?",
+    "question": "Какой метод добавляет элемент в конец массива?",
     "options": [
-      { "index": 0, "text": "push()" },
-      { "index": 1, "text": "pop()" },
-      { "index": 2, "text": "shift()" },
-      { "index": 3, "text": "map()" }
+      { "index": 0, "text": "shift()" },
+      { "index": 1, "text": "unshift()" },
+      { "index": 2, "text": "push()" },
+      { "index": 3, "text": "pop()" }
     ]
   },
-  "correctAnswer": 0
+  "correctAnswer": 2
 }

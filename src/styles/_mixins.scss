@@ -90,9 +90,9 @@
   padding: vars.$spacing-sm vars.$spacing-lg;
   width: auto;
   transition:
-          transform vars.$transition-speed ease,
-          filter vars.$transition-speed ease,
-          box-shadow vars.$transition-speed ease;
+    transform vars.$transition-speed ease,
+    filter vars.$transition-speed ease,
+    box-shadow vars.$transition-speed ease;
   border-radius: vars.$button-border-radius;
   font-size: 1.2rem;
   font-weight: 700;
@@ -122,9 +122,9 @@
 }
 
 @mixin no-select {
-  -webkit-user-select: none;  /* Safari */
-  -ms-user-select: none;      /* IE 10+ и Edge */
-  user-select: none;          /* Современные браузеры */
+  user-select: none; /* Safari */
+  user-select: none; /* IE 10+ и Edge */
+  user-select: none; /* Современные браузеры */
 }
 
 // =====================
@@ -293,18 +293,18 @@
 
 @mixin cloud-message {
   @include flex-center;
-  flex-direction: column;
-  gap: vars.$spacing-sm;
 
   position: relative;
-  width: 300px;
-  margin-top: vars.$spacing-md;
   padding: vars.$spacing-md;
+  width: 300px;
+  transition: all 0.3s ease;
+  flex-direction: column;
+  gap: vars.$spacing-sm;
+  margin-top: vars.$spacing-md;
   background-color: white;
   border-radius: vars.$border-radius-lg;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
   text-align: center;
-  transition: all 0.3s ease;
 
   // Стрелочка вверх
   &::before {
@@ -316,6 +316,6 @@
     height: 20px;
     background-color: white;
     transform: rotate(45deg);
-    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: -2px -2px 4px rgb(0 0 0 / 5%);
   }
 }

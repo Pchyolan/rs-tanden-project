@@ -14,6 +14,7 @@
 .welcome-page__wrapper,
 .welcome-page__image-wrapper {
   @include flex-center;
+
   flex-direction: column;
   gap: $spacing-md;
 }
@@ -24,10 +25,10 @@
 
 .welcome-page__wrapper:last-child {
   @include flex-column;
-  align-items: center;
-  justify-content: start;
 
   position: relative;
+  align-items: center;
+  justify-content: start;
   height: 230px;
 }
 
@@ -64,6 +65,7 @@
 
 .login-submit-btn {
   @include button-success;
+
   width: 100%;
   line-height: 24px;
 }
@@ -78,23 +80,22 @@
   color: $color-warning;
 }
 
-
 .login-fields-container,
 .register-fields-container,
 .reset-fields-container {
   @include flex-column;
-  align-items: center;
-  gap: $spacing-sm;
 
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translateX(-50%) translateY(-12px);
-
+  align-items: center;
   opacity: 0;
+  transition:
+    opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  gap: $spacing-sm;
+  transform: translateX(-50%) translateY(-12px);
   pointer-events: none;
-  transition: opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   &.show {
     opacity: 1;
@@ -105,17 +106,20 @@
 
 .register-fields-wrapper {
   @include flex-column;
+
   gap: $spacing-xs;
 }
 
 .login-buttons-container {
   @include flex-center;
+
   gap: $spacing-md;
   margin: $spacing-sm 0;
 }
 
 .register-message-container {
   @include cloud-message;
+
   width: 300px;
 
   &.hidden {
@@ -124,7 +128,7 @@
 }
 
 .register-message-text {
-  margin: 0 0 $spacing-md 0;
+  margin: 0 0 $spacing-md;
   font-size: 1rem;
   color: $color-text-muted;
   line-height: 1.4;
@@ -139,6 +143,7 @@
 
 .reset-fields-wrapper {
   @include flex-column;
+
   align-items: center;
   gap: $spacing-sm;
 }

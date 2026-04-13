@@ -1,0 +1,12 @@
+{
+  "id": "tf-12",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["functions-scope"],
+  "payload": {
+    "statement": "Arrow function имеет собственный this",
+    "explanation": "Нет, стрелочная функция берёт this из внешнего лексического окружения."
+  },
+  "correctAnswer": false
+}

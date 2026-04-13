@@ -3,15 +3,15 @@
   "type": "quiz",
   "version": 1,
   "difficulty": 1,
-  "tags": ["js"],
+  "tags": ["js-basics"],
   "payload": {
-    "question": "What does typeof null return?",
+    "question": "Что вернёт typeof null?",
     "options": [
       { "index": 0, "text": "null" },
-      { "index": 1, "text": "undefined" },
-      { "index": 2, "text": "object" },
+      { "index": 1, "text": "object" },
+      { "index": 2, "text": "undefined" },
       { "index": 3, "text": "number" }
     ]
   },
-  "correctAnswer": 2
+  "correctAnswer": 1
 }

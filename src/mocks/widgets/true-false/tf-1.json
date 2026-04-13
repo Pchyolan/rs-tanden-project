@@ -1,0 +1,12 @@
+{
+  "id": "tf-1",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["js-basics"],
+  "payload": {
+    "statement": "typeof undefined возвращает строку 'undefined'",
+    "explanation": "Да, оператор typeof для undefined возвращает строку 'undefined'."
+  },
+  "correctAnswer": true
+}

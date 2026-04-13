@@ -1,0 +1,12 @@
+{
+  "id": "tf-7",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "statement": "У каждого объекта в JavaScript есть доступ к Object.prototype, если цепочка прототипов не была явно изменена",
+    "explanation": "Да, в обычной цепочке прототипов Object.prototype находится наверху."
+  },
+  "correctAnswer": true
+}

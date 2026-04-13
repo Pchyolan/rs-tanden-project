@@ -1,0 +1,12 @@
+{
+  "id": "cc-10",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["js-basics"],
+  "payload": {
+    "code": "const value = maybeNull ?? ___;",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["'default'"]
+}

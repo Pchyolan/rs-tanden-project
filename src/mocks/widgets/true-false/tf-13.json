@@ -1,0 +1,12 @@
+{
+  "id": "tf-13",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["async"],
+  "payload": {
+    "statement": "setTimeout(fn, 0) выполнится до обработчиков Promise.then",
+    "explanation": "Нет, сначала после текущего стека выполняются microtasks, а уже потом macrotasks вроде setTimeout."
+  },
+  "correctAnswer": false
+}

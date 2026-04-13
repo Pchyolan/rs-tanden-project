@@ -1,0 +1,17 @@
+{
+  "id": "quiz-10",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "question": "Чем отличается === от == ?",
+    "options": [
+      { "index": 0, "text": "=== сравнивает без приведения типов" },
+      { "index": 1, "text": "== строже, чем ===" },
+      { "index": 2, "text": "Они работают одинаково" },
+      { "index": 3, "text": "=== можно использовать только со строками" }
+    ]
+  },
+  "correctAnswer": 0
+}

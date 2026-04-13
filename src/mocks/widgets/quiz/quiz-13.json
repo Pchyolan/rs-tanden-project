@@ -1,0 +1,17 @@
+{
+  "id": "quiz-13",
+  "type": "quiz",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["async"],
+  "payload": {
+    "question": "Как ведёт себя Promise.all, если один из промисов отклонится?",
+    "options": [
+      { "index": 0, "text": "Ждёт все остальные и возвращает массив" },
+      { "index": 1, "text": "Сразу переходит в rejected" },
+      { "index": 2, "text": "Игнорирует rejected-промисы" },
+      { "index": 3, "text": "Повторяет выполнение всех промисов" }
+    ]
+  },
+  "correctAnswer": 1
+}

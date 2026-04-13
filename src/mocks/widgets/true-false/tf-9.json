@@ -1,0 +1,12 @@
+{
+  "id": "tf-9",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["js-basics"],
+  "payload": {
+    "statement": "null === undefined возвращает true",
+    "explanation": "Нет, при строгом сравнении null и undefined не равны."
+  },
+  "correctAnswer": false
+}

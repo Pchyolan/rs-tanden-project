@@ -1,0 +1,12 @@
+{
+  "id": "cc-2",
+  "type": "code-completion",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["js-basics"],
+  "payload": {
+    "code": "const type = typeof ___;",
+    "blanks": ["___"]
+  },
+  "correctAnswer": ["null"]
+}

@@ -25,14 +25,13 @@
 .task-card {
   display: flex;
   justify-content: center;
-  padding: 12px;
-  width: 600px;
-  background: rgb(255 255 255 / 16%);
-  background: radial-gradient(circle at top, #4fc3f7, #1976d2);
-  border: 2px solid rgb(255 255 255 / 28%);
-  min-height: 250px;
+  padding: 0;
+  width: 100%;
+  background: transparent;
+  border: none;
+  min-height: auto;
   border-radius: 28px;
-  box-shadow: 0 20px 40px rgb(0 0 0 / 16%);
+  box-shadow: none;
   flex-direction: column;
   gap: 28px;
   box-sizing: border-box;

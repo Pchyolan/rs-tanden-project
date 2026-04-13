@@ -1,0 +1,12 @@
+{
+  "id": "tf-11",
+  "type": "true-false",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "statement": "NaN == NaN возвращает true",
+    "explanation": "Нет, NaN не равен даже самому себе."
+  },
+  "correctAnswer": false
+}

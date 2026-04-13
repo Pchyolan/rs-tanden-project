@@ -3,15 +3,15 @@
   "type": "quiz",
   "version": 1,
   "difficulty": 1,
-  "tags": ["javascript", "comparison"],
+  "tags": ["arrays-methods"],
   "payload": {
-    "question": "What does strict equality === compare?",
+    "question": "Какой метод добавляет элемент в конец массива?",
     "options": [
-      { "index": 0, "text": "Only values" },
-      { "index": 1, "text": "Value and type" },
-      { "index": 2, "text": "Only strings" },
-      { "index": 3, "text": "Only null and undefined" }
+      { "index": 0, "text": "shift()" },
+      { "index": 1, "text": "unshift()" },
+      { "index": 2, "text": "push()" },
+      { "index": 3, "text": "pop()" }
     ]
   },
-  "correctAnswer": 1
+  "correctAnswer": 2
 }
