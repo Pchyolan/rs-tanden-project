@@ -1,0 +1,28 @@
+{
+  "id": "gc-038",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["async"],
+  "payload": {
+    "codeSnippet": "let callback = () => {\n  let data = {value: 42};\n};\nsetTimeout(callback, 1000);\ncallback = null;",
+    "highlightedLine": 5,
+    "objects": [
+      { "id": "callback-var", "label": "Variable callback", "x": 50, "y": 120 },
+      { "id": "callback-fn", "label": "Callback function", "x": 350, "y": 120 },
+      { "id": "timeout-obj", "label": "Timeout (timer)", "x": 550, "y": 250 },
+      { "id": "data-obj", "label": "Object {value:42}", "x": 50, "y": 370 }
+    ],
+    "links": [
+      { "from": "callback-var", "to": "callback-fn", "label": "ref" },
+      { "from": "callback-fn", "to": "data-obj", "label": "[[scope]]" },
+      { "from": "timeout-obj", "to": "callback-fn", "label": "callback" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "callback-var" },
+      { "from": "global", "to": "timeout-obj", "label": "active timers" }
+    ]
+  },
+  "correctAnswer": ["callback-fn", "data-obj"]
+}

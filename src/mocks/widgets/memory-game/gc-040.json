@@ -1,0 +1,30 @@
+{
+  "id": "gc-040",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["async"],
+  "payload": {
+    "codeSnippet": "let handler = {\n  data: {value: 'important'},\n  onClick: () => { console.log(this.data); }\n};\nsetTimeout(handler.onClick, 500);\nhandler = null;",
+    "highlightedLine": 7,
+    "objects": [
+      { "id": "handler-var", "label": "Variable handler", "x": 50, "y": 120 },
+      { "id": "handler-obj", "label": "Object handler", "x": 300, "y": 120 },
+      { "id": "data-obj", "label": "Object {value:'important'}", "x": 300, "y": 250 },
+      { "id": "onClick-fn", "label": "Function onClick", "x": 300, "y": 370 },
+      { "id": "timeout-obj", "label": "Timeout (timer)", "x": 550, "y": 120 }
+    ],
+    "links": [
+      { "from": "handler-var", "to": "handler-obj", "label": "ref" },
+      { "from": "handler-obj", "to": "data-obj", "label": "data" },
+      { "from": "handler-obj", "to": "onClick-fn", "label": "onClick" },
+      { "from": "timeout-obj", "to": "onClick-fn", "label": "callback" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "handler-var" },
+      { "from": "global", "to": "timeout-obj" }
+    ]
+  },
+  "correctAnswer": ["handler-obj", "data-obj", "onClick-fn"]
+}
