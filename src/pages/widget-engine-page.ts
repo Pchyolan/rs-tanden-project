@@ -1,42 +1,45 @@
-import { type Page } from '@/core';
-import type { TicketItem } from '@/types';
+import { BaseComponent, type Page } from '@/core';
+import { routes } from '@/constants';
 import { TicketPageController } from '@/features/ticket';
+import { loadCurrentSession } from '@/features/training-session/session-storage';
+
+function navigateTo(path: string): void {
+  globalThis.history.pushState({}, '', path);
+  globalThis.dispatchEvent(new PopStateEvent('popstate'));
+}
 
 export function widgetEnginePage(): Page {
-  let controller: TicketPageController;
+  let controller: TicketPageController | null = null;
 
   return {
     render() {
-      const items: TicketItem[] = [
-        { type: 'quiz', id: 'quiz-1' },
-        { type: 'true-false', id: 'tf-1' },
-        { type: 'code-completion', id: 'cc-1' },
-        { type: 'quiz', id: 'quiz-2' },
-        { type: 'true-false', id: 'tf-2' },
-        { type: 'quiz', id: 'quiz-3' },
-        { type: 'code-completion', id: 'cc-2' },
-        { type: 'true-false', id: 'tf-3' },
-        { type: 'true-false', id: 'tf-4' },
-        { type: 'quiz', id: 'quiz-4' },
-        { type: 'quiz', id: 'quiz-5' },
-        { type: 'true-false', id: 'tf-5' },
-        { type: 'true-false', id: 'tf-6' },
-        { type: 'true-false', id: 'tf-7' },
-        { type: 'quiz', id: 'quiz-6' },
-        { type: 'quiz', id: 'quiz-7' },
-        { type: 'true-false', id: 'tf-8' },
-        { type: 'true-false', id: 'tf-9' },
-        { type: 'quiz', id: 'quiz-8' },
-        { type: 'true-false', id: 'tf-10' },
-      ];
-      controller = new TicketPageController(items);
+      const session = loadCurrentSession();
+
+      if (!session || session.tasks.length === 0) {
+        const fallback = new BaseComponent({
+          tag: 'div',
+          text: 'No tasks found',
+        });
+
+        globalThis.setTimeout(() => {
+          navigateTo(routes.home);
+        }, 0);
+
+        return fallback;
+      }
+
+      // ❗ УБРАЛИ startIndex — он у тебя не поддерживается в типах
+      controller = new TicketPageController(session.tasks);
+
       return controller;
     },
+
     onMount() {
-      console.log('Widget Engine page mounted');
+      console.log('Widget Engine mounted');
     },
+
     onDestroy() {
-      console.log('Widget Engine page destroyed');
+      controller?.remove();
     },
   };
 }

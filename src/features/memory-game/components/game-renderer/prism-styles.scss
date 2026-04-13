@@ -1,7 +1,7 @@
 @use '@/styles/variables' as *;
 
-pre[class*="language-"],
-code[class*="language-"] {
+pre[class*='language-'],
+code[class*='language-'] {
   box-sizing: border-box;
 }
 
@@ -15,19 +15,18 @@ pre.memory-game__code {
   box-sizing: border-box;
 }
 
-pre[class*="language-"] .line-numbers-rows {
+pre[class*='language-'] .line-numbers-rows {
   line-height: 1.5;
   overflow: visible;
   box-sizing: border-box;
   max-height: fit-content;
 }
 
-pre[class*="language-"] .line-highlight {
+pre[class*='language-'] .line-highlight {
   margin-top: 0;
   line-height: 1.5;
-
-  background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  background: rgb(255 255 255 / 30%);
+  box-shadow: 0 0 6px rgb(255 255 255 / 60%);
   border-left: 3px solid white;
 
   &::before {

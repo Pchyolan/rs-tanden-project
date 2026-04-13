@@ -10,8 +10,12 @@ export type TopicOption = {
 
 export const homeTexts = {
   projectTitle: {
-    ru: 'Brainium',
-    en: 'Brainium',
+    ru: 'Brainiac',
+    en: 'Brainiac',
+  },
+  bubbleTitle: {
+    ru: 'Мысль дня',
+    en: 'Thought of the Day',
   },
   startButton: {
     ru: 'Начать тренировку',
@@ -30,16 +34,16 @@ export const homeTexts = {
     en: 'Set Up Practice',
   },
   levelLabel: {
-    ru: 'Level',
+    ru: 'Уровень',
     en: 'Level',
   },
   topicLabel: {
-    ru: 'Topics',
+    ru: 'Темы',
     en: 'Topics',
   },
   countLabel: {
-    ru: 'Questions',
-    en: 'Questions',
+    ru: 'Количество вопросов',
+    en: 'Number of Questions',
   },
   startModalButton: {
     ru: 'Начать',
@@ -48,10 +52,6 @@ export const homeTexts = {
   cancelModalButton: {
     ru: 'Отмена',
     en: 'Cancel',
-  },
-  allTopics: {
-    ru: 'All',
-    en: 'All',
   },
   easy: {
     ru: 'Лёгкий',
@@ -64,14 +64,6 @@ export const homeTexts = {
   hard: {
     ru: 'Сложный',
     en: 'Hard',
-  },
-  profileAria: {
-    ru: 'Профиль',
-    en: 'Profile',
-  },
-  settingsAria: {
-    ru: 'Настройки',
-    en: 'Settings',
   },
 };
 
@@ -86,7 +78,7 @@ export const topicOptions: TopicOption[] = [
   },
   {
     id: 'comparison-operators',
-    label: { ru: 'Операторы', en: 'Operators' },
+    label: { ru: 'Сравнение и операторы', en: 'Comparison & Operators' },
   },
   {
     id: 'functions-scope',
@@ -106,7 +98,7 @@ export const topicOptions: TopicOption[] = [
   },
   {
     id: 'memory-management',
-    label: { ru: 'Память', en: 'Memory' },
+    label: { ru: 'Управление памятью', en: 'Memory Management' },
   },
 ];
 
