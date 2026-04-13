@@ -2,7 +2,7 @@
   "id": "gc-025",
   "type": "memory-game",
   "version": 1,
-  "difficulty": 2,
+  "difficulty": 1,
   "tags": ["comparison-operators"],
   "payload": {
     "codeSnippet": "let obj = {value: 100};\nlet isBig = obj.value > 50;\nobj = null;",

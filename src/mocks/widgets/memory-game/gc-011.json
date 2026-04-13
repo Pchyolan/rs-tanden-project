@@ -2,7 +2,7 @@
   "id": "gc-011",
   "type": "memory-game",
   "version": 1,
-  "difficulty": 1,
+  "difficulty": 2,
   "tags": ["js-basics"],
   "payload": {
     "codeSnippet": "let a = 10;\nlet b = a;\na = null;",

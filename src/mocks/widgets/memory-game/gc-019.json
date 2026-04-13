@@ -2,7 +2,7 @@
   "id": "gc-019",
   "type": "memory-game",
   "version": 1,
-  "difficulty": 2,
+  "difficulty": 3,
   "tags": ["arrays-methods"],
   "payload": {
     "codeSnippet": "let original = [{x:1}, {x:2}, {x:3}];\nlet filtered = original.filter(item => item.x > 1);\noriginal = null;",

@@ -2,7 +2,7 @@
   "id": "gc-030",
   "type": "memory-game",
   "version": 1,
-  "difficulty": 2,
+  "difficulty": 1,
   "tags": ["functions-scope"],
   "payload": {
     "codeSnippet": "function run() {\n  let temp = {data: 'temp'};\n  return;\n}\nrun();",

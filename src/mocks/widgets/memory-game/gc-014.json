@@ -2,7 +2,7 @@
   "id": "gc-014",
   "type": "memory-game",
   "version": 1,
-  "difficulty": 2,
+  "difficulty": 3,
   "tags": ["js-basics"],
   "payload": {
     "codeSnippet": "let arr = [1, 2];\narr = null;",

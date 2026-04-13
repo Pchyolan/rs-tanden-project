@@ -2,7 +2,7 @@
   "id": "gc-017",
   "type": "memory-game",
   "version": 1,
-  "difficulty": 2,
+  "difficulty": 1,
   "tags": ["arrays-methods"],
   "payload": {
     "codeSnippet": "let fruits = [{name: 'apple'}, {name: 'banana'}];\nlet last = fruits.pop();",

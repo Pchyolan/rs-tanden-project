@@ -2,7 +2,7 @@
   "id": "gc-029",
   "type": "memory-game",
   "version": 1,
-  "difficulty": 2,
+  "difficulty": 3,
   "tags": ["functions-scope"],
   "payload": {
     "codeSnippet": "function makeCounter() {\n  let count = {value: 0};\n  return function() { return count.value++; };\n}\nlet counter = makeCounter();\ncounter = null;",
