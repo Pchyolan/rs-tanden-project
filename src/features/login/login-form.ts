@@ -4,6 +4,7 @@ import { BaseComponent, Router } from '@/core';
 import { createButtonWithIcon } from '@/components';
 import { passwordRules } from '@/constants';
 
+import { getElementWithType } from '@/utils/selectors';
 import { loginApi, registrationApi, sendResetPasswordEmailApi, user$ } from '@/store/auth-store';
 import { getFriendlyErrorMessage } from '@/utils/supabase-errors';
 import { isStrongPassword, isValidEmail, setButtonLoading, showTemporaryError } from '@/utils/login-helpers';
@@ -16,7 +17,6 @@ import { language$ } from '@/store/language-store';
 import { translations } from '@/i18n';
 
 import './login-form.scss';
-import { getElementWithType } from '@/utils/selectors.ts';
 
 /**
  * Страница входа/регистрации.
