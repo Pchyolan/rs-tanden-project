@@ -89,11 +89,16 @@
 .memory-game__counter-wrapper {
   @include glacier-base;
 
+  padding: 0;
   width: 30px;
   height: 30px;
-
-  padding: 0;
-  border-radius: 50%;
-  border: 2px solid $color-surface;
   background: $color-primary-glow;
+  border: 2px solid $color-surface;
+  border-radius: 50%;
+}
+
+.memory-game__buttons-block {
+  @include flex-center;
+
+  gap: $spacing-xs;
 }

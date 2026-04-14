@@ -1,86 +1,99 @@
 import { BaseComponent } from '@/core';
+import { RoundButton } from '@/components';
 import { user$ } from '@/store/auth-store';
+
 import { translations } from '@/i18n';
 import { language$ } from '@/store/language-store';
 
+import loginIconUrl from '@/assets/images/icons/info.png';
+import settingsIconUrl from '@/assets/images/icons/settings.png';
+import achievementsIconUrl from '@/assets/images/icons/user.png';
+import { getElementWithType } from '@/utils/selectors.ts';
+
 type HeaderCallbacks = {
-  onHome: () => void;
   onSignIn: () => void;
-  onTestApi: () => void;
-  onWidgetClick: () => void;
-  onMemoryClick: () => void;
   onLogout: () => void;
   onSettings: () => void;
 };
 
 export class Header extends BaseComponent<'header'> {
-  private readonly logo: BaseComponent<'span'>;
-  private readonly homeBtn: BaseComponent<'button'>;
-  private readonly signInBtn: BaseComponent<'button'>;
-  private readonly testApiBtn: BaseComponent<'button'>;
-  private readonly widgetEngineBtn: BaseComponent<'button'>;
-  private readonly memoryGameBtn: BaseComponent<'button'>;
-  private readonly settingsBtn: BaseComponent<'button'>;
-  private readonly logoutBtn: BaseComponent<'button'>;
-
-  private callbacks: HeaderCallbacks;
+  private readonly signInButton: RoundButton;
+  private readonly achievementsButton: RoundButton;
+  private readonly settingsButton: RoundButton;
+  private readonly logoutButton: RoundButton;
 
   private readonly unsubscribeLang: () => void;
   private readonly unsubscribeUser: () => void;
 
   constructor(callbacks: HeaderCallbacks) {
     super({ tag: 'header', className: ['app-header'] });
-    this.callbacks = callbacks;
 
     const contentContainer = new BaseComponent({ tag: 'div', className: ['header-content'] });
 
-    this.logo = new BaseComponent({ tag: 'span', className: ['logo'] });
+    const appName = new BaseComponent({
+      tag: 'span',
+      text: translations[language$.value].appName,
+      className: ['header-app-name'],
+    });
 
-    const navButtons = new BaseComponent({ tag: 'div', className: ['nav-buttons'] });
+    const buttonsContainer = new BaseComponent({ tag: 'div', className: ['header-buttons-container'] });
 
-    this.homeBtn = new BaseComponent({ tag: 'button' });
-    this.homeBtn.addEventListener('click', this.callbacks.onHome);
+    this.signInButton = new RoundButton({
+      iconSrc: loginIconUrl,
+      alt: 'Sign In',
+      tooltip: translations[language$.value].signIn,
+      onClick: callbacks.onSignIn,
+      showSparkle: true,
+      tooltipPlacement: 'bottom',
+    });
 
-    this.signInBtn = new BaseComponent({ tag: 'button' });
-    this.signInBtn.addEventListener('click', this.callbacks.onSignIn);
+    this.settingsButton = new RoundButton({
+      iconSrc: settingsIconUrl,
+      alt: 'Settings',
+      tooltip: translations[language$.value].settings,
+      onClick: callbacks.onSettings,
+      showSparkle: true,
+      tooltipPlacement: 'bottom',
+    });
 
-    this.testApiBtn = new BaseComponent({ tag: 'button' });
-    this.testApiBtn.addEventListener('click', this.callbacks.onTestApi);
+    this.achievementsButton = new RoundButton({
+      iconSrc: achievementsIconUrl,
+      alt: 'Achievements',
+      tooltip: translations[language$.value].achievements,
+      onClick: callbacks.onSettings,
+      showSparkle: true,
+      tooltipPlacement: 'bottom',
+    });
 
-    this.widgetEngineBtn = new BaseComponent({ tag: 'button', text: 'Widget Engine' });
-    this.widgetEngineBtn.addEventListener('click', this.callbacks.onWidgetClick);
+    this.logoutButton = new RoundButton({
+      iconSrc: settingsIconUrl,
+      alt: 'Logout',
+      tooltip: translations[language$.value].logout,
+      onClick: callbacks.onLogout,
+      showSparkle: true,
+      tooltipPlacement: 'bottom',
+    });
+    this.logoutButton.hide();
 
-    this.memoryGameBtn = new BaseComponent({ tag: 'button', text: 'Memory Game' });
-    this.memoryGameBtn.addEventListener('click', this.callbacks.onMemoryClick);
+    buttonsContainer.append(this.signInButton, this.achievementsButton, this.settingsButton, this.logoutButton);
 
-    this.settingsBtn = new BaseComponent({ tag: 'button' });
-    this.settingsBtn.addEventListener('click', this.callbacks.onSettings);
-
-    this.logoutBtn = new BaseComponent({ tag: 'button' });
-    this.logoutBtn.addEventListener('click', this.callbacks.onLogout);
-    this.logoutBtn.hide();
-
-    navButtons.append(
-      this.homeBtn,
-      this.signInBtn,
-      this.testApiBtn,
-      this.widgetEngineBtn,
-      this.memoryGameBtn,
-      this.settingsBtn,
-      this.logoutBtn
-    );
-
-    contentContainer.append(this.logo, navButtons);
+    contentContainer.append(appName, buttonsContainer);
     this.append(contentContainer);
 
     this.unsubscribeLang = language$.subscribe(() => this.updateTexts());
     this.unsubscribeUser = user$.subscribe((user) => {
       if (user) {
-        this.signInBtn.hide();
-        this.logoutBtn.show();
+        this.signInButton.hide();
+
+        this.achievementsButton.show();
+        this.settingsButton.show();
+        this.logoutButton.show();
       } else {
-        this.signInBtn.show();
-        this.logoutBtn.hide();
+        this.signInButton.show();
+
+        this.achievementsButton.hide();
+        this.settingsButton.hide();
+        this.logoutButton.hide();
       }
       this.updateTexts();
     });
@@ -89,12 +102,29 @@ export class Header extends BaseComponent<'header'> {
   }
 
   private updateTexts(): void {
-    this.logo.element.textContent = translations[language$.value].appName;
-    this.homeBtn.element.textContent = translations[language$.value].home;
-    this.signInBtn.element.textContent = translations[language$.value].signIn;
-    this.testApiBtn.element.textContent = translations[language$.value].testApi;
-    this.settingsBtn.element.textContent = translations[language$.value].settings;
-    this.logoutBtn.element.textContent = translations[language$.value].logout;
+    if (this.signInButton) {
+      const signInTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.signInButton.element);
+      signInTooltip.textContent = translations[language$.value].signIn;
+    }
+
+    if (this.achievementsButton) {
+      const achievementsTooltip = getElementWithType(
+        HTMLDivElement,
+        'icon-button__tooltip',
+        this.achievementsButton.element
+      );
+      achievementsTooltip.textContent = translations[language$.value].achievements;
+    }
+
+    if (this.settingsButton) {
+      const settingsTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.settingsButton.element);
+      settingsTooltip.textContent = translations[language$.value].settings;
+    }
+
+    if (this.logoutButton) {
+      const logoutTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.logoutButton.element);
+      logoutTooltip.textContent = translations[language$.value].logout;
+    }
   }
 
   public override remove(): void {

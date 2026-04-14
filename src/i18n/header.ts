@@ -6,6 +6,7 @@ export const headerTranslations = {
     home: 'Home',
     logout: 'Logout',
     settings: 'Settings',
+    achievements: 'Achievements',
   },
   ru: {
     appName: 'Brainiac',
@@ -14,5 +15,6 @@ export const headerTranslations = {
     home: 'Главная',
     logout: 'Выйти',
     settings: 'Настройки',
+    achievements: 'Достижения',
   },
 } as const;

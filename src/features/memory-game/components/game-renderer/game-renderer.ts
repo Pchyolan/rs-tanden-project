@@ -1,14 +1,14 @@
 import { BaseComponent, Observable } from '@/core';
-import { SoundKey, SoundService } from '@/services/sound-service.ts';
+import { SoundKey, SoundService } from '@/services/sound-service';
+import { RoundButton } from '@/components';
 
-import { GraphRenderer } from '../graph-renderer/graph-renderer.ts';
-import type { GameState, MemoryGamePayload } from '../../types.ts';
-import { gameStates } from '../../constants.ts';
+import { GraphRenderer } from '../graph-renderer/graph-renderer';
+import type { GameState, MemoryGamePayload } from '../../types';
+import { gameStates } from '../../constants';
 
 import infoLogo from '@/assets/images/icons/info.png';
 import questionLogo from '@/assets/images/icons/question.png';
 import refreshLogo from '@/assets/images/icons/refresh.png';
-import sparkleImage from '@/assets/images/icons/sparkle.png';
 
 import Prism from 'prismjs';
 import '@/styles/prism/prism-tailwind-moon-blue.css';
@@ -22,7 +22,6 @@ import { translations } from '@/i18n';
 import { getElementWithType } from '@/utils/selectors.ts';
 
 import './game-renderer.scss';
-import './round-buttons.scss';
 import './prism-styles.scss';
 
 type MemoryGameRendererProps = {
@@ -41,7 +40,7 @@ export class MemoryGameRenderer extends BaseComponent {
   private soundService = SoundService.getInstance();
 
   private unsubscribeMachine?: () => void;
-  private unsubscribeLanguage?: () => void;
+  private readonly unsubscribeLanguage?: () => void;
 
   private codeHeader?: BaseComponent;
   private graphHeader?: BaseComponent;
@@ -49,9 +48,9 @@ export class MemoryGameRenderer extends BaseComponent {
   private markedCounterText?: BaseComponent<'span'>;
   private collectButton?: BaseComponent<'button'>;
 
-  private refreshWrapper?: BaseComponent;
-  private questionWrapper?: BaseComponent;
-  private infoWrapper?: BaseComponent;
+  private refreshButton?: RoundButton;
+  private questionButton?: RoundButton;
+  private infoButton?: RoundButton;
 
   constructor({ payload, gameState$, onObjectClick, onReset, onCollect }: MemoryGameRendererProps) {
     super({
@@ -120,64 +119,13 @@ export class MemoryGameRenderer extends BaseComponent {
     return panel;
   }
 
-  private renderIconWrapper(
-    iconLogo: string,
-    iconAltText: string,
-    tooltipContent: BaseComponent | string
-  ): BaseComponent {
-    const iconContainer = new BaseComponent({
-      tag: 'div',
-      className: ['memory-game__icon-container'],
-    });
-
-    const iconWrapper = new BaseComponent({
-      tag: 'div',
-      className: ['memory-game__icon-wrapper'],
-    });
-
-    const iconImg = new BaseComponent<'img'>({
-      tag: 'img',
-      className: ['memory-game__icon'],
-      attrs: {
-        src: iconLogo,
-        alt: iconAltText,
-      },
-    });
-
-    const sparkleImg = new BaseComponent<'img'>({
-      tag: 'img',
-      className: ['memory-game__sparkle'],
-      attrs: {
-        src: sparkleImage,
-        alt: iconAltText,
-      },
-    });
-
-    iconWrapper.append(iconImg);
-
-    const tooltip = new BaseComponent({
-      tag: 'div',
-      className: ['memory-game__tooltip'],
-    });
-
-    if (typeof tooltipContent === 'string') {
-      tooltip.element.textContent = tooltipContent;
-    } else {
-      tooltip.append(tooltipContent);
-    }
-
-    iconContainer.append(iconWrapper, sparkleImg, tooltip);
-
-    return iconContainer;
-  }
-
   private renderAdditionButtons(onReset: () => void): BaseComponent {
     const buttonsBlock = new BaseComponent({
       tag: 'div',
       className: ['memory-game__buttons-block'],
     });
 
-    const hintContainer = new BaseComponent({ tag: 'div', className: ['memory-game__hint-tooltip-content'] });
+    const hintContainer = new BaseComponent({ tag: 'div', className: ['complex-tooltip'] });
     const p1 = new BaseComponent({
       tag: 'p',
       text: translations[language$.value].hintFirstLine,
@@ -195,22 +143,29 @@ export class MemoryGameRenderer extends BaseComponent {
     });
     hintContainer.append(p1, p2, p3);
 
-    this.infoWrapper = this.renderIconWrapper(infoLogo, translations[language$.value].infoTooltip, hintContainer);
+    this.infoButton = new RoundButton({
+      iconSrc: infoLogo,
+      alt: translations[language$.value].infoTooltip,
+      tooltip: hintContainer, // сложный tooltip
+      showSparkle: true,
+    });
 
-    this.questionWrapper = this.renderIconWrapper(
-      questionLogo,
-      translations[language$.value].clueTooltip,
-      translations[language$.value].clueTooltip
-    );
+    this.questionButton = new RoundButton({
+      iconSrc: questionLogo,
+      alt: translations[language$.value].clueTooltip,
+      tooltip: translations[language$.value].clueTooltip,
+      showSparkle: true,
+    });
 
-    this.refreshWrapper = this.renderIconWrapper(
-      refreshLogo,
-      translations[language$.value].refreshTooltip,
-      translations[language$.value].refreshTooltip
-    );
-    this.refreshWrapper.addEventListener('click', onReset);
+    this.refreshButton = new RoundButton({
+      iconSrc: refreshLogo,
+      alt: translations[language$.value].refreshTooltip,
+      tooltip: translations[language$.value].refreshTooltip,
+      onClick: onReset,
+      showSparkle: true,
+    });
 
-    buttonsBlock.append(this.infoWrapper, this.questionWrapper, this.refreshWrapper);
+    buttonsBlock.append(this.infoButton, this.questionButton, this.refreshButton);
 
     return buttonsBlock;
   }
@@ -362,13 +317,9 @@ export class MemoryGameRenderer extends BaseComponent {
       this.collectButton.element.disabled = !isActive;
     }
 
-    if (this.questionWrapper) {
-      this.questionWrapper.element.classList.toggle('is-disabled', !isActive);
-    }
-
-    if (this.refreshWrapper) {
-      this.refreshWrapper.element.classList.toggle('is-disabled', !isActive);
-    }
+    this.questionButton?.setDisabled(!isActive);
+    this.refreshButton?.setDisabled(!isActive);
+    this.infoButton?.setDisabled(!isActive);
 
     if (this.graphRenderer) {
       this.graphRenderer.element.classList.toggle('is-disabled', !isActive);
@@ -407,13 +358,18 @@ export class MemoryGameRenderer extends BaseComponent {
       this.collectButton.element.textContent = this.getButtonText();
     }
 
-    if (this.questionWrapper) {
-      const questionTooltip = getElementWithType(HTMLDivElement, 'memory-game__tooltip', this.questionWrapper.element);
+    if (this.infoButton) {
+      const infoTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.infoButton.element);
+      infoTooltip.textContent = dictionary.infoTooltip;
+    }
+
+    if (this.questionButton) {
+      const questionTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.questionButton.element);
       questionTooltip.textContent = dictionary.clueTooltip;
     }
 
-    if (this.refreshWrapper) {
-      const refreshTooltip = getElementWithType(HTMLDivElement, 'memory-game__tooltip', this.refreshWrapper.element);
+    if (this.refreshButton) {
+      const refreshTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.refreshButton.element);
       refreshTooltip.textContent = dictionary.refreshTooltip;
     }
   }

@@ -4,6 +4,7 @@ import { Footer } from '../footer.ts';
 
 import { routes } from '@/constants';
 import { initAuth, logoutApi } from '@/store/auth-store';
+
 import {
   apiTestPage,
   homePage,
@@ -17,10 +18,10 @@ import {
 
 import './app.scss';
 
-export class App extends BaseComponent<'div'> {
+export class App extends BaseComponent {
   private readonly header: Header;
-  public mainContainer: BaseComponent<'div'>;
-  private contentContainer: BaseComponent<'div'>;
+  public mainContainer: BaseComponent;
+  private readonly contentContainer: BaseComponent;
   private readonly footer: Footer;
   public router: Router;
 
@@ -28,11 +29,7 @@ export class App extends BaseComponent<'div'> {
     super({ tag: 'div', className: ['app-container'] });
 
     this.header = new Header({
-      onHome: () => this.router.navigate(routes.home),
       onSignIn: () => this.router.navigate(routes.login),
-      onTestApi: () => this.router.navigate(routes.api_test),
-      onWidgetClick: () => this.router.navigate(routes.widget_engine),
-      onMemoryClick: () => this.router.navigate(routes.memory_game),
       onSettings: () => this.router.navigate(routes.settings),
       onLogout: async () => {
         await logoutApi();

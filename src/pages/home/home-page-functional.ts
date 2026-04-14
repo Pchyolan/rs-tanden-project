@@ -4,9 +4,6 @@ import { brainQuotes, homeTexts, topicOptions, type HomeLanguage } from './home-
 import { generateTicketItems } from '@/features/training-session/generate-ticket-items';
 import { saveCurrentSession } from '@/features/training-session/session-storage';
 
-import settingsIcon from '@/assets/icons/settings.png';
-import userIcon from '@/assets/icons/user.png';
-
 import brain1 from '@/assets/brain/brain-1.png';
 import brain2 from '@/assets/brain/brain-2.png';
 import brain3 from '@/assets/brain/brain-3.png';
@@ -39,43 +36,6 @@ function getRandomBrain(): string {
   const brainImage = brainImages[index];
 
   return brainImage ?? brain1;
-}
-
-function createTopbar(lang: HomeLanguage): HTMLDivElement {
-  const topbar = document.createElement('div');
-  topbar.className = 'home-topbar';
-
-  const title = document.createElement('h1');
-  title.className = 'home-project-title';
-  title.textContent = homeTexts.projectTitle[lang];
-
-  const actions = document.createElement('div');
-  actions.className = 'home-topbar-actions';
-
-  const settingsButton = document.createElement('button');
-  settingsButton.className = 'home-icon-btn';
-  settingsButton.type = 'button';
-  settingsButton.setAttribute('aria-label', 'Settings');
-
-  const settingsImage = document.createElement('img');
-  settingsImage.src = settingsIcon;
-  settingsImage.alt = 'Settings';
-  settingsButton.append(settingsImage);
-
-  const userButton = document.createElement('button');
-  userButton.className = 'home-icon-btn';
-  userButton.type = 'button';
-  userButton.setAttribute('aria-label', 'Account');
-
-  const userImage = document.createElement('img');
-  userImage.src = userIcon;
-  userImage.alt = 'Account';
-  userButton.append(userImage);
-
-  actions.append(settingsButton, userButton);
-  topbar.append(title, actions);
-
-  return topbar;
 }
 
 function createLeftSection(lang: HomeLanguage): HTMLDivElement {
@@ -360,7 +320,7 @@ export function renderHomePage(): HTMLDivElement {
     createRightSection(lang, () => openModal(lang))
   );
 
-  page.append(createTopbar(lang), content);
+  page.append(content);
 
   return page;
 }
