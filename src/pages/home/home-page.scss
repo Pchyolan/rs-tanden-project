@@ -1,3 +1,5 @@
+@use '@/styles/mixins' as *;
+
 .home-page {
   min-height: calc(100vh - 56px);
   display: flex;
@@ -90,13 +92,12 @@
 }
 
 .home-bubble-text {
-  color: white;
+  @include cloud-message('bottom-center');
+
+  width: clamp(300px, calc(100% - 2rem), 600px);
   font-size: 40px;
   font-weight: 700;
   line-height: 1.1;
-  font-family: 'Comic Relief', system-ui;
-  font-style: normal;
-  text-wrap: balance;
 }
 
 .home-brain {
