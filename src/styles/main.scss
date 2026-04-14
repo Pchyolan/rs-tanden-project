@@ -1,5 +1,6 @@
+@use './variables' as *;
 @use './mixins' as *;
-@use '@/styles/variables' as *;
+@use './themes/light' as *;
 
 // Импорт шрифта Inter через @fontsource/inter
 @import '@fontsource/inter/400.css';

@@ -12,7 +12,7 @@
 .settings-title {
   font-size: 2rem;
   margin-bottom: $spacing-lg;
-  color: $color-text-primary;
+  color: var(--color-text-primary);
 }
 
 .settings-form {
@@ -29,7 +29,7 @@
 
   padding: 2px;
   width: 100%;
-  background: $color-background-header;
+  background: var(--color-background-header);
   overflow: hidden;
 }
 
@@ -37,8 +37,8 @@
   @include no-select;
 
   padding: $spacing-sm $spacing-md;
-  color: $color-text-primary;
-  background: $color-background-header;
+  color: var(--color-text-primary);
+  background: var(--color-background-header);
   font-size: 1.3rem;
   font-weight: 700;
 }
@@ -47,12 +47,12 @@
   font-family: $font-family-text;
   font-size: 1.1rem;
   font-weight: 700;
-  color: $color-settings-test;
+  color: var(--color-settings-test);
 }
 
 .settings-section-content {
   padding: $spacing-sm $spacing-md;
-  background: $gradient-panel;
+  background: var(--gradient-panel);
   border-radius: $border-radius-lg;
   font-size: 1rem;
 }
@@ -94,11 +94,11 @@
   font-size: 0.9rem;
 
   &.success {
-    color: $color-success;
+    color: var(--color-success);
   }
 
   &.error {
-    color: $color-warning;
+    color: var(--color-warning);
   }
 }
 

@@ -8,7 +8,7 @@ code[class*='language-'] {
 pre.memory-game__code {
   flex: 1;
   margin: 0;
-  background: $color-background;
+  background: var(--color-background);
   border-radius: $border-radius-lg;
   line-height: 1.5;
   padding-left: 3.5em;

@@ -13,8 +13,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: $color-text-primary;
-  background-color: $color-primary;
+  color: var(--color-text-primary);
+  background-color: var(--color-primary);
 }
 
 .header-app-name {
@@ -22,7 +22,7 @@
 
   font-weight: 700;
   font-size: 1.5rem;
-  color: $color-primary-dark;
+  color: var(--color-primary-dark);
 }
 
 .header-buttons-container {
@@ -44,7 +44,7 @@
   position: relative;
   width: 100%;
   flex: 1;
-  background-color: $color-primary;
+  background-color: var(--color-primary);
   background-image:
     linear-gradient(var(--grid-line-color, rgb(148 163 184 / 60%)) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line-color, rgb(148 163 184 / 60%)) 1px, transparent 1px);
@@ -65,12 +65,12 @@
 
   &::before {
     top: 0;
-    background: linear-gradient(to bottom, $color-primary, transparent);
+    background: linear-gradient(to bottom, var(--color-primary), transparent);
   }
 
   &::after {
     bottom: 0;
-    background: linear-gradient(to top, $color-primary, transparent);
+    background: linear-gradient(to top, var(--color-primary), transparent);
   }
 }
 
@@ -87,8 +87,8 @@
 .app-footer {
   @include no-select;
 
-  color: $color-text-primary;
-  background-color: $color-primary;
+  color: var(--color-text-primary);
+  background-color: var(--color-primary);
   text-align: center;
 }
 

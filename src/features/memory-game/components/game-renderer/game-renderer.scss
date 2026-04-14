@@ -25,7 +25,7 @@
   @include panel;
 
   padding: 2px;
-  background: $color-background-header;
+  background: var(--color-background-header);
   overflow: hidden;
 }
 
@@ -41,8 +41,8 @@
   @include no-select;
 
   padding: $spacing-sm $spacing-md;
-  color: $color-text-primary;
-  background: $color-background-header;
+  color: var(--color-text-primary);
+  background: var(--color-background-header);
   font-size: 1rem;
   font-weight: 700;
 }
@@ -62,12 +62,12 @@
   @include no-select;
 
   font-size: $font-size-base;
-  color: $color-text;
+  color: var(--color-text-primary);
 }
 
 .selected-garbage-line {
   font-weight: 900;
-  color: $color-text-muted;
+  color: var(--color-text-muted);
 }
 
 .memory-game__button {
@@ -92,8 +92,8 @@
   padding: 0;
   width: 30px;
   height: 30px;
-  background: $color-primary-glow;
-  border: 2px solid $color-surface;
+  background: var(--color-primary-glow);
+  border: 2px solid var(--color-surface);
   border-radius: 50%;
 }
 

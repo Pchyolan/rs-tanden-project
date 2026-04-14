@@ -22,7 +22,7 @@
 
   font-size: 1rem;
   font-weight: bold;
-  color: $color-settings-test;
+  color: var(--color-settings-test);
 }
 
 .segments-container {
@@ -34,7 +34,7 @@
 
 .task-segment {
   width: 40px;
-  background-color: $color-primary-dark;
+  background-color: var(--color-primary-dark);
   transition: background-color $transition-speed;
 
   &:first-child {
@@ -46,7 +46,7 @@
   }
 
   &.active {
-    background-color: $color-secondary;
+    background-color: var(--color-warning);
   }
 }
 
@@ -79,7 +79,7 @@
   cursor: pointer;
 
   &:hover {
-    color: $color-secondary;
+    color: var(--color-warning);
     opacity: 0.7;
   }
 

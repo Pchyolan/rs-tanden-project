@@ -45,7 +45,7 @@
 }
 
 .welcome-page__header {
-  color: $color-text-primary;
+  color: var(--color-text-primary);
   font-weight: 700;
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   text-align: center;
@@ -77,7 +77,7 @@
   margin-top: $spacing-xs;
   text-align: center;
   min-height: 2.5rem;
-  color: $color-warning;
+  color: var(--color-warning);
 }
 
 .login-fields-container,
@@ -130,12 +130,12 @@
 .register-message-text {
   margin: 0 0 $spacing-md;
   font-size: 1rem;
-  color: $color-text-muted;
+  color: var(--color-text-muted);
   line-height: 1.4;
 }
 
 .login-reset-link {
-  color: $color-text-muted;
+  color: var(--color-text-muted);
   font-size: 1rem;
   font-weight: 700;
   text-decoration: none;

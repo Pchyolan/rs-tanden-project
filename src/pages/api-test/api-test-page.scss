@@ -17,8 +17,8 @@
       margin: 0 0 $spacing-sm;
       font-size: 1.2rem;
       font-weight: 600;
-      color: $color-secondary;
-      border-bottom: 2px solid $color-primary;
+      color: var(--color-warning);
+      border-bottom: 2px solid var(--color-primary);
       padding-bottom: $spacing-xs;
     }
 
@@ -37,7 +37,7 @@
     button {
       padding: $spacing-sm;
       color: white;
-      background: $color-primary;
+      background: var(--color-primary);
       border: none;
       transition:
         filter $transition-speed,
@@ -70,7 +70,7 @@
       a {
         display: inline-flex;
         align-items: center;
-        color: $color-primary;
+        color: var(--color-primary);
         text-decoration: none;
         font-size: 0.9rem;
         gap: 4px;
@@ -83,7 +83,7 @@
       .copy-btn {
         padding: 4px 12px;
         color: white;
-        background: $color-secondary;
+        background: var(--color-warning);
         border: none;
         transition: filter $transition-speed;
         border-radius: $border-radius;

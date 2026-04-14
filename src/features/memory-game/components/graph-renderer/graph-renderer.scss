@@ -8,7 +8,7 @@
   height: auto;
   background:
     linear-gradient(rgb(148 163 184 / 10%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(148 163 184 / 10%) 1px, transparent 1px), $color-background;
+    linear-gradient(90deg, rgb(148 163 184 / 10%) 1px, transparent 1px), var(--color-background);
   border-radius: $border-radius-lg;
   background-size: 15px 15px;
   flex: 1;
@@ -46,7 +46,7 @@
 
   .object-rect {
     fill: url('#objectGradient');
-    stroke: $button-border;
+    stroke: var(--button-border);
     stroke-width: 2;
     filter: drop-shadow(0 2px 2px rgb(0 0 0 / 20%));
   }

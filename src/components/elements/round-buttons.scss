@@ -24,8 +24,8 @@
   padding: 0;
   width: 100%;
   height: 100%;
-  background: $color-primary-glow;
-  border: 2px solid $color-surface;
+  background: var(--color-primary-glow);
+  border: 2px solid var(--color-surface);
   opacity: 0.85;
   border-radius: 50%;
   cursor: pointer;
@@ -58,8 +58,8 @@
   left: 50%;
   padding: $spacing-sm 12px;
   color: white;
-  background: $color-primary-dark;
-  border: 1px solid $border-color;
+  background: var(--color-primary-dark);
+  border: 1px solid var(--border-color);
   opacity: 0;
   transition: opacity $transition-long;
   transform: translateX(-50%);
@@ -69,7 +69,7 @@
   white-space: nowrap;
   pointer-events: none;
   z-index: 100;
-  box-shadow: 0 4px 12px $shadow-soft;
+  box-shadow: 0 4px 12px var(--shadow-soft);
 
   &::after {
     content: '';
@@ -79,7 +79,7 @@
     transform: translateX(-50%);
     border-width: $spacing-sm;
     border-style: solid;
-    border-color: $color-primary-dark transparent transparent transparent;
+    border-color: var(--color-primary-dark) transparent transparent transparent;
   }
 
   // Для placement="bottom"
@@ -90,7 +90,7 @@
     &::after {
       top: auto;
       bottom: 100%;
-      border-color: transparent transparent $color-primary-dark;
+      border-color: transparent transparent var(--color-primary-dark);
     }
   }
 

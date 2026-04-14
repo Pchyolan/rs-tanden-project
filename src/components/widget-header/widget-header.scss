@@ -22,24 +22,24 @@
 
   padding: $spacing-xs;
   color: white;
-  border: 1px solid $difficulty-border;
+  border: 1px solid var(--difficulty-border);
   min-width: 70px;
   font-size: 0.8rem;
   font-weight: 700;
-  background-color: $difficulty-bg;
+  background-color: var(--difficulty-bg);
   border-radius: $border-radius;
   cursor: default;
 
   &-easy {
-    color: $difficulty-easy;
+    color: var(--difficulty-easy);
   }
 
   &-medium {
-    color: $difficulty-medium;
+    color: var(--difficulty-medium);
   }
 
   &-hard {
-    color: $difficulty-hard;
+    color: var(--difficulty-hard);
   }
 }
 
@@ -66,13 +66,13 @@
 }
 
 .dot-easy {
-  fill: $difficulty-easy;
+  fill: var(--difficulty-easy);
 }
 
 .dot-medium {
-  fill: $difficulty-medium;
+  fill: var(--difficulty-medium);
 }
 
 .dot-hard {
-  fill: $difficulty-hard;
+  fill: var(--difficulty-hard);
 }

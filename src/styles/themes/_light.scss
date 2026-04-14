@@ -1,0 +1,72 @@
+:root,
+.light-theme {
+  // Main palette
+  --color-primary: #248df8;
+  --color-primary-dark: #1e3a8a;
+  --color-primary-glow: #4bb6fc;
+
+  // Backgrounds
+  --color-background: #082f7a;
+  --color-background-header: #124a9d;
+  --color-surface: #0f83f0;
+
+  // Glass / UI panels
+  --color-glass: rgb(255 255 255 / 8%);
+  --color-glass-border: rgb(255 255 255 / 20%);
+
+  // Difficulty badges
+  --difficulty-easy: #72f515;
+  --difficulty-medium: #f1c40f;
+  --difficulty-hard: #5ae3e9;
+  --difficulty-bg: #0775d7;
+  --difficulty-border: #0066cd;
+
+  // Inputs
+  --color-input-text: #6b7280;
+  --color-input-placeholder: #d1d5db;
+  --color-input-background: white;
+
+  // Gradients
+  --gradient-primary: linear-gradient(135deg, #248df8, #3998f8);
+  --gradient-panel: linear-gradient(180deg, #207edf 70%, #4fa3f9 100%);
+  --gradient-glow: radial-gradient(circle, rgb(96 165 250 / 90%), transparent);
+
+  // Accents (buttons & states)
+  --input-border: #207edf;
+  --button-border: #0d5fb5;
+  --button-border-radius: 999px;
+
+  // Success (green) + dark variant
+  --color-success: #22c55e;
+  --color-success-light: #4ade80;
+  --color-success-dark: #16a34a;
+
+  // Danger (red) + dark variant
+  --color-danger: #ef4444;
+  --color-danger-light: #f87171;
+  --color-danger-dark: #dc2626;
+
+  // Warning (orange) + dark variant
+  --color-warning: #fbbf24;
+  --color-warning-medium: #f59e0b;
+  --color-warning-dark: #ab6e07;
+
+  // Info / highlights
+  --color-accent: #38bdf8;
+
+  // Text
+  --color-text-primary: #fff;
+  --color-text-muted: #93c5fd;
+  --color-settings-test: #082f7a;
+
+  // Borders & shadows
+  --border-color: rgb(255 255 255 / 15%);
+  --shadow-soft: 0 10px 10px rgb(0 0 0 / 30%);
+  --shadow-glow: 0 0 10px rgb(96 165 250 / 60%);
+
+  // Header buttons (light theme defaults)
+  --button-header-bg: #fff;
+  --button-header-hover-bg: #e0e0e0;
+  --button-header-color: #082f7a;
+  --grid-line-color: rgb(148 163 184 / 60%);
+}
