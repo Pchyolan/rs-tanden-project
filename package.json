@@ -22,7 +22,7 @@
     "test:integration:coverage": "vitest run --coverage tests/integration",
     "test:e2e": "playwright test --config=playwright.config.ts --tsconfig=tsconfig.e2e.json",
     "test:e2e:debug": "playwright test --debug",
-    "test:all": "npm run test && npm run test:e2e",
+    "test:all": "npm run test && npm run test:integration && npm run test:e2e",
     "prepare": "husky",
     "check-all": "npm run type-check && npm run lint:check && npm run format:check && npm run test"
   },
