@@ -25,7 +25,7 @@
   // Inputs
   --color-input-text: #6b7280;
   --color-input-placeholder: #d1d5db;
-  --color-input-background: #bddcfc;
+  --color-input-background: rgb(57 152 248 / 60%);
 
   // Gradients
   --gradient-primary: linear-gradient(135deg, #248df8, #3998f8);
@@ -35,6 +35,8 @@
   // Accents (buttons & states)
   --input-border: #0d5fb5;
   --input-border-active: #558fcb;
+  --input-filled-border: #4bb6fc;
+  --input-filled-border-active: #bddcfc;
   --button-border: #0d5fb5;
   --button-border-radius: 999px;
 

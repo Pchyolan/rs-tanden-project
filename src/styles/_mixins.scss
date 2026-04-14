@@ -98,7 +98,7 @@
   overflow: hidden;
 }
 
-@mixin element-states {
+@mixin element-states($border-color: var(--button-border)) {
   &:hover {
     transform: scale(1.02);
     filter: brightness(1.06);
@@ -112,7 +112,7 @@
 
   &:focus {
     outline: none; // убираем встроенный outline браузера
-    border-color: var(--button-border);
+    border-color: $border-color;
     box-shadow: 0 4px 4px rgb(0 0 0 / 38%);
   }
 }
@@ -285,14 +285,16 @@
 // =====================
 @mixin input-base {
   @include element-base;
-  @include element-states;
+  @include element-states(var(--input-filled-border-active));
 
-  color: var(--color-input-text);
+  color: var(--color-warning-medium);
+  caret-color: var(--color-warning-medium);
   background: var(--color-input-background);
-  border: 3px solid var(--input-border);
+  border: 3px solid var(--input-filled-border);
+  border-radius: 12px;
 
   &::placeholder {
-    color: var(--color-input-placeholder);
+    color: var(--color-warning);
   }
 }
 
@@ -367,16 +369,11 @@
     background: var(--color-primary-glow);
     box-shadow: 0 6px 0 rgb(0 0 0 / 10%);
     transform: rotate(45deg);
-  }
 
-  // Позиции стрелки
-  @if $placement == 'top-left' {
-    &::before {
+    @if $placement == 'top-left' {
       top: -7px;
       left: 70px;
-    }
-  } @else if $placement == 'bottom-center' {
-    &::before {
+    } @else if $placement == 'bottom-center' {
       top: auto;
       bottom: -7px;
       left: 50%;

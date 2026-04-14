@@ -107,7 +107,7 @@
 .register-fields-wrapper {
   @include flex-column;
 
-  gap: $spacing-xs;
+  gap: $spacing-sm;
 }
 
 .login-buttons-container {

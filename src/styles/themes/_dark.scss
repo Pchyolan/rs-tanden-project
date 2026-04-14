@@ -24,7 +24,7 @@
   // Inputs
   --color-input-text: #cbd5e1;
   --color-input-placeholder: #64748b;
-  --color-input-background: #2d3748;
+  --color-input-background: rgb(139 92 246 / 60%);
 
   // Gradients
   --gradient-primary: linear-gradient(135deg, #6c5ce7, #8b5cf6);
@@ -34,6 +34,8 @@
   // Accents (buttons & states)
   --input-border: #4c4c6e;
   --input-border-active: #6c6c9e;
+  --input-filled-border: #8b5cf6;
+  --input-filled-border-active: #c4bdf5;
   --button-border: #4c4c6e;
   --button-border-radius: 999px;
 
@@ -50,7 +52,7 @@
   // Warning (orange) + dark variant
   --color-warning: #f97316;
   --color-warning-medium: #ea580c;
-  --color-warning-dark: #ab6e07;
+  --color-warning-dark: #b45309;
 
   // Info / highlights
   --color-accent: #5649b8;
