@@ -1,14 +1,16 @@
 import { BaseComponent } from '@/core';
 import { widgetEvents, widgetTypes } from '@/constants';
 import type { MemoryGamePayload } from '@/features/memory-game/types';
-import type { QuizPayload } from '@/features/quiz/types';
-import type { TrueFalsePayload } from '@/features/true-false/types';
-import type { CodeCompletionPayload } from '@/features/code-completion/types';
+import type { QuizPayload, QuizAnswer } from '@/features/quiz/types';
+import type { TrueFalsePayload, TrueFalseAnswer } from '@/features/true-false/types';
+import type { CodeCompletionPayload, CodeCompletionAnswer } from '@/features/code-completion/types';
+import type { Verdict } from './verdict-types';
 
 export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
 
 // Уровень сложности
 export type Difficulty = 1 | 2 | 3;
+export type DifficultyKey = 'easy' | 'medium' | 'hard';
 
 export const difficultyMap = {
   1: 'Easy',
@@ -48,6 +50,21 @@ export type Widget =
 
 export type WidgetEvent = (typeof widgetEvents)[keyof typeof widgetEvents];
 
+export type WidgetUserAnswer = QuizAnswer | TrueFalseAnswer | CodeCompletionAnswer | unknown;
+
+export type WidgetReviewState = {
+  answer?: WidgetUserAnswer;
+  verdict?: Verdict;
+  isSubmitted: boolean;
+  isReviewMode: boolean;
+};
+
+export type WidgetSubmitPayload = {
+  answer: WidgetUserAnswer;
+  verdict: Verdict;
+  autoAdvance?: boolean;
+};
+
 export type WidgetComponent = {
   /**
    * Возвращает корневой элемент компонента для встраивания в DOM
@@ -61,6 +78,8 @@ export type WidgetComponent = {
    */
   on(event: WidgetEvent, handler: () => void): void;
 
+  setReviewState?(state: WidgetReviewState): void;
+
   /**
    * Уничтожает компонент, очищает ресурсы
    */
@@ -69,6 +88,7 @@ export type WidgetComponent = {
 
 export type WidgetContext = {
   widgetId: string;
+  reviewState?: WidgetReviewState;
   onReady: () => void;
-  onComplete: () => void;
+  onSubmit: (payload: WidgetSubmitPayload) => void;
 };

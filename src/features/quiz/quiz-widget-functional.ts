@@ -1,10 +1,9 @@
 import { widgetDataSource } from '@/api';
-import type { WidgetContext } from '@/types';
+import type { Verdict, WidgetContext, WidgetReviewState } from '@/types';
 import type { QuizWidget, QuizAnswer } from './types';
 
 import './quiz-widget-creator.scss';
 
-// Функции для построения DOM
 function createQuestion(text: string): HTMLDivElement {
   const element = document.createElement('div');
   element.className = 'question-block';
@@ -25,21 +24,6 @@ function createButton(text: string): HTMLButtonElement {
   return button;
 }
 
-function createSubmitButton(): HTMLButtonElement {
-  const button = document.createElement('button');
-  button.className = 'next-btn';
-  button.textContent = 'Submit';
-  button.style.display = 'none';
-  return button;
-}
-
-function createMoveBlock(button: HTMLButtonElement): HTMLDivElement {
-  const element = document.createElement('div');
-  element.className = 'move-block';
-  element.append(button);
-  return element;
-}
-
 function createTaskCard(...children: HTMLElement[]): HTMLDivElement {
   const element = document.createElement('div');
   element.className = 'task-card';
@@ -47,62 +31,123 @@ function createTaskCard(...children: HTMLElement[]): HTMLDivElement {
   return element;
 }
 
-// Основная функция рендера – принимает данные виджета и контекст с колбэками
-export function renderQuizWidget(
-  widget: QuizWidget,
-  context: WidgetContext
-): { element: HTMLElement; destroy: () => void } {
+type QuizRenderAPI = {
+  element: HTMLElement;
+  updateReviewState: (state: WidgetReviewState) => void;
+  destroy: () => void;
+};
+
+export function renderQuizWidget(widget: QuizWidget, context: WidgetContext): QuizRenderAPI {
   const container = document.createElement('div');
   container.className = 'quiz-widget';
 
   let selectedIndex: number | null = null;
-  let submitButton: HTMLButtonElement | null = null;
+  let currentVerdict: Verdict | undefined;
+  let isReviewMode = Boolean(context.reviewState?.isReviewMode);
 
-  function buildUI() {
-    container.innerHTML = '';
+  const question = createQuestion(widget.payload.question);
+  const answersBlock = createAnswersBlock();
+  const buttons = new Map<number, HTMLButtonElement>();
 
-    const question = createQuestion(widget.payload.question);
-    const answersBlock = createAnswersBlock();
-    submitButton = createSubmitButton();
-
-    widget.payload.options.forEach((option) => {
-      const button = createButton(option.text);
-      button.addEventListener('click', () => {
-        selectedIndex = option.index;
-        answersBlock.querySelectorAll('.answer-btn').forEach((button_) => button_.classList.remove('selected'));
-        button.classList.add('selected');
-        if (submitButton) submitButton.style.display = 'flex';
-      });
-      answersBlock.append(button);
+  function applyDefaultSelection(): void {
+    answersBlock.querySelectorAll('.answer-btn').forEach((button) => {
+      button.classList.remove('selected', 'correct', 'wrong');
     });
 
-    submitButton.addEventListener('click', async () => {
-      if (selectedIndex === null) return;
-      const answer: QuizAnswer = { selectedIndex };
-      try {
-        const verdict = await widgetDataSource.submitAnswer('quiz', context.widgetId, answer);
-        if (verdict.isCorrect) {
-          context.onComplete();
-        } else {
-          alert(verdict.explanation || 'Wrong answer');
-        }
-      } catch (error) {
-        console.error('Submit error', error);
-      }
-    });
-
-    const moveBlock = createMoveBlock(submitButton);
-    const taskCard = createTaskCard(question, answersBlock, moveBlock);
-    container.append(taskCard);
+    if (selectedIndex !== null) {
+      const button = buttons.get(selectedIndex);
+      button?.classList.add('selected');
+    }
   }
 
-  buildUI();
+  function applyReviewState(): void {
+    applyDefaultSelection();
 
-  // сообщаем приложению, что виджет готов
+    if (!isReviewMode || selectedIndex === null || !currentVerdict) return;
+
+    const selectedButton = buttons.get(selectedIndex);
+    const correctButton = buttons.get(widget.correctAnswer);
+
+    if (currentVerdict.isCorrect) {
+      selectedButton?.classList.add('correct');
+    } else {
+      selectedButton?.classList.add('wrong');
+      correctButton?.classList.add('correct');
+    }
+  }
+
+  async function handleAnswer(optionIndex: number): Promise<void> {
+    if (isReviewMode) return;
+
+    selectedIndex = optionIndex;
+    applyDefaultSelection();
+
+    const answer: QuizAnswer = { selectedIndex: optionIndex };
+
+    try {
+      const verdict = await widgetDataSource.submitAnswer('quiz', context.widgetId, answer);
+      currentVerdict = verdict;
+
+      context.onSubmit({
+        answer,
+        verdict,
+        autoAdvance: true,
+      });
+    } catch (error) {
+      console.error('Submit error', error);
+    }
+  }
+
+  widget.payload.options.forEach((option) => {
+    const button = createButton(option.text);
+
+    if (
+      context.reviewState?.answer &&
+      typeof context.reviewState.answer === 'object' &&
+      context.reviewState.answer !== null &&
+      'selectedIndex' in context.reviewState.answer &&
+      typeof context.reviewState.answer.selectedIndex === 'number'
+    ) {
+      selectedIndex = context.reviewState.answer.selectedIndex;
+    }
+
+    button.addEventListener('click', () => {
+      void handleAnswer(option.index);
+    });
+
+    buttons.set(option.index, button);
+    answersBlock.append(button);
+  });
+
+  if (context.reviewState?.verdict) {
+    currentVerdict = context.reviewState.verdict;
+  }
+
+  applyReviewState();
+
+  const taskCard = createTaskCard(question, answersBlock);
+  container.append(taskCard);
+
   context.onReady();
 
   return {
     element: container,
+    updateReviewState(state: WidgetReviewState) {
+      isReviewMode = state.isReviewMode;
+      currentVerdict = state.verdict;
+
+      if (
+        state.answer &&
+        typeof state.answer === 'object' &&
+        state.answer !== null &&
+        'selectedIndex' in state.answer &&
+        typeof state.answer.selectedIndex === 'number'
+      ) {
+        selectedIndex = state.answer.selectedIndex;
+      }
+
+      applyReviewState();
+    },
     destroy() {
       container.remove();
     },

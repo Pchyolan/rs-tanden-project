@@ -9,6 +9,9 @@ export type {
   WidgetContext,
   WidgetEvent,
   WidgetType,
+  WidgetUserAnswer,
+  WidgetReviewState,
+  WidgetSubmitPayload,
 } from './widget-types';
 export { difficultyMap } from './widget-types';
 

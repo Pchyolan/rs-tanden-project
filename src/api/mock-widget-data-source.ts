@@ -5,6 +5,7 @@ import type { AnswerValidator } from '@/api/validators/answer-validator';
 import { MemoryGameAnswerValidator } from '@/api/validators/memory-game-validator';
 import { QuizAnswerValidator } from '@/api/validators/quiz-validator';
 import { TrueFalseAnswerValidator } from '@/api/validators/true-false-validator';
+import { CodeCompletionAnswerValidator } from '@/api/validators/code-completion-validator';
 
 // Функции для случайной задержки при загрузке (для отладки loading)
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,6 +15,7 @@ const validators = new Map<WidgetType, AnswerValidator>([
   ['memory-game', new MemoryGameAnswerValidator()],
   ['quiz', new QuizAnswerValidator()],
   ['true-false', new TrueFalseAnswerValidator()],
+  ['code-completion', new CodeCompletionAnswerValidator()],
 ]);
 
 export class MockWidgetDataSource implements WidgetDataSource {

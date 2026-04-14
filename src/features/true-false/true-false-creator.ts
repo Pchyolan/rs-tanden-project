@@ -1,7 +1,14 @@
 import { BaseComponent } from '@/core';
 import { widgetDataSource } from '@/api';
 import { widgetEvents } from '@/constants';
-import type { WidgetComponent, WidgetEvent } from '@/types';
+import type {
+  Verdict,
+  WidgetComponent,
+  WidgetContext,
+  WidgetEvent,
+  WidgetReviewState,
+  WidgetSubmitPayload,
+} from '@/types';
 import type { TrueFalseAnswer, TrueFalseWidget } from './types';
 
 import './true-false-widget-creator.scss';
@@ -26,13 +33,6 @@ function createButton(text: string): HTMLButtonElement {
   return button;
 }
 
-function createExplanation(text: string): HTMLDivElement {
-  const element = document.createElement('div');
-  element.className = 'explanation-block';
-  element.textContent = text;
-  return element;
-}
-
 function createTaskCard(...children: HTMLElement[]): HTMLDivElement {
   const element = document.createElement('div');
   element.className = 'task-card';
@@ -40,11 +40,133 @@ function createTaskCard(...children: HTMLElement[]): HTMLDivElement {
   return element;
 }
 
+type TrueFalseRenderAPI = {
+  element: HTMLElement;
+  updateReviewState: (state: WidgetReviewState) => void;
+  destroy: () => void;
+};
+
+function renderTrueFalseWidget(widget: TrueFalseWidget, context: WidgetContext): TrueFalseRenderAPI {
+  const container = document.createElement('div');
+  container.className = 'true-false-widget';
+
+  const statement = createStatement(widget.payload.statement);
+  const answersBlock = createAnswersBlock();
+
+  const trueButton = createButton('True');
+  const falseButton = createButton('False');
+
+  let selectedValue: boolean | null = null;
+  let currentVerdict: Verdict | undefined = context.reviewState?.verdict;
+  let isReviewMode = Boolean(context.reviewState?.isReviewMode);
+
+  if (
+    context.reviewState?.answer &&
+    typeof context.reviewState.answer === 'object' &&
+    context.reviewState.answer !== null &&
+    'value' in context.reviewState.answer &&
+    typeof context.reviewState.answer.value === 'boolean'
+  ) {
+    selectedValue = context.reviewState.answer.value;
+  }
+
+  function applyBaseState(): void {
+    trueButton.classList.remove('selected', 'correct', 'wrong');
+    falseButton.classList.remove('selected', 'correct', 'wrong');
+
+    if (selectedValue === true) {
+      trueButton.classList.add('selected');
+    }
+
+    if (selectedValue === false) {
+      falseButton.classList.add('selected');
+    }
+  }
+
+  function applyReviewState(): void {
+    applyBaseState();
+
+    if (!isReviewMode || selectedValue === null || !currentVerdict) return;
+
+    const selectedButton = selectedValue ? trueButton : falseButton;
+    const correctButton = widget.correctAnswer ? trueButton : falseButton;
+
+    if (currentVerdict.isCorrect) {
+      selectedButton.classList.add('correct');
+    } else {
+      selectedButton.classList.add('wrong');
+      correctButton.classList.add('correct');
+    }
+  }
+
+  async function handleAnswer(value: boolean): Promise<void> {
+    if (isReviewMode) return;
+
+    selectedValue = value;
+    applyBaseState();
+
+    const answer: TrueFalseAnswer = { value };
+
+    try {
+      const verdict = await widgetDataSource.submitAnswer('true-false', context.widgetId, answer);
+      currentVerdict = verdict;
+
+      context.onSubmit({
+        answer,
+        verdict,
+        autoAdvance: true,
+      });
+    } catch (error) {
+      console.error('Failed to submit true/false answer', error);
+    }
+  }
+
+  trueButton.addEventListener('click', () => {
+    void handleAnswer(true);
+  });
+
+  falseButton.addEventListener('click', () => {
+    void handleAnswer(false);
+  });
+
+  answersBlock.append(trueButton, falseButton);
+
+  const taskCard = createTaskCard(statement, answersBlock);
+  container.append(taskCard);
+
+  applyReviewState();
+  context.onReady();
+
+  return {
+    element: container,
+    updateReviewState(state: WidgetReviewState) {
+      isReviewMode = state.isReviewMode;
+      currentVerdict = state.verdict;
+
+      if (
+        state.answer &&
+        typeof state.answer === 'object' &&
+        state.answer !== null &&
+        'value' in state.answer &&
+        typeof state.answer.value === 'boolean'
+      ) {
+        selectedValue = state.answer.value;
+      }
+
+      applyReviewState();
+    },
+    destroy() {
+      container.remove();
+    },
+  };
+}
+
 export class TrueFalseWidgetCreator extends BaseComponent implements WidgetComponent {
   private readonly widgetId: string;
-  private completeHandler?: () => void;
+  private widgetAPI: TrueFalseRenderAPI | null = null;
+  private completeHandler?: (payload?: WidgetSubmitPayload) => void;
   private readyHandler?: () => void;
-  private isAnswered = false;
+  private reviewState?: WidgetReviewState;
 
   constructor(widgetId: string) {
     super({ tag: 'div', className: ['true-false-widget-container'] });
@@ -56,12 +178,21 @@ export class TrueFalseWidgetCreator extends BaseComponent implements WidgetCompo
     return this;
   }
 
-  on(event: WidgetEvent, handler: () => void): void {
+  on(event: WidgetEvent, handler: (payload?: WidgetSubmitPayload) => void): void {
     if (event === widgetEvents.Ready) this.readyHandler = handler;
     if (event === widgetEvents.Complete) this.completeHandler = handler;
   }
 
+  setReviewState(state: WidgetReviewState): void {
+    this.reviewState = state;
+
+    if (this.widgetAPI) {
+      this.widgetAPI.updateReviewState(state);
+    }
+  }
+
   destroy(): void {
+    this.widgetAPI?.destroy();
     this.remove();
   }
 
@@ -69,54 +200,22 @@ export class TrueFalseWidgetCreator extends BaseComponent implements WidgetCompo
     try {
       const widget = await widgetDataSource.getWidgetById<TrueFalseWidget>('true-false', this.widgetId);
 
+      const context: WidgetContext = {
+        widgetId: this.widgetId,
+        ...(this.reviewState ? { reviewState: this.reviewState } : {}),
+        onReady: () => this.readyHandler?.(),
+        onSubmit: (payload: WidgetSubmitPayload) => {
+          this.completeHandler?.(payload);
+        },
+      };
+
+      this.widgetAPI = renderTrueFalseWidget(widget, context);
+
       this.element.innerHTML = '';
-
-      const statement = createStatement(widget.payload.statement);
-      const answersBlock = createAnswersBlock();
-
-      const trueButton = createButton('True');
-      const falseButton = createButton('False');
-
-      trueButton.addEventListener('click', () => {
-        void this.handleAnswer(true, widget, answersBlock);
-      });
-
-      falseButton.addEventListener('click', () => {
-        void this.handleAnswer(false, widget, answersBlock);
-      });
-
-      answersBlock.append(trueButton, falseButton);
-
-      const taskCard = createTaskCard(statement, answersBlock);
-      this.element.append(taskCard);
-
-      this.readyHandler?.();
+      this.element.append(this.widgetAPI.element);
     } catch (error) {
       console.error('Failed to load true-false widget', error);
       this.element.textContent = 'Error loading true/false widget';
-    }
-  }
-
-  private async handleAnswer(value: boolean, widget: TrueFalseWidget, answersBlock: HTMLDivElement): Promise<void> {
-    if (this.isAnswered) return;
-    this.isAnswered = true;
-
-    const answer: TrueFalseAnswer = { value };
-
-    try {
-      const verdict = await widgetDataSource.submitAnswer('true-false', this.widgetId, answer);
-
-      const explanation = createExplanation(
-        `${verdict.isCorrect ? '✅ Correct!' : '❌ Incorrect.'} ${widget.payload.explanation}`
-      );
-
-      answersBlock.append(explanation);
-
-      setTimeout(() => {
-        this.completeHandler?.();
-      }, 1200);
-    } catch (error) {
-      console.error('Failed to submit true/false answer', error);
     }
   }
 }
