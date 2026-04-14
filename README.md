@@ -16,7 +16,7 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 ## 🌟 JustBuildIt Team
 - Pchyolan – [GitHub](https://github.com/pchyolan) - [Дневники](./development-notes/Pchyolan)
-- Anna Demyanovich – [GitHub](https://github.com/thefoxtale) - [Дневники](./development-notes/theFoxTale)
+- Anna Demyanovich – [GitHub](https://github.com/thefoxtale) - [Дневники](./development-notes/theFoxTale) - [Self-assessment](./development-notes/theFoxTale/self-assessment.md)
 
 **Чем гордимся:**
 - 👻 **Мы выжили** - и даже кажется доползли до сдачи проекта, хотя было огромное желание бросить всё и сдаться.
