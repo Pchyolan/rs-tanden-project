@@ -1,15 +1,29 @@
 # RS Tandem Project
+## Приложение "Байты памяти" (Memory Bytes)
 
-## 📖 Description
+## 📖 Описание
+```
 A tiny web project fueled by coffee and optimism ☕️
 We write code, occasionally debug, and mostly survive stage 2.  
+```
+«Байты памяти» — это интерактивная платформа, где вы тренируете мозг, проходя «билеты» с заданиями по JavaScript. Играйте в викторины, собирайте мусор в памяти, разбирайтесь с асинхронностью — и всё это в стильном космическом интерьере с анимированным мозгом-помощником.
 
-## 🌱 Deploy
-[Deploy Link](https://tranquil-froyo-550c45.netlify.app/)
+Проект написан на TypeScript с собственной компонентной системой, реактивными `Observable`, роутером и полной локализацией (русский/английский). Бэкенд — Supabase (авторизация, хранение виджетов и прогресса).
 
-## 🌟 Team
+## 🌱 Deploy & Demo
+- [Deploy Link](https://tranquil-froyo-550c45.netlify.app/)  
+- [Demo video](https://youtu.be/Vk_MvrETp9Q?si=R3sT1_7hyuWviuF4)  
+
+## 🌟 JustBuildIt Team
 - Pchyolan – [GitHub](https://github.com/pchyolan) - [Дневники](./development-notes/Pchyolan)
 - Anna Demyanovich – [GitHub](https://github.com/thefoxtale) - [Дневники](./development-notes/theFoxTale)
+
+**Чем гордимся:**
+- 👻 **Мы выжили** - и даже кажется доползли до сдачи проекта, хотя было огромное желание бросить всё и сдаться.
+- 🧠 **Живой граф памяти** — объекты, ссылки, анимация сборки мусора и интерактивное выделение.
+- 🎛️ **Гибкая система виджетов** — фабрика и единый интерфейс для добавления новых типов заданий.
+- 🌍 **Полная локализация** — динамическое переключение между русским и английским без перезагрузки.
+- 🎨 **Кастомный дизайн** — все кнопки, панели, тултипы и блики сделаны вручную, без UI-библиотек.
 
 ## ⚙️ Технологический стек
 - **Язык:** TypeScript
@@ -21,9 +35,17 @@ We write code, occasionally debug, and mostly survive stage 2.
 
 ## 🤹‍♀️ Kanban-доска разработки проекта
 Все задачи, связанные с разработкой и развитием проекта, занесены на Kanban-доску - [ссылка](https://github.com/users/Pchyolan/projects/1/views/1).
+![kanban-desc.png](docs/assets/kanban-desc.png)
 
 ## 📝 Записи встреч команды
-Иногда мы ведём дневниковые записи наших встреч, и они лежат [тут](./docs/meeting-notes/index.md)
+Иногда мы встречаемся командой для обсуждения нашего проекта и ведём дневниковые записи наших встреч. Всё, что есть, лежит [тут](./docs/meeting-notes/index.md)
+
+## Интересные PR с Code Review
+На самом деле мы чаще всего обсуждали их на встречах голосом (так просто быстрее, а времени нам не хватало катастрофически), но кое-что есть в виде записей. Например:
+- [Пример №1](./development-notes/Pchyolan/Pchyolan-2026-03-17.md)
+- [Пример №2](./development-notes/Pchyolan/Pchyolan-2026-03-30.md)
+- [Пример №3](./development-notes/Pchyolan/Pchyolan-2026-03-31.md)
+- [Пример №4](https://github.com/Pchyolan/rs-tandem-project/pull/46)
 
 ## 🚀 Запуск проекта для разработчиков
 Для запуска проекта требуется Node миниум 20-ой версии.

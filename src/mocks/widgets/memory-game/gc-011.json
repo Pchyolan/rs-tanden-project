@@ -1,0 +1,26 @@
+{
+  "id": "gc-011",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["js-basics"],
+  "payload": {
+    "codeSnippet": "let a = 10;\nlet b = a;\na = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "var-a", "label": "Variable a", "x": 100, "y": 150 },
+      { "id": "var-b", "label": "Variable b", "x": 500, "y": 150 },
+      { "id": "num-10", "label": "Number 10", "x": 300, "y": 280 }
+    ],
+    "links": [
+      { "from": "var-a", "to": "num-10", "label": "ref" },
+      { "from": "var-b", "to": "num-10", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-a" },
+      { "from": "global", "to": "var-b" }
+    ]
+  },
+  "correctAnswer": []
+}

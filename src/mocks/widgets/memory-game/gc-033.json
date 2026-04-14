@@ -1,0 +1,23 @@
+{
+  "id": "gc-033",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["closures"],
+  "payload": {
+    "codeSnippet": "function createMultiplier(mult) {\n  return function(n) { return mult * n; };\n}\nlet double = createMultiplier(2);\ndouble = null;",
+    "highlightedLine": 5,
+    "objects": [
+      { "id": "double-var", "label": "Variable double", "x": 100, "y": 150 },
+      { "id": "closure-fn", "label": "Function (closure)", "x": 400, "y": 150 },
+      { "id": "mult-value", "label": "Number 2 (captured)", "x": 400, "y": 300 }
+    ],
+    "links": [
+      { "from": "double-var", "to": "closure-fn", "label": "ref" },
+      { "from": "closure-fn", "to": "mult-value", "label": "[[scope]]" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "double-var" }]
+  },
+  "correctAnswer": ["closure-fn", "mult-value"]
+}

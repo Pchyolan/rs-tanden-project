@@ -1,4 +1,3 @@
-@use 'sass:color';
 @use '@/styles/variables' as *;
 
 .api-test-container {
@@ -26,7 +25,9 @@
     input {
       padding: $spacing-sm;
       width: 100%;
-      border: 1px solid #ccc;
+      color: var(--color-text-primary, #333);
+      background: var(--color-surface, white);
+      border: 1px solid var(--border-color, #ccc);
       margin-bottom: $spacing-sm;
       border-radius: $border-radius;
       font-size: 1rem;
@@ -38,13 +39,15 @@
       color: white;
       background: $color-primary;
       border: none;
-      transition: background-color $transition-speed;
+      transition:
+        filter $transition-speed,
+        background-color $transition-speed;
       border-radius: $border-radius;
       cursor: pointer;
       font-size: 1rem;
 
       &:hover {
-        background: color.adjust($color-primary, $lightness: -10%);
+        filter: brightness(0.9);
       }
     }
   }
@@ -60,8 +63,8 @@
       align-items: center;
       justify-content: space-between;
       padding: $spacing-xs $spacing-sm;
-      border: 1px solid #ccc;
-      background-color: color.adjust($color-background, $lightness: 5%);
+      background: var(--color-surface, #f0f0f0);
+      border: 1px solid var(--border-color, #ccc);
       border-radius: $border-radius $border-radius 0 0;
 
       a {
@@ -82,13 +85,13 @@
         color: white;
         background: $color-secondary;
         border: none;
-        transition: background-color $transition-speed;
+        transition: filter $transition-speed;
         border-radius: $border-radius;
         cursor: pointer;
         font-size: 0.9rem;
 
         &:hover {
-          background: color.adjust($color-secondary, $lightness: -10%);
+          filter: brightness(0.9);
         }
       }
     }
@@ -98,7 +101,7 @@
       height: 100%;
       color: #d4d4d4;
       background: #1e1e1e;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border-color, #ccc);
       min-height: 400px;
       font-family: monospace;
       font-size: 12px;

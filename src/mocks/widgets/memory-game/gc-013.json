@@ -1,0 +1,26 @@
+{
+  "id": "gc-013",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["js-basics"],
+  "payload": {
+    "codeSnippet": "let y = {val: 2};\nlet z = y;\ny = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "var-y", "label": "Variable y", "x": 100, "y": 150 },
+      { "id": "var-z", "label": "Variable z", "x": 500, "y": 150 },
+      { "id": "obj", "label": "Object {val: 2}", "x": 300, "y": 280 }
+    ],
+    "links": [
+      { "from": "var-y", "to": "obj", "label": "ref" },
+      { "from": "var-z", "to": "obj", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-y" },
+      { "from": "global", "to": "var-z" }
+    ]
+  },
+  "correctAnswer": []
+}

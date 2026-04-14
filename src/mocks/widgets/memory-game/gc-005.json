@@ -3,14 +3,14 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 2,
-  "tags": ["garbage-collection", "nested"],
+  "tags": ["objects-prototypes"],
   "payload": {
     "codeSnippet": "let container = { inner: { value: 10 } };\ncontainer = null;",
     "highlightedLine": 2,
     "objects": [
       { "id": "container-var", "label": "Variable container", "x": 100, "y": 150 },
-      { "id": "container-obj", "label": "Object {inner: ...}", "x": 300, "y": 150 },
-      { "id": "inner-obj", "label": "Object {value:10}", "x": 300, "y": 300 }
+      { "id": "container-obj", "label": "Object {inner: ...}", "x": 400, "y": 150 },
+      { "id": "inner-obj", "label": "Object {value:10}", "x": 400, "y": 300 }
     ],
     "links": [
       { "from": "container-var", "to": "container-obj", "label": "ref" },

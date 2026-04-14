@@ -1,0 +1,98 @@
+@use 'sass:color';
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.memory-game__container {
+  @include flex-column;
+
+  width: 100%;
+  height: 100%;
+}
+
+.memory-game__panels-container {
+  display: flex;
+  padding: $spacing-sm 0;
+  width: 100%;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+  gap: $spacing-sm;
+}
+
+.memory-game__code-panel,
+.memory-game__graph-panel {
+  @include flex-column;
+  @include panel;
+
+  padding: 2px;
+  background: $color-background-header;
+  overflow: hidden;
+}
+
+.memory-game__code-panel {
+  width: 40%;
+}
+
+.memory-game__graph-panel {
+  width: 60%;
+}
+
+.memory-game__panel-header {
+  @include no-select;
+
+  padding: $spacing-sm $spacing-md;
+  color: $color-text-primary;
+  background: $color-background-header;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.memory-game__bottom-panel {
+  display: flex;
+  justify-content: space-between;
+}
+
+.memory-game__text-wrapper {
+  @include flex-center;
+
+  gap: $spacing-sm;
+}
+
+.memory-game__text {
+  @include no-select;
+
+  font-size: $font-size-base;
+  color: $color-text;
+}
+
+.selected-garbage-line {
+  font-weight: 900;
+  color: $color-text-muted;
+}
+
+.memory-game__button {
+  @include button-success;
+
+  &:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.memory-game__counter-wrapper {
+  @include glacier-base;
+
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  background: $color-primary-glow;
+  border: 2px solid $color-surface;
+  border-radius: 50%;
+}

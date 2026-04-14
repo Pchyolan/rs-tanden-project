@@ -3,16 +3,16 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 2,
-  "tags": ["garbage-collection", "array"],
+  "tags": ["arrays-methods"],
   "payload": {
     "codeSnippet": "let arr = [{x:1}, {x:2}];\nlet last = arr.pop();",
     "highlightedLine": 2,
     "objects": [
-      { "id": "arr-var", "label": "Variable arr", "x": 100, "y": 100 },
-      { "id": "arr-obj", "label": "Array [obj1, obj2]", "x": 350, "y": 100 },
-      { "id": "obj1", "label": "Object {x:1}", "x": 200, "y": 225 },
-      { "id": "obj2", "label": "Object {x:2}", "x": 400, "y": 225 },
-      { "id": "last-var", "label": "Variable last", "x": 100, "y": 350 }
+      { "id": "arr-var", "label": "Variable arr", "x": 50, "y": 200 },
+      { "id": "arr-obj", "label": "Array [obj1, obj2]", "x": 350, "y": 200 },
+      { "id": "obj1", "label": "Object {x:1}", "x": 50, "y": 350 },
+      { "id": "obj2", "label": "Object {x:2}", "x": 350, "y": 350 },
+      { "id": "last-var", "label": "Variable last", "x": 550, "y": 100 }
     ],
     "links": [
       { "from": "arr-var", "to": "arr-obj", "label": "ref" },

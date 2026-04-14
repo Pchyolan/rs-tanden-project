@@ -1,0 +1,29 @@
+{
+  "id": "gc-016",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "codeSnippet": "let nums = [{val:1}, {val:2}];\nlet first = nums.shift();",
+    "highlightedLine": 2,
+    "objects": [
+      { "id": "nums-var", "label": "Variable nums", "x": 50, "y": 150 },
+      { "id": "nums-array", "label": "Array [obj1, obj2]", "x": 300, "y": 150 },
+      { "id": "obj1", "label": "{val:1}", "x": 50, "y": 300 },
+      { "id": "obj2", "label": "{val:2}", "x": 300, "y": 300 },
+      { "id": "first-var", "label": "Variable first", "x": 550, "y": 150 }
+    ],
+    "links": [
+      { "from": "nums-var", "to": "nums-array", "label": "ref" },
+      { "from": "nums-array", "to": "obj2", "label": "0" },
+      { "from": "first-var", "to": "obj1", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "nums-var" },
+      { "from": "global", "to": "first-var" }
+    ]
+  },
+  "correctAnswer": []
+}

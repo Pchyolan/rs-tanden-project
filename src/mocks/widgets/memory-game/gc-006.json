@@ -3,14 +3,14 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 3,
-  "tags": ["garbage-collection", "closure"],
+  "tags": ["closures"],
   "payload": {
     "codeSnippet": "function createHolder() {\n  let obj = { data: 'secret' };\n  return function() { return obj; };\n}\nconst holder = createHolder();",
     "highlightedLine": 5,
     "objects": [
       { "id": "holder-var", "label": "Variable holder", "x": 100, "y": 150 },
-      { "id": "closure-fn", "label": "Function (closure)", "x": 300, "y": 150 },
-      { "id": "obj-in-closure", "label": "Object {data:'secret'}", "x": 300, "y": 300 }
+      { "id": "closure-fn", "label": "Function (closure)", "x": 400, "y": 150 },
+      { "id": "obj-in-closure", "label": "Object {data:'secret'}", "x": 400, "y": 300 }
     ],
     "links": [
       { "from": "holder-var", "to": "closure-fn", "label": "ref" },

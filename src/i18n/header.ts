@@ -1,14 +1,11 @@
-import type { LanguageType } from '@/types';
-
-export type HeaderTranslationKey = 'appName' | 'signIn' | 'testApi' | 'home' | 'logout';
-
-export const headerTranslations: Record<LanguageType, Record<HeaderTranslationKey, string>> = {
+export const headerTranslations = {
   en: {
     appName: 'Widget Trainer',
     signIn: 'Sign In',
     testApi: 'Test API',
     home: 'Home',
     logout: 'Logout',
+    settings: 'Settings',
   },
   ru: {
     appName: 'Тренажёр виджетов',
@@ -16,5 +13,6 @@ export const headerTranslations: Record<LanguageType, Record<HeaderTranslationKe
     testApi: 'Тест API',
     home: 'Главная',
     logout: 'Выйти',
+    settings: 'Настройки',
   },
-};
+} as const;

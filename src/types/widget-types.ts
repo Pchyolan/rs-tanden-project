@@ -12,10 +12,10 @@ export type WidgetType = (typeof widgetTypes)[keyof typeof widgetTypes];
 export type Difficulty = 1 | 2 | 3;
 export type DifficultyKey = 'easy' | 'medium' | 'hard';
 
-export const difficultyMap = {
-  1: 'Easy',
-  2: 'Medium',
-  3: 'Hard',
+export const difficultyMap: Record<Difficulty, DifficultyKey> = {
+  1: 'easy',
+  2: 'medium',
+  3: 'hard',
 };
 
 // Базовый интерфейс виджета

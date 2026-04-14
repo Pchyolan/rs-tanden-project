@@ -1,0 +1,139 @@
+@use '@/styles/mixins' as *;
+@use '@/styles/variables' as *;
+
+.settings-page {
+  @include panel;
+
+  margin: $spacing-md;
+  padding: $spacing-md;
+  flex: 1;
+}
+
+.settings-title {
+  font-size: 2rem;
+  margin-bottom: $spacing-lg;
+  color: $color-text-primary;
+}
+
+.settings-form {
+  @include flex-center;
+
+  flex-direction: column;
+  gap: $spacing-md;
+  width: 100%;
+}
+
+.settings-section {
+  @include flex-column;
+  @include panel;
+
+  padding: 2px;
+  width: 100%;
+  background: $color-background-header;
+  overflow: hidden;
+}
+
+.settings-section-title {
+  @include no-select;
+
+  padding: $spacing-sm $spacing-md;
+  color: $color-text-primary;
+  background: $color-background-header;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.settings-row-text {
+  font-family: $font-family-text;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $color-settings-test;
+}
+
+.settings-section-content {
+  padding: $spacing-sm $spacing-md;
+  background: $gradient-panel;
+  border-radius: $border-radius-lg;
+  font-size: 1rem;
+}
+
+.settings-row {
+  @include flex-center;
+
+  justify-content: normal;
+  gap: $spacing-md;
+  margin-bottom: $spacing-sm;
+}
+
+.line-row,
+.user-line-row {
+  display: flex;
+  align-items: start;
+  gap: $spacing-md;
+  width: 100%;
+}
+
+.settings-input {
+  @include input-base;
+}
+
+.toggle-label {
+  cursor: pointer;
+}
+
+.settings-save-btn {
+  @include button-success;
+
+  width: 220px;
+  line-height: 24px;
+}
+
+.settings-status {
+  margin-top: $spacing-md;
+  text-align: center;
+  font-size: 0.9rem;
+
+  &.success {
+    color: $color-success;
+  }
+
+  &.error {
+    color: $color-warning;
+  }
+}
+
+.settings-button-group {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.settings-option-btn {
+  @include button-primary;
+
+  font-size: 0.9rem;
+
+  &.active {
+    @include button-warning;
+
+    font-size: 0.9rem;
+  }
+}
+
+@media (width <= 900px) {
+  .line-row {
+    flex-direction: column;
+  }
+
+  .user-line-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+@media (width <= 600px) {
+  .settings-row {
+    flex-direction: column;
+    align-items: start;
+    gap: $spacing-xs;
+  }
+}

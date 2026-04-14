@@ -1,0 +1,156 @@
+@use '@/styles/variables' as *;
+
+.memory-game__graph-container {
+  position: relative;
+  margin: 0;
+  padding: $spacing-md;
+  width: 100%;
+  height: auto;
+  background:
+    linear-gradient(rgb(148 163 184 / 10%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 10%) 1px, transparent 1px), $color-background;
+  border-radius: $border-radius-lg;
+  background-size: 15px 15px;
+  flex: 1;
+  overflow: auto;
+
+  // дополнительный фон со звёздами
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('@/assets/images/backgrounds/silver_stars.svg') center / cover no-repeat;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  svg {
+    position: relative;
+    z-index: 1;
+  }
+
+  &.is-disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.graph-object {
+  cursor: pointer;
+  transition: filter $transition-speed;
+
+  .object-rect {
+    fill: url('#objectGradient');
+    stroke: $button-border;
+    stroke-width: 2;
+    filter: drop-shadow(0 2px 2px rgb(0 0 0 / 20%));
+  }
+
+  &.root .object-rect {
+    fill: url('#rootGradient');
+    stroke: #5b21b6;
+  }
+
+  &.marked .object-rect {
+    fill: url('#markedGradient');
+    stroke: #c2410c;
+  }
+
+  // Эффект внутренней тени (вогнутость)
+  .object-effect {
+    stroke: none;
+  }
+
+  // Блик
+  .object-highlight {
+    fill: rgb(255 255 255 / 40%);
+  }
+
+  &:hover .object-rect {
+    filter: brightness(1.3) drop-shadow(0 2px 2px rgb(0 0 0 / 30%));
+  }
+
+  &.click-animation {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: click-pulse $transition-speed ease-out;
+  }
+
+  &.shake-animation {
+    animation: shake 0.3s ease-in-out;
+  }
+
+  &.collecting {
+    opacity: 0;
+    transition:
+      transform $transition-speed ease-out,
+      opacity $transition-speed ease-out;
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    transform: scale(0);
+  }
+}
+
+.graph-object__label-root,
+.graph-object__label-single,
+.graph-object__label-second {
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.graph-object__label-first {
+  font-size: 20px;
+}
+
+.graph-link {
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  marker-end: url('#arrowhead');
+  fill: none;
+}
+
+.root-link {
+  stroke-dasharray: 5, 5;
+}
+
+@keyframes click-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-3px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}

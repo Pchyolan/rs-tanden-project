@@ -1,0 +1,29 @@
+{
+  "id": "gc-023",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "codeSnippet": "let x = {name: 'Alice'};\nlet y = {name: 'Alice'};\nlet equal = x === y;\nx = null;\ny = null;",
+    "highlightedLine": 4,
+    "objects": [
+      { "id": "var-x", "label": "Variable x", "x": 50, "y": 120 },
+      { "id": "var-y", "label": "Variable y", "x": 550, "y": 120 },
+      { "id": "obj-x", "label": "Object {name:'Alice'}", "x": 50, "y": 250 },
+      { "id": "obj-y", "label": "Object {name:'Alice'}", "x": 550, "y": 250 },
+      { "id": "equal-var", "label": "Variable equal", "x": 300, "y": 200 }
+    ],
+    "links": [
+      { "from": "var-x", "to": "obj-x", "label": "ref" },
+      { "from": "var-y", "to": "obj-y", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-x" },
+      { "from": "global", "to": "var-y" },
+      { "from": "global", "to": "equal-var" }
+    ]
+  },
+  "correctAnswer": ["obj-x", "obj-y"]
+}

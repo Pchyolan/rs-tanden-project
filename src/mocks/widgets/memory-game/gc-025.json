@@ -1,0 +1,23 @@
+{
+  "id": "gc-025",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "codeSnippet": "let obj = {value: 100};\nlet isBig = obj.value > 50;\nobj = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "var-obj", "label": "Variable obj", "x": 100, "y": 150 },
+      { "id": "obj-entity", "label": "Object {value:100}", "x": 100, "y": 300 },
+      { "id": "isBig-var", "label": "Variable isBig", "x": 500, "y": 150 }
+    ],
+    "links": [{ "from": "var-obj", "to": "obj-entity", "label": "ref" }],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-obj" },
+      { "from": "global", "to": "isBig-var" }
+    ]
+  },
+  "correctAnswer": ["obj-entity"]
+}

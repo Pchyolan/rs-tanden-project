@@ -1,0 +1,29 @@
+{
+  "id": "gc-017",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "codeSnippet": "let fruits = [{name: 'apple'}, {name: 'banana'}];\nlet last = fruits.pop();",
+    "highlightedLine": 2,
+    "objects": [
+      { "id": "fruits-var", "label": "Variable fruits", "x": 50, "y": 150 },
+      { "id": "fruits-array", "label": "Array [apple]", "x": 300, "y": 150 },
+      { "id": "apple-obj", "label": "{name: 'apple'}", "x": 300, "y": 300 },
+      { "id": "banana-obj", "label": "{name: 'banana'}", "x": 50, "y": 300 },
+      { "id": "last-var", "label": "Variable last", "x": 550, "y": 150 }
+    ],
+    "links": [
+      { "from": "fruits-var", "to": "fruits-array", "label": "ref" },
+      { "from": "fruits-array", "to": "apple-obj", "label": "0" },
+      { "from": "last-var", "to": "banana-obj", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "fruits-var" },
+      { "from": "global", "to": "last-var" }
+    ]
+  },
+  "correctAnswer": []
+}

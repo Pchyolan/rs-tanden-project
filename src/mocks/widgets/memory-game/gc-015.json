@@ -1,0 +1,20 @@
+{
+  "id": "gc-015",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["js-basics"],
+  "payload": {
+    "codeSnippet": "let flag = true;\nflag = false;",
+    "highlightedLine": 2,
+    "objects": [
+      { "id": "var-flag", "label": "Variable flag", "x": 100, "y": 150 },
+      { "id": "true-val", "label": "Boolean true", "x": 400, "y": 150 },
+      { "id": "false-val", "label": "Boolean false", "x": 400, "y": 300 }
+    ],
+    "links": [{ "from": "var-flag", "to": "false-val", "label": "ref" }],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "var-flag" }]
+  },
+  "correctAnswer": []
+}

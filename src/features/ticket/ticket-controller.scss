@@ -18,9 +18,11 @@
 }
 
 .task-counter {
+  @include no-select;
+
   font-size: 1rem;
   font-weight: bold;
-  color: #333;
+  color: $color-settings-test;
 }
 
 .segments-container {
@@ -52,7 +54,7 @@
   @include flex-center;
 
   position: relative;
-  padding: $spacing-sm;
+  padding: $spacing-sm $spacing-sm $spacing-lg $spacing-sm;
   gap: $spacing-md;
   flex: 1;
 }

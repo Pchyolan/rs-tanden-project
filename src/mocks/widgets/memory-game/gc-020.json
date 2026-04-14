@@ -1,0 +1,33 @@
+{
+  "id": "gc-020",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["arrays-methods"],
+  "payload": {
+    "codeSnippet": "let numbers = [{val:10}, {val:20}];\nlet copy = numbers.slice();\nnumbers = null;",
+    "highlightedLine": 3,
+    "objects": [
+      { "id": "numbers-var", "label": "Variable numbers", "x": 50, "y": 120 },
+      { "id": "copy-var", "label": "Variable copy", "x": 50, "y": 270 },
+      { "id": "numbers-array", "label": "Array [obj10, obj20]", "x": 300, "y": 120 },
+      { "id": "copy-array", "label": "Array [obj10, obj20]", "x": 300, "y": 270 },
+      { "id": "obj10", "label": "{val:10}", "x": 550, "y": 200 },
+      { "id": "obj20", "label": "{val:20}", "x": 550, "y": 350 }
+    ],
+    "links": [
+      { "from": "numbers-var", "to": "numbers-array", "label": "ref" },
+      { "from": "copy-var", "to": "copy-array", "label": "ref" },
+      { "from": "numbers-array", "to": "obj10", "label": "0" },
+      { "from": "numbers-array", "to": "obj20", "label": "1" },
+      { "from": "copy-array", "to": "obj10", "label": "0" },
+      { "from": "copy-array", "to": "obj20", "label": "1" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "numbers-var" },
+      { "from": "global", "to": "copy-var" }
+    ]
+  },
+  "correctAnswer": ["numbers-array"]
+}

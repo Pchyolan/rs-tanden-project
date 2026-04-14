@@ -1,0 +1,30 @@
+{
+  "id": "gc-032",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 3,
+  "tags": ["closures"],
+  "payload": {
+    "codeSnippet": "let globalObj = {name: 'global'};\nfunction outer() {\n  let local = {inner: globalObj};\n  return function() { return local; };\n}\nlet fn = outer();\nglobalObj = null;\nfn = null;",
+    "highlightedLine": 8,
+    "objects": [
+      { "id": "globalObj-var", "label": "Variable globalObj", "x": 50, "y": 120 },
+      { "id": "fn-var", "label": "Variable fn", "x": 50, "y": 250 },
+      { "id": "global-obj", "label": "Object {name:'global'}", "x": 400, "y": 120 },
+      { "id": "closure-fn", "label": "Function (closure)", "x": 400, "y": 250 },
+      { "id": "local-obj", "label": "Object {inner: ...}", "x": 400, "y": 370 }
+    ],
+    "links": [
+      { "from": "globalObj-var", "to": "global-obj", "label": "ref" },
+      { "from": "fn-var", "to": "closure-fn", "label": "ref" },
+      { "from": "closure-fn", "to": "local-obj", "label": "[[scope]]" },
+      { "from": "local-obj", "to": "global-obj", "label": "inner" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "globalObj-var" },
+      { "from": "global", "to": "fn-var" }
+    ]
+  },
+  "correctAnswer": ["global-obj", "closure-fn", "local-obj"]
+}

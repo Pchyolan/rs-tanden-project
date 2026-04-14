@@ -3,15 +3,15 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 3,
-  "tags": ["garbage-collection", "cycles"],
+  "tags": ["objects-prototypes"],
   "payload": {
     "codeSnippet": "let obj1 = {};\nlet obj2 = {};\nobj1.ref = obj2;\nobj2.ref = obj1;\nobj1 = null;\nobj2 = null;",
     "highlightedLine": 6,
     "objects": [
       { "id": "var-1", "label": "Variable obj1", "x": 100, "y": 150 },
       { "id": "var-2", "label": "Variable obj2", "x": 100, "y": 300 },
-      { "id": "heap-1", "label": "Object #1", "x": 300, "y": 150 },
-      { "id": "heap-2", "label": "Object #2", "x": 300, "y": 300 }
+      { "id": "heap-1", "label": "Object #1", "x": 400, "y": 150 },
+      { "id": "heap-2", "label": "Object #2", "x": 400, "y": 300 }
     ],
     "links": [
       { "from": "heap-1", "to": "heap-2", "label": "ref" },

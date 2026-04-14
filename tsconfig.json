@@ -36,5 +36,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "tests", "vite.config.ts", "playwright.config.ts"]
 }

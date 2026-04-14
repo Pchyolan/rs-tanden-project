@@ -1,0 +1,32 @@
+{
+  "id": "gc-043",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["objects-prototypes"],
+  "payload": {
+    "codeSnippet": "let a = {name: 'A'};\nlet b = {name: 'B'};\nlet obj = Object.create(a);\nobj.__proto__ = b;\na = null;\nb = null;",
+    "highlightedLine": 5,
+    "objects": [
+      { "id": "var-a", "label": "Variable a", "x": 50, "y": 120 },
+      { "id": "var-b", "label": "Variable b", "x": 50, "y": 250 },
+      { "id": "obj-var", "label": "Variable obj", "x": 50, "y": 370 },
+      { "id": "obj-a", "label": "Object {name:'A'}", "x": 400, "y": 120 },
+      { "id": "obj-b", "label": "Object {name:'B'}", "x": 400, "y": 250 },
+      { "id": "obj-entity", "label": "Object", "x": 400, "y": 370 }
+    ],
+    "links": [
+      { "from": "var-a", "to": "obj-a", "label": "ref" },
+      { "from": "var-b", "to": "obj-b", "label": "ref" },
+      { "from": "obj-var", "to": "obj-entity", "label": "ref" },
+      { "from": "obj-entity", "to": "obj-b", "label": "__proto__" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-a" },
+      { "from": "global", "to": "var-b" },
+      { "from": "global", "to": "obj-var" }
+    ]
+  },
+  "correctAnswer": ["obj-a"]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "gc-022",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["comparison-operators"],
+  "payload": {
+    "codeSnippet": "let a = {val: 5};\nlet b = {val: 10};\nlet result = a.val > b.val;\na = null;\nb = null;",
+    "highlightedLine": 4,
+    "objects": [
+      { "id": "var-a", "label": "Variable a", "x": 100, "y": 120 },
+      { "id": "var-b", "label": "Variable b", "x": 550, "y": 120 },
+      { "id": "obj-a", "label": "Object {val:5}", "x": 100, "y": 300 },
+      { "id": "obj-b", "label": "Object {val:10}", "x": 550, "y": 300 },
+      { "id": "result-var", "label": "Variable result", "x": 350, "y": 210 }
+    ],
+    "links": [
+      { "from": "var-a", "to": "obj-a", "label": "ref" },
+      { "from": "var-b", "to": "obj-b", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [
+      { "from": "global", "to": "var-a" },
+      { "from": "global", "to": "var-b" },
+      { "from": "global", "to": "result-var" }
+    ]
+  },
+  "correctAnswer": ["obj-a", "obj-b"]
+}

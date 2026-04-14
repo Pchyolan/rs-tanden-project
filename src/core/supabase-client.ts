@@ -7,4 +7,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-export const SupabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+export const SupabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true, // автоматическое обновление JWT
+    persistSession: true, // сохранение сессии в localStorage
+    detectSessionInUrl: true, // для OAuth колбэков
+    flowType: 'pkce', // более безопасный поток
+  },
+});

@@ -3,14 +3,14 @@
   "type": "memory-game",
   "version": 1,
   "difficulty": 2,
-  "tags": ["garbage-collection", "reachability"],
+  "tags": ["js-basics"],
   "payload": {
     "codeSnippet": "let data = {value: 42};\nlet backup = data;\ndata = null;",
     "highlightedLine": 3,
     "objects": [
       { "id": "data-var", "label": "Variable data", "x": 100, "y": 150 },
-      { "id": "backup-var", "label": "Variable backup", "x": 300, "y": 150 },
-      { "id": "data-obj", "label": "Object {value:42}", "x": 200, "y": 300 }
+      { "id": "backup-var", "label": "Variable backup", "x": 500, "y": 150 },
+      { "id": "data-obj", "label": "Object {value:42}", "x": 300, "y": 300 }
     ],
     "links": [
       { "from": "data-var", "to": "data-obj", "label": "ref" },

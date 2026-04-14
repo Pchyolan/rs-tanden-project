@@ -1,0 +1,25 @@
+{
+  "id": "gc-039",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 2,
+  "tags": ["async"],
+  "payload": {
+    "codeSnippet": "async function fetchData() {\n  let result = {status: 'ok'};\n  return result;\n}\nlet promise = fetchData();\npromise = null;",
+    "highlightedLine": 6,
+    "objects": [
+      { "id": "promise-var", "label": "Variable promise", "x": 100, "y": 120 },
+      { "id": "promise-obj", "label": "Promise (async function)", "x": 400, "y": 120 },
+      { "id": "async-fn", "label": "Async function", "x": 400, "y": 250 },
+      { "id": "result-obj", "label": "Object {status:'ok'}", "x": 400, "y": 370 }
+    ],
+    "links": [
+      { "from": "promise-var", "to": "promise-obj", "label": "ref" },
+      { "from": "promise-obj", "to": "async-fn", "label": "[[executor]]" },
+      { "from": "async-fn", "to": "result-obj", "label": "ref" }
+    ],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "promise-var" }]
+  },
+  "correctAnswer": ["promise-obj", "async-fn", "result-obj"]
+}

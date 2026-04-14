@@ -1,0 +1,19 @@
+{
+  "id": "gc-026",
+  "type": "memory-game",
+  "version": 1,
+  "difficulty": 1,
+  "tags": ["functions-scope"],
+  "payload": {
+    "codeSnippet": "function run() {\n  let local = {data: 42};\n  return local;\n}\nlet result = run();\nresult = null;",
+    "highlightedLine": 6,
+    "objects": [
+      { "id": "result-var", "label": "Variable result", "x": 100, "y": 150 },
+      { "id": "local-obj", "label": "Object {data:42}", "x": 300, "y": 300 }
+    ],
+    "links": [{ "from": "result-var", "to": "local-obj", "label": "ref" }],
+    "rootIds": ["global"],
+    "rootLinks": [{ "from": "global", "to": "result-var" }]
+  },
+  "correctAnswer": ["local-obj"]
+}
