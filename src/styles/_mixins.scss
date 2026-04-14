@@ -118,7 +118,9 @@
 }
 
 @mixin no-select {
-  /* Safari */ /* IE 10+ и Edge */
+  /* Safari */
+
+  /* IE 10+ и Edge */
   user-select: none; /* Современные браузеры */
 }
 

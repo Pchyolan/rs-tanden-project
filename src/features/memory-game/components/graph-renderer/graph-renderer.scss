@@ -1,19 +1,16 @@
 @use '@/styles/variables' as *;
 
 .memory-game__graph-container {
-  width: 100%;
-  height: auto;
-
+  position: relative;
   margin: 0;
   padding: $spacing-md;
-  border-radius: $border-radius-lg;
-
-  position: relative;
+  width: 100%;
+  height: auto;
   background:
     linear-gradient(rgb(148 163 184 / 10%) 1px, transparent 1px),
     linear-gradient(90deg, rgb(148 163 184 / 10%) 1px, transparent 1px), $color-background;
+  border-radius: $border-radius-lg;
   background-size: 15px 15px;
-
   flex: 1;
   overflow: auto;
 
@@ -48,19 +45,19 @@
   transition: filter $transition-speed;
 
   .object-rect {
-    fill: url(#objectGradient);
+    fill: url('#objectGradient');
     stroke: $button-border;
     stroke-width: 2;
     filter: drop-shadow(0 2px 2px rgb(0 0 0 / 20%));
   }
 
   &.root .object-rect {
-    fill: url(#rootGradient);
+    fill: url('#rootGradient');
     stroke: #5b21b6;
   }
 
   &.marked .object-rect {
-    fill: url(#markedGradient);
+    fill: url('#markedGradient');
     stroke: #c2410c;
   }
 

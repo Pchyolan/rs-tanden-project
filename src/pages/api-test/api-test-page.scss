@@ -25,13 +25,13 @@
     input {
       padding: $spacing-sm;
       width: 100%;
+      color: var(--color-text-primary, #333);
+      background: var(--color-surface, white);
       border: 1px solid var(--border-color, #ccc);
       margin-bottom: $spacing-sm;
       border-radius: $border-radius;
       font-size: 1rem;
       box-sizing: border-box;
-      background: var(--color-surface, white);
-      color: var(--color-text-primary, #333);
     }
 
     button {
@@ -63,8 +63,8 @@
       align-items: center;
       justify-content: space-between;
       padding: $spacing-xs $spacing-sm;
-      border: 1px solid var(--border-color, #ccc);
       background: var(--color-surface, #f0f0f0);
+      border: 1px solid var(--border-color, #ccc);
       border-radius: $border-radius $border-radius 0 0;
 
       a {
