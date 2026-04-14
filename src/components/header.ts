@@ -1,14 +1,15 @@
 import { BaseComponent } from '@/core';
 import { RoundButton } from '@/components';
 import { user$ } from '@/store/auth-store';
+import { getElementWithType } from '@/utils/selectors';
 
 import { translations } from '@/i18n';
 import { language$ } from '@/store/language-store';
 
-import loginIconUrl from '@/assets/images/icons/info.png';
-import settingsIconUrl from '@/assets/images/icons/settings.png';
+import loginIconUrl from '@/assets/images/icons/sign-in.png';
 import achievementsIconUrl from '@/assets/images/icons/user.png';
-import { getElementWithType } from '@/utils/selectors.ts';
+import settingsIconUrl from '@/assets/images/icons/settings.png';
+import logoutIconUrl from '@/assets/images/icons/sign-out.png';
 
 type HeaderCallbacks = {
   onSignIn: () => void;
@@ -66,7 +67,7 @@ export class Header extends BaseComponent<'header'> {
     });
 
     this.logoutButton = new RoundButton({
-      iconSrc: settingsIconUrl,
+      iconSrc: logoutIconUrl,
       alt: 'Logout',
       tooltip: translations[language$.value].logout,
       onClick: callbacks.onLogout,
