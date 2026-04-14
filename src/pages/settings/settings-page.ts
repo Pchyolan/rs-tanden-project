@@ -35,7 +35,7 @@ export class SettingsPage implements Page {
   render(): BaseComponent {
     this.container = new BaseComponent({ tag: 'div', className: ['settings-page'] });
 
-    const title = new BaseComponent({ tag: 'h1', text: 'Settings', className: ['settings-title'] });
+    const title = new BaseComponent({ tag: 'h1', text: 'Game Settings', className: ['settings-title'] });
     this.container.append(title);
 
     const form = new BaseComponent({ tag: 'div', className: ['settings-form'] });

@@ -13,6 +13,7 @@
   // Glass / UI panels
   --color-glass: rgb(255 255 255 / 8%);
   --color-glass-border: rgb(255 255 255 / 20%);
+  --panel-background: #1e6fd4;
 
   // Difficulty badges
   --difficulty-easy: #72f515;
@@ -32,7 +33,8 @@
   --gradient-glow: radial-gradient(circle, rgb(96 165 250 / 90%), transparent);
 
   // Accents (buttons & states)
-  --input-border: #207edf;
+  --input-border: #0d5fb5;
+  --input-border-active: #558fcb;
   --button-border: #0d5fb5;
   --button-border-radius: 999px;
 
@@ -57,7 +59,6 @@
   // Text
   --color-text-primary: #fff;
   --color-text-muted: #93c5fd;
-  --color-settings-test: #082f7a;
 
   // Borders & shadows
   --border-color: rgb(255 255 255 / 15%);

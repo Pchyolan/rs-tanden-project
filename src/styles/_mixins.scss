@@ -296,6 +296,29 @@
   }
 }
 
+@mixin outlined-input {
+  padding: vars.$spacing-xs vars.$spacing-xs;
+  color: var(--color-warning-medium);
+  background: transparent;
+  border: none;
+  transition: border-color 0.2s ease;
+  border-bottom: 2px solid var(--input-border);
+  font-family: vars.$font-family-text;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  caret-color: var(--color-warning-medium);
+
+  &::placeholder {
+    color: var(--color-input-placeholder);
+    opacity: 0.7;
+  }
+
+  &:focus {
+    border-bottom-color: var(--input-border-active);
+  }
+}
+
 // =====================
 // MEDIA QUERIES
 // =====================
