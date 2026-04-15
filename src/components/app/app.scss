@@ -15,14 +15,39 @@
   justify-content: space-between;
   color: var(--color-text-primary);
   background-color: var(--color-primary);
+
+  .icon-button__container {
+    --round-button-size: 40px;
+  }
+
+  @media (width <= 768px) {
+    .icon-button__container {
+      --round-button-size: 32px;
+    }
+  }
+
+  @media (width <= 480px) {
+    .icon-button__container {
+      --round-button-size: 28px;
+    }
+  }
 }
 
 .header-app-name {
   @include no-select;
 
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   color: var(--color-primary-dark);
+  transition: font-size $transition-speed ease;
+
+  @media (width <= 768px) {
+    font-size: 1.8rem;
+  }
+
+  @media (width <= 480px) {
+    font-size: 1.4rem;
+  }
 }
 
 .header-buttons-container {
