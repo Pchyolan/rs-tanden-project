@@ -8,6 +8,7 @@ import { updatePasswordApi } from '@/store/auth-store';
 import { authService } from '@/services/auth-service';
 import { getFriendlyErrorMessage } from '@/utils/supabase-errors';
 import { isStrongPassword } from '@/utils/login-helpers';
+
 import { language$ } from '@/store/language-store';
 import { translations } from '@/i18n';
 

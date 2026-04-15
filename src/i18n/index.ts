@@ -7,6 +7,7 @@ import { ticketPageTranslations } from '@/i18n/ticket-page.ts';
 import { errorTranslations } from '@/i18n/supabase-errors.ts';
 import { loginPageTranslations } from '@/i18n/login-page.ts';
 import { notFoundPageTranslations } from '@/i18n/not-found-page.ts';
+import { settingsPageTranslations } from '@/i18n/settings-page.ts';
 
 export const translations = {
   en: {
@@ -19,6 +20,7 @@ export const translations = {
     ...errorTranslations.en,
     ...loginPageTranslations.en,
     ...notFoundPageTranslations.en,
+    ...settingsPageTranslations.en,
   },
   ru: {
     ...headerTranslations.ru,
@@ -30,6 +32,7 @@ export const translations = {
     ...errorTranslations.ru,
     ...loginPageTranslations.ru,
     ...notFoundPageTranslations.ru,
+    ...settingsPageTranslations.ru,
   },
 } as const;
 
