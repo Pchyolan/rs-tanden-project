@@ -44,4 +44,13 @@ export class Observable<T> extends EventEmitter<T> {
     this.currentValue = callback(this.currentValue);
     this.emit(this.currentValue);
   }
+
+  /**
+   * Переопределяем subscribe, чтобы новый подписчик сразу получал текущее значение
+   * @param listener - функция-обработчик
+   */
+  public override subscribe(listener: (value: T) => void): () => void {
+    listener(this.currentValue);
+    return super.subscribe(listener);
+  }
 }

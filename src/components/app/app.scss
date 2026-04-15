@@ -15,19 +15,48 @@
   justify-content: space-between;
   color: var(--color-text-primary);
   background-color: var(--color-primary);
+
+  --header-scale: 1;
+
+  @media (width <= 768px) {
+    --header-scale: 0.75;
+  }
+
+  @media (width <= 480px) {
+    --header-scale: 0.6;
+  }
+
+  .icon-button__container {
+    --round-button-size: calc(40px * var(--header-scale));
+  }
+}
+
+.header-app-image {
+  width: calc(36px * var(--header-scale));
+  height: calc(36px * var(--header-scale));
+  transition:
+    width $transition-speed ease,
+    height $transition-speed ease;
 }
 
 .header-app-name {
   @include no-select;
 
   font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--color-primary-dark);
+  color: var(--color-header-text);
+  font-size: calc(2.5rem * var(--header-scale));
+  transition: font-size $transition-speed ease;
+}
+
+.header-name-container {
+  @include flex-center;
+
+  gap: $spacing-sm;
 }
 
 .header-buttons-container {
   display: flex;
-  gap: $spacing-md;
+  gap: calc($spacing-md * var(--header-scale));
 }
 
 .header-content {

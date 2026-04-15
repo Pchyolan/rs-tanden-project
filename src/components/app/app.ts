@@ -28,15 +28,6 @@ export class App extends BaseComponent {
   constructor() {
     super({ tag: 'div', className: ['app-container'] });
 
-    this.header = new Header({
-      onSignIn: () => this.router.navigate(routes.login),
-      onSettings: () => this.router.navigate(routes.settings),
-      onLogout: async () => {
-        await logoutApi();
-        this.router.navigate(routes.login);
-      },
-    });
-
     this.mainContainer = new BaseComponent({
       tag: 'div',
       className: ['app-main'],
@@ -49,11 +40,21 @@ export class App extends BaseComponent {
 
     this.mainContainer.append(this.contentContainer);
 
+    this.router = new Router(this.contentContainer);
+
+    this.header = new Header(this.router, {
+      onSignIn: () => this.router.navigate(routes.login),
+      onSettings: () => this.router.navigate(routes.settings),
+      onLogout: async () => {
+        await logoutApi();
+        this.router.navigate(routes.login);
+      },
+    });
+
     this.footer = new Footer();
 
     this.append(this.header, this.mainContainer, this.footer);
 
-    this.router = new Router(this.contentContainer);
     this.setupRoutes();
   }
 
@@ -63,18 +64,19 @@ export class App extends BaseComponent {
   }
 
   private setupRoutes(): void {
-    this.router.addRoute(routes.home, homePage);
+    // Открытые маршруты
+    this.router.addRoute(routes.login, () => loginPage(this.router), false);
+    this.router.addRoute(routes.reset_password, () => new ResetPasswordPage(this.router), false);
+    this.router.addRoute(routes.not_found, () => notFoundPage((path) => this.router.navigate(path)), false);
 
-    this.router.addRoute(routes.login, () => loginPage(this.router));
-    this.router.addRoute(routes.reset_password, () => new ResetPasswordPage(this.router));
+    // Защищённые маршруты (требуют авторизации)
+    this.router.addRoute(routes.home, homePage, true);
+    this.router.addRoute(routes.api_test, apiTestPage, true);
+    this.router.addRoute(routes.widget_engine, widgetEnginePage, true);
+    this.router.addRoute(routes.memory_game, memoryGamePage, true);
+    this.router.addRoute(routes.settings, settingsPage, true);
 
-    this.router.addRoute(routes.api_test, apiTestPage);
-    this.router.addRoute(routes.widget_engine, widgetEnginePage);
-    this.router.addRoute(routes.memory_game, memoryGamePage);
-
-    this.router.addRoute(routes.settings, settingsPage);
     this.router.setNotFound(() => notFoundPage((path) => this.router.navigate(path)));
-
     this.router.start();
   }
 }

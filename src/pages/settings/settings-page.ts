@@ -2,25 +2,41 @@ import { BaseComponent, type Page } from '@/core';
 import type { UserSettings } from '@/types';
 
 import { language$ } from '@/store/language-store';
-import { loadSettings, settings$, updateSettings } from '@/store/settings-store';
+import { translations } from '@/i18n';
+
+import { settings$, updateSettings } from '@/store/settings-store';
 
 import './settings-page.scss';
+import { getElementWithType } from '@/utils/selectors.ts';
 
 export class SettingsPage implements Page {
   private container?: BaseComponent;
+  private pageTitleLabel?: BaseComponent<'h1'>;
+
+  // Секции
+  private profileSection?: BaseComponent;
+  private appearanceSection?: BaseComponent;
+  private soundSection?: BaseComponent;
+
+  private displayNameLabel?: BaseComponent<'label'>;
   private displayNameInput?: BaseComponent<'input'>;
+  private firstNameLabel?: BaseComponent<'label'>;
   private firstNameInput?: BaseComponent<'input'>;
+  private lastNameLabel?: BaseComponent<'label'>;
   private lastNameInput?: BaseComponent<'input'>;
 
   // Кнопки для темы
+  private themeLabel?: BaseComponent<'span'>;
   private themeLightBtn?: BaseComponent<'button'>;
   private themeDarkBtn?: BaseComponent<'button'>;
 
   // Кнопки для звука
+  private soundLabel?: BaseComponent<'span'>;
   private soundOnBtn?: BaseComponent<'button'>;
   private soundOffBtn?: BaseComponent<'button'>;
 
   // Кнопки для языка
+  private languageLabel?: BaseComponent<'span'>;
   private langRuBtn?: BaseComponent<'button'>;
   private langEnBtn?: BaseComponent<'button'>;
 
@@ -35,21 +51,29 @@ export class SettingsPage implements Page {
   render(): BaseComponent {
     this.container = new BaseComponent({ tag: 'div', className: ['settings-page'] });
 
-    const title = new BaseComponent({ tag: 'h1', text: 'Game Settings', className: ['settings-title'] });
-    this.container.append(title);
+    this.pageTitleLabel = new BaseComponent({
+      tag: 'h1',
+      text: translations[language$.value].settings_title,
+      className: ['settings-title'],
+    });
+    this.container.append(this.pageTitleLabel);
 
     const form = new BaseComponent({ tag: 'div', className: ['settings-form'] });
 
     // --- Профиль ---
-    const { container: profileSection, content: profileContent } = this.createSection('Profile');
+    const { container: profileSection, content: profileContent } = this.createSection(
+      translations[language$.value].settings_profile
+    );
+    this.profileSection = profileSection;
+
     const nameWrapper = new BaseComponent({
       tag: 'div',
       className: ['settings-row'],
     });
 
-    const nameLabel = new BaseComponent({
+    this.displayNameLabel = new BaseComponent({
       tag: 'label',
-      text: 'Display name:',
+      text: translations[language$.value].settings_displayName,
       className: ['settings-row-text'],
     });
 
@@ -59,7 +83,7 @@ export class SettingsPage implements Page {
       className: ['settings-input'],
     });
 
-    nameWrapper.append(nameLabel, this.displayNameInput);
+    nameWrapper.append(this.displayNameLabel, this.displayNameInput);
 
     const userWrapper = new BaseComponent({
       tag: 'div',
@@ -71,9 +95,9 @@ export class SettingsPage implements Page {
       className: ['settings-row'],
     });
 
-    const firstNameLabel = new BaseComponent({
+    this.firstNameLabel = new BaseComponent({
       tag: 'label',
-      text: 'First name:',
+      text: translations[language$.value].settings_firstName,
       className: ['settings-row-text'],
     });
     this.firstNameInput = new BaseComponent({
@@ -82,16 +106,16 @@ export class SettingsPage implements Page {
       className: ['settings-input'],
     });
 
-    firstNameWrapper.append(firstNameLabel, this.firstNameInput);
+    firstNameWrapper.append(this.firstNameLabel, this.firstNameInput);
 
     const lastNameWrapper = new BaseComponent({
       tag: 'div',
       className: ['settings-row'],
     });
 
-    const lastNameLabel = new BaseComponent({
+    this.lastNameLabel = new BaseComponent({
       tag: 'label',
-      text: 'Last name:',
+      text: translations[language$.value].settings_lastName,
       className: ['settings-row-text'],
     });
     this.lastNameInput = new BaseComponent({
@@ -100,59 +124,66 @@ export class SettingsPage implements Page {
       className: ['settings-input'],
     });
 
-    lastNameWrapper.append(lastNameLabel, this.lastNameInput);
+    lastNameWrapper.append(this.lastNameLabel, this.lastNameInput);
 
     userWrapper.append(firstNameWrapper, lastNameWrapper);
 
     profileContent.append(userWrapper, nameWrapper);
-    form.append(profileSection);
+    form.append(this.profileSection);
 
     const lineWrapper = new BaseComponent({ tag: 'div', className: ['line-row'] });
 
     // --- Внешний вид (тема + язык) ---
-    const { container: appearanceSection, content: appearanceContent } = this.createSection('Appearance');
+    const { container: appearanceSection, content: appearanceContent } = this.createSection(
+      translations[language$.value].settings_appearance
+    );
+    this.appearanceSection = appearanceSection;
 
     // Блок темы
-    const themeLabel = new BaseComponent({
+    this.themeLabel = new BaseComponent({
       tag: 'span',
-      text: 'Theme:',
+      text: translations[language$.value].settings_theme,
       className: ['settings-row-text'],
     });
     const themeButtons = this.createThemeButtons();
     const themeWrapper = new BaseComponent({ tag: 'div', className: ['settings-row'] });
-    themeWrapper.append(themeLabel, themeButtons);
+    themeWrapper.append(this.themeLabel, themeButtons);
 
     // Блок языка
-    const languageLabel = new BaseComponent({
+    this.languageLabel = new BaseComponent({
       tag: 'span',
-      text: 'Language:',
+      text: translations[language$.value].settings_language,
       className: ['settings-row-text'],
     });
     const languageButtons = this.createLanguageButtons();
     const languageWrapper = new BaseComponent({ tag: 'div', className: ['settings-row'] });
-    languageWrapper.append(languageLabel, languageButtons);
+    languageWrapper.append(this.languageLabel, languageButtons);
 
     appearanceContent.append(themeWrapper, languageWrapper);
 
     // --- Звук ---
-    const { container: soundSection, content: soundContent } = this.createSection('Sound');
-    const soundLabel = new BaseComponent({
+    const { container: soundSection, content: soundContent } = this.createSection(
+      translations[language$.value].settings_sound
+    );
+    this.soundSection = soundSection;
+
+    this.soundLabel = new BaseComponent({
       tag: 'span',
-      text: 'Sound effects:',
+      text: translations[language$.value].settings_soundEffects,
       className: ['settings-row-text'],
     });
     const soundButtons = this.createSoundButtons();
     const soundWrapper = new BaseComponent({ tag: 'div', className: ['settings-row'] });
-    soundWrapper.append(soundLabel, soundButtons);
+    soundWrapper.append(this.soundLabel, soundButtons);
     soundContent.append(soundWrapper);
 
-    lineWrapper.append(appearanceSection, soundSection);
+    lineWrapper.append(this.appearanceSection, this.soundSection);
     form.append(lineWrapper);
 
     // Кнопка сохранения
     this.saveButton = new BaseComponent({
       tag: 'button',
-      text: 'Save Changes',
+      text: translations[language$.value].settings_save,
       className: ['settings-save-btn'],
     });
     this.saveButton.addEventListener('click', this.handleSave);
@@ -171,8 +202,6 @@ export class SettingsPage implements Page {
     });
     this.unsubscribeLanguage = language$.subscribe(() => this.updateTexts());
 
-    loadSettings();
-
     return this.container;
   }
 
@@ -186,8 +215,16 @@ export class SettingsPage implements Page {
 
   private createThemeButtons(): BaseComponent {
     const wrapper = new BaseComponent({ tag: 'div', className: ['settings-button-group'] });
-    this.themeLightBtn = new BaseComponent({ tag: 'button', text: 'Light', className: ['settings-option-btn'] });
-    this.themeDarkBtn = new BaseComponent({ tag: 'button', text: 'Dark', className: ['settings-option-btn'] });
+    this.themeLightBtn = new BaseComponent({
+      tag: 'button',
+      text: translations[language$.value].settings_light,
+      className: ['settings-option-btn'],
+    });
+    this.themeDarkBtn = new BaseComponent({
+      tag: 'button',
+      text: translations[language$.value].settings_dark,
+      className: ['settings-option-btn'],
+    });
 
     this.themeLightBtn.addEventListener('click', () => {
       if (this.currentSettings) this.currentSettings.theme = 'light';
@@ -204,8 +241,16 @@ export class SettingsPage implements Page {
 
   private createSoundButtons(): BaseComponent {
     const wrapper = new BaseComponent({ tag: 'div', className: ['settings-button-group'] });
-    this.soundOnBtn = new BaseComponent({ tag: 'button', text: 'On', className: ['settings-option-btn'] });
-    this.soundOffBtn = new BaseComponent({ tag: 'button', text: 'Off', className: ['settings-option-btn'] });
+    this.soundOnBtn = new BaseComponent({
+      tag: 'button',
+      text: translations[language$.value].settings_on,
+      className: ['settings-option-btn'],
+    });
+    this.soundOffBtn = new BaseComponent({
+      tag: 'button',
+      text: translations[language$.value].settings_off,
+      className: ['settings-option-btn'],
+    });
 
     this.soundOnBtn.addEventListener('click', () => {
       if (this.currentSettings) this.currentSettings.soundEnabled = true;
@@ -298,7 +343,7 @@ export class SettingsPage implements Page {
       }
 
       this.saveButton.element.disabled = true;
-      this.saveButton.element.textContent = 'Saving...';
+      this.saveButton.element.textContent = translations[language$.value].settings_saving;
 
       this.statusMessage.element.textContent = '';
       this.statusMessage.element.classList.remove('error', 'success');
@@ -306,23 +351,84 @@ export class SettingsPage implements Page {
       try {
         await updateSettings(newSettings);
 
-        this.statusMessage.element.textContent = 'Settings saved successfully!';
+        this.statusMessage.element.textContent = translations[language$.value].settings_saved;
         this.statusMessage.element.classList.add('success');
         setTimeout(() => {
           if (this.statusMessage) this.statusMessage.element.textContent = '';
         }, 3000);
       } catch {
-        this.statusMessage.element.textContent = 'Failed to save settings. Please try again.';
+        this.statusMessage.element.textContent = translations[language$.value].settings_saveError;
         this.statusMessage.element.classList.add('error');
       } finally {
         this.saveButton.element.disabled = false;
-        this.saveButton.element.textContent = 'Save Changes';
+        this.saveButton.element.textContent = translations[language$.value].settings_save;
       }
     }
   };
 
   private updateTexts(): void {
+    if (this.pageTitleLabel) {
+      this.pageTitleLabel.element.textContent = translations[language$.value].settings_title;
+    }
+
+    if (this.profileSection) {
+      const profileHeaderText = getElementWithType(
+        HTMLDivElement,
+        'settings-section-title',
+        this.profileSection.element
+      );
+      profileHeaderText.textContent = translations[language$.value].settings_profile;
+    }
+    if (this.displayNameLabel) {
+      this.displayNameLabel.element.textContent = translations[language$.value].settings_displayName;
+    }
+    if (this.firstNameLabel) {
+      this.firstNameLabel.element.textContent = translations[language$.value].settings_firstName;
+    }
+    if (this.lastNameLabel) {
+      this.lastNameLabel.element.textContent = translations[language$.value].settings_lastName;
+    }
+
+    if (this.appearanceSection) {
+      const appearanceHeaderText = getElementWithType(
+        HTMLDivElement,
+        'settings-section-title',
+        this.appearanceSection.element
+      );
+      appearanceHeaderText.textContent = translations[language$.value].settings_appearance;
+    }
+    if (this.themeLabel) {
+      this.themeLabel.element.textContent = translations[language$.value].settings_theme;
+    }
+    if (this.themeLightBtn) {
+      this.themeLightBtn.element.textContent = translations[language$.value].settings_light;
+    }
+    if (this.themeDarkBtn) {
+      this.themeDarkBtn.element.textContent = translations[language$.value].settings_dark;
+    }
+
+    if (this.languageLabel) {
+      this.languageLabel.element.textContent = translations[language$.value].settings_language;
+    }
     this.updateLanguageButtonsUI();
+
+    if (this.soundSection) {
+      const soundHeaderText = getElementWithType(HTMLDivElement, 'settings-section-title', this.soundSection.element);
+      soundHeaderText.textContent = translations[language$.value].settings_sound;
+    }
+    if (this.soundLabel) {
+      this.soundLabel.element.textContent = translations[language$.value].settings_soundEffects;
+    }
+    if (this.soundOnBtn) {
+      this.soundOnBtn.element.textContent = translations[language$.value].settings_on;
+    }
+    if (this.soundOffBtn) {
+      this.soundOffBtn.element.textContent = translations[language$.value].settings_off;
+    }
+
+    if (this.saveButton) {
+      this.saveButton.element.textContent = translations[language$.value].settings_save;
+    }
   }
 
   onMount(): void {

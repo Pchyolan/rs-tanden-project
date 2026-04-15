@@ -3,8 +3,8 @@
 
 .icon-button__container {
   position: relative;
-  width: 28px;
-  height: 28px;
+  width: var(--round-button-size, 28px);
+  height: var(--round-button-size, 28px);
 
   &:hover {
     .icon-button__sparkle {

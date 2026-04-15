@@ -6,4 +6,5 @@ export const routes = {
   reset_password: '/reset-password',
   settings: '/settings',
   widget_engine: '/widget-engine',
+  not_found: '/404',
 } as const;

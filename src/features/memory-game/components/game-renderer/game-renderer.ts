@@ -342,15 +342,6 @@ export class MemoryGameRenderer extends BaseComponent {
       this.graphHeader.element.textContent = dictionary.graphPanelName;
     }
 
-    const hintFirstLine = getElementWithType(HTMLParagraphElement, 'hint__first-line', this.element);
-    hintFirstLine.textContent = dictionary.hintFirstLine;
-
-    const hintSecondLine = getElementWithType(HTMLParagraphElement, 'hint__second-line', this.element);
-    hintSecondLine.textContent = dictionary.hintSecondLine;
-
-    const hintThirdLine = getElementWithType(HTMLParagraphElement, 'hint__third-line', this.element);
-    hintThirdLine.textContent = dictionary.hintThirdLine;
-
     const selectedLine = getElementWithType(HTMLSpanElement, 'selected-garbage-line', this.element);
     selectedLine.textContent = dictionary.selectedLine;
 
@@ -359,8 +350,14 @@ export class MemoryGameRenderer extends BaseComponent {
     }
 
     if (this.infoButton) {
-      const infoTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.infoButton.element);
-      infoTooltip.textContent = dictionary.infoTooltip;
+      const hintFirstLine = getElementWithType(HTMLParagraphElement, 'hint__first-line', this.element);
+      hintFirstLine.textContent = dictionary.hintFirstLine;
+
+      const hintSecondLine = getElementWithType(HTMLParagraphElement, 'hint__second-line', this.element);
+      hintSecondLine.textContent = dictionary.hintSecondLine;
+
+      const hintThirdLine = getElementWithType(HTMLParagraphElement, 'hint__third-line', this.element);
+      hintThirdLine.textContent = dictionary.hintThirdLine;
     }
 
     if (this.questionButton) {

@@ -1,6 +1,7 @@
 import { Observable } from '@/core';
 import type { User } from '@supabase/supabase-js';
 import { authService } from '../services/auth-service';
+import { loadSettings } from '@/store/settings-store';
 
 export const user$ = new Observable<User | null>(null);
 export const authLoading$ = new Observable<boolean>(true);
@@ -11,12 +12,20 @@ export async function initAuth() {
   authService.onAuthStateChange((user) => {
     user$.set(user);
     authLoading$.set(false);
+    if (user) {
+      void loadSettings().catch(console.error);
+    }
   });
 
   // Получаем текущую сессию (на случай, если уже была авторизация)
   const { data } = await authService.getSession();
   user$.set(data?.session?.user ?? null);
   authLoading$.set(false);
+
+  const user = data?.session?.user ?? null;
+  if (user) {
+    await loadSettings().catch(console.error);
+  }
 }
 
 export async function loginApi(email: string, password: string): Promise<void> {
@@ -26,6 +35,9 @@ export async function loginApi(email: string, password: string): Promise<void> {
     if (error) throw error;
 
     user$.set(data?.user ?? null);
+    if (data?.user) {
+      await loadSettings().catch(console.error);
+    }
   } finally {
     authLoading$.set(false);
   }
@@ -38,6 +50,9 @@ export async function registrationApi(email: string, password: string, displayNa
     if (error) throw error;
 
     user$.set(data?.user ?? null);
+    if (data?.user) {
+      await loadSettings().catch(console.error);
+    }
   } finally {
     authLoading$.set(false);
   }

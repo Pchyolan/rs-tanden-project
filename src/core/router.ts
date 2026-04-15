@@ -1,4 +1,6 @@
 import { BaseComponent } from './base-component';
+import { Observable } from './observable';
+import { user$ } from '@/store/auth-store';
 
 export type Page = {
   render(): BaseComponent;
@@ -9,6 +11,7 @@ export type Page = {
 type Route = {
   path: string;
   page: () => Page;
+  protected?: boolean;
 };
 
 export class Router {
@@ -17,22 +20,27 @@ export class Router {
   private currentPage: Page | null = null;
   private notFoundPage: (() => Page) | null = null;
 
+  public currentPath$ = new Observable<string>(globalThis.location.pathname);
+  private readonly unsubscribeUser: (() => void) | null = null;
+
   constructor(root: BaseComponent) {
     this.root = root;
     globalThis.addEventListener('popstate', this.handlePopState.bind(this));
+    this.unsubscribeUser = user$.subscribe(() => this.handleAuthChange());
   }
 
   /**
    * Добавляет маршрут с фабричной функцией, которая создаёт экземпляр страницы.
    * @param path - путь маршрута
    * @param page - функция, возвращающая экземпляр Page
+   * @param isProtected - требует ли маршрут авторизации
    */
-  public addRoute(path: string, page: () => Page) {
-    this.routes.push({ path, page });
+  public addRoute(path: string, page: () => Page, isProtected: boolean = false) {
+    this.routes.push({ path, page, protected: isProtected });
   }
 
   /**
-   * Устанавливает страницу для несуществующих маршрутов.
+   * Устанавливает страницу для несуществующих маршрутов (404).
    * @param page - функция, возвращающая экземпляр Page
    */
   public setNotFound(page: () => Page): void {
@@ -65,24 +73,36 @@ export class Router {
    * @param path - URL-путь для отображения (например, '/', '/login').
    */
   private render(path: string) {
+    const route = this.routes.find((r) => r.path === path);
+
+    // Проверка авторизации для защищённых маршрутов
+    if (route?.protected && !user$.value) {
+      // Сохраняем целевой путь для редиректа после логина
+      sessionStorage.setItem('redirectAfterLogin', path);
+      this.navigate('/login');
+      return;
+    }
+
     if (this.currentPage) {
       this.currentPage.onDestroy?.();
     }
 
-    const route = this.routes.find((r) => r.path === path);
-
+    let newPage: Page | null;
     if (route) {
-      this.currentPage = route.page();
+      newPage = route.page();
     } else if (this.notFoundPage) {
-      this.currentPage = this.notFoundPage();
+      newPage = this.notFoundPage();
     } else {
       console.error(`No route for path "${path}" and no not-found page set.`);
       return;
     }
 
+    this.currentPage = newPage;
     this.root.clear();
-    this.root.append(this.currentPage.render());
-    this.currentPage.onMount?.();
+    this.root.append(newPage.render());
+    newPage.onMount?.();
+
+    this.currentPath$.set(path);
   }
 
   /**
@@ -94,10 +114,38 @@ export class Router {
   }
 
   /**
+   * Обработчик изменения состояния авторизации.
+   * Если пользователь вышел, а текущий маршрут защищён – редирект на логин.
+   */
+  private handleAuthChange() {
+    const currentPath = globalThis.location.pathname;
+    const route = this.routes.find((r) => r.path === currentPath);
+    if (route?.protected && !user$.value) {
+      sessionStorage.setItem('redirectAfterLogin', currentPath);
+      this.navigate('/login');
+    }
+  }
+
+  /**
    * Инициализирует роутер, выполняя рендеринг начальной страницы по текущему URL-пути.
    * Должен быть вызван один раз после добавления всех маршрутов и установки страницы 404.
    */
   public start() {
-    this.render(globalThis.location.pathname);
+    // Если есть сохранённый редирект после логина, используем его (например, после логина)
+    const redirect = sessionStorage.getItem('redirectAfterLogin');
+    if (redirect && user$.value) {
+      sessionStorage.removeItem('redirectAfterLogin');
+      this.navigate(redirect);
+    } else {
+      this.render(globalThis.location.pathname);
+    }
+  }
+
+  /**
+   * Очистка подписок (вызывается при уничтожении приложения).
+   */
+  public destroy() {
+    this.unsubscribeUser?.();
+    // globalThis.removeEventListener('popstate', this.handlePopState.bind(this));
   }
 }
