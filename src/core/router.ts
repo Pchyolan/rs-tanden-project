@@ -1,6 +1,5 @@
 import { BaseComponent } from './base-component';
 import { Observable } from './observable';
-import { user$ } from '@/store/auth-store';
 
 export type Page = {
   render(): BaseComponent;
@@ -11,7 +10,6 @@ export type Page = {
 type Route = {
   path: string;
   page: () => Page;
-  protected?: boolean;
 };
 
 export class Router {
@@ -21,22 +19,19 @@ export class Router {
   private notFoundPage: (() => Page) | null = null;
 
   public currentPath$ = new Observable<string>(globalThis.location.pathname);
-  private readonly unsubscribeUser: (() => void) | null = null;
 
   constructor(root: BaseComponent) {
     this.root = root;
     globalThis.addEventListener('popstate', this.handlePopState.bind(this));
-    this.unsubscribeUser = user$.subscribe(() => this.handleAuthChange());
   }
 
   /**
    * Добавляет маршрут с фабричной функцией, которая создаёт экземпляр страницы.
    * @param path - путь маршрута
    * @param page - функция, возвращающая экземпляр Page
-   * @param isProtected - требует ли маршрут авторизации
    */
-  public addRoute(path: string, page: () => Page, isProtected: boolean = false) {
-    this.routes.push({ path, page, protected: isProtected });
+  public addRoute(path: string, page: () => Page) {
+    this.routes.push({ path, page });
   }
 
   /**
@@ -52,10 +47,14 @@ export class Router {
    * @param path - целевой путь
    * @param state - дополнительные данные состояния
    */
-  public navigate(path: string, state: object = {}) {
-    if (path === globalThis.location.pathname) return;
+  public navigate(path: string, replace: boolean = false, state: object = {}) {
+    if (path === globalThis.location.pathname && !replace) return;
 
-    globalThis.history.pushState(state, '', path);
+    if (replace) {
+      globalThis.history.replaceState(state, '', path);
+    } else {
+      globalThis.history.pushState(state, '', path);
+    }
     this.render(path);
   }
 
@@ -74,14 +73,6 @@ export class Router {
    */
   private render(path: string) {
     const route = this.routes.find((r) => r.path === path);
-
-    // Проверка авторизации для защищённых маршрутов
-    if (route?.protected && !user$.value) {
-      // Сохраняем целевой путь для редиректа после логина
-      sessionStorage.setItem('redirectAfterLogin', path);
-      this.navigate('/login');
-      return;
-    }
 
     if (this.currentPage) {
       this.currentPage.onDestroy?.();
@@ -114,38 +105,10 @@ export class Router {
   }
 
   /**
-   * Обработчик изменения состояния авторизации.
-   * Если пользователь вышел, а текущий маршрут защищён – редирект на логин.
-   */
-  private handleAuthChange() {
-    const currentPath = globalThis.location.pathname;
-    const route = this.routes.find((r) => r.path === currentPath);
-    if (route?.protected && !user$.value) {
-      sessionStorage.setItem('redirectAfterLogin', currentPath);
-      this.navigate('/login');
-    }
-  }
-
-  /**
    * Инициализирует роутер, выполняя рендеринг начальной страницы по текущему URL-пути.
    * Должен быть вызван один раз после добавления всех маршрутов и установки страницы 404.
    */
   public start() {
-    // Если есть сохранённый редирект после логина, используем его (например, после логина)
-    const redirect = sessionStorage.getItem('redirectAfterLogin');
-    if (redirect && user$.value) {
-      sessionStorage.removeItem('redirectAfterLogin');
-      this.navigate(redirect);
-    } else {
-      this.render(globalThis.location.pathname);
-    }
-  }
-
-  /**
-   * Очистка подписок (вызывается при уничтожении приложения).
-   */
-  public destroy() {
-    this.unsubscribeUser?.();
-    // globalThis.removeEventListener('popstate', this.handlePopState.bind(this));
+    this.render(globalThis.location.pathname);
   }
 }

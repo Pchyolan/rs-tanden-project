@@ -4,7 +4,8 @@ import sparkleImage from '@/assets/images/icons/sparkle.png';
 import './round-buttons.scss';
 
 export type RoundButtonProps = {
-  iconSrc: string;
+  iconSrc?: string;
+  iconSvg?: SVGElement;
   alt: string;
   tooltip: string | BaseComponent;
   onClick?: () => void;
@@ -36,12 +37,18 @@ export class RoundButton extends BaseComponent {
     }
 
     // Иконка
-    const icon = new BaseComponent<'img'>({
-      tag: 'img',
-      className: ['icon-button__icon'],
-      attrs: { src: props.iconSrc, alt: props.alt },
-    });
-    this.wrapper.append(icon);
+    if (props.iconSvg) {
+      const svgWrapper = new BaseComponent({ tag: 'div', className: ['icon-button__svg-wrapper'] });
+      svgWrapper.element.append(props.iconSvg);
+      this.wrapper.append(svgWrapper);
+    } else if (props.iconSrc) {
+      const icon = new BaseComponent<'img'>({
+        tag: 'img',
+        className: ['icon-button__icon'],
+        attrs: { src: props.iconSrc, alt: props.alt },
+      });
+      this.wrapper.append(icon);
+    }
 
     // Sparkle
     if (props.showSparkle !== false) {

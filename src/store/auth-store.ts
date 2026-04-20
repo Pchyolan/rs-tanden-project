@@ -6,26 +6,87 @@ import { loadSettings } from '@/store/settings-store';
 export const user$ = new Observable<User | null>(null);
 export const authLoading$ = new Observable<boolean>(true);
 
-// Инициализация: подписка на изменения +  получение сессии
-export async function initAuth() {
-  // Подписываемся на будущие изменения
+const STORAGE_KEY = 'app_mock_user';
+
+function saveMockUser(user: User | null): void {
+  if (user) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+  } else {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+}
+
+function loadMockUser(): User | null {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+export async function initAuth(): Promise<void> {
+  // Сначала пробуем восстановить из localStorage
+  const storedUser = loadMockUser();
+  if (storedUser) {
+    user$.set(storedUser);
+    authLoading$.set(false);
+    await loadSettings().catch(console.error);
+    return;
+  }
+
+  // Иначе ждём реальной аутентификации (мок или Supabase)
   authService.onAuthStateChange((user) => {
     user$.set(user);
     authLoading$.set(false);
     if (user) {
+      saveMockUser(user);
       void loadSettings().catch(console.error);
+    } else {
+      saveMockUser(null);
     }
   });
 
-  // Получаем текущую сессию (на случай, если уже была авторизация)
   const { data } = await authService.getSession();
-  user$.set(data?.session?.user ?? null);
-  authLoading$.set(false);
-
   const user = data?.session?.user ?? null;
   if (user) {
+    user$.set(user);
+    saveMockUser(user);
     await loadSettings().catch(console.error);
   }
+  authLoading$.set(false);
+}
+
+export function waitForAuth(): Promise<User | null> {
+  return new Promise((resolve) => {
+    const stored = loadMockUser();
+    if (stored) {
+      user$.set(stored);
+      resolve(stored);
+      return;
+    }
+
+    let resolved = false;
+    const {
+      data: { subscription },
+    } = authService.onAuthStateChange((user) => {
+      if (!resolved) {
+        resolved = true;
+        subscription.unsubscribe();
+        if (user) saveMockUser(user);
+        resolve(user);
+      }
+    });
+
+    setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        subscription.unsubscribe();
+        resolve(null);
+      }
+    }, 2000);
+  });
 }
 
 export async function loginApi(email: string, password: string): Promise<void> {
@@ -33,9 +94,10 @@ export async function loginApi(email: string, password: string): Promise<void> {
   try {
     const { data, error } = await authService.signIn(email, password);
     if (error) throw error;
-
-    user$.set(data?.user ?? null);
-    if (data?.user) {
+    const user = data?.user ?? null;
+    user$.set(user);
+    saveMockUser(user);
+    if (user) {
       await loadSettings().catch(console.error);
     }
   } finally {
@@ -48,9 +110,10 @@ export async function registrationApi(email: string, password: string, displayNa
   try {
     const { data, error } = await authService.registration(email, password, displayName);
     if (error) throw error;
-
-    user$.set(data?.user ?? null);
-    if (data?.user) {
+    const user = data?.user ?? null;
+    user$.set(user);
+    saveMockUser(user);
+    if (user) {
       await loadSettings().catch(console.error);
     }
   } finally {
@@ -60,10 +123,9 @@ export async function registrationApi(email: string, password: string, displayNa
 
 export async function logoutApi(): Promise<void> {
   authLoading$.set(true);
-
   await authService.signOut();
   user$.set(null);
-
+  saveMockUser(null);
   authLoading$.set(false);
 }
 

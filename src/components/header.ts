@@ -11,14 +11,17 @@ import achievementsIconUrl from '@/assets/images/icons/user.png';
 import settingsIconUrl from '@/assets/images/icons/settings.png';
 import logoutIconUrl from '@/assets/images/icons/sign-out.png';
 import appImageUrl from '@/assets/images/app-header.png';
+import { createHouseIcon } from '@/utils/svg-icon.ts';
 
 type HeaderCallbacks = {
+  onHome: () => void;
   onSignIn: () => void;
   onLogout: () => void;
   onSettings: () => void;
 };
 
 export class Header extends BaseComponent<'header'> {
+  private readonly homeButton: RoundButton;
   private readonly signInButton: RoundButton;
   private readonly achievementsButton: RoundButton;
   private readonly settingsButton: RoundButton;
@@ -59,6 +62,15 @@ export class Header extends BaseComponent<'header'> {
       className: ['header-buttons-container'],
     });
 
+    this.homeButton = new RoundButton({
+      iconSvg: createHouseIcon(),
+      alt: 'Home',
+      tooltip: translations[language$.value].home,
+      onClick: callbacks.onHome,
+      showSparkle: true,
+      tooltipPlacement: 'bottom',
+    });
+
     this.signInButton = new RoundButton({
       iconSrc: loginIconUrl,
       alt: 'Sign In',
@@ -96,7 +108,13 @@ export class Header extends BaseComponent<'header'> {
     });
     this.logoutButton.hide();
 
-    buttonsContainer.append(this.signInButton, this.achievementsButton, this.settingsButton, this.logoutButton);
+    buttonsContainer.append(
+      this.homeButton,
+      this.signInButton,
+      this.achievementsButton,
+      this.settingsButton,
+      this.logoutButton
+    );
 
     contentContainer.append(appNameContainer, buttonsContainer);
     this.append(contentContainer);
@@ -115,6 +133,11 @@ export class Header extends BaseComponent<'header'> {
   }
 
   private updateTexts(): void {
+    if (this.homeButton) {
+      const homeTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.homeButton.element);
+      homeTooltip.textContent = translations[language$.value].home;
+    }
+
     if (this.signInButton) {
       const signInTooltip = getElementWithType(HTMLDivElement, 'icon-button__tooltip', this.signInButton.element);
       signInTooltip.textContent = translations[language$.value].signIn;
@@ -150,6 +173,7 @@ export class Header extends BaseComponent<'header'> {
     const isAuthPage = currentPath === '/login' || currentPath === '/reset-password';
 
     if (isAuthPage) {
+      this.homeButton.hide();
       this.signInButton.hide();
       this.achievementsButton.hide();
       this.settingsButton.hide();
@@ -160,11 +184,15 @@ export class Header extends BaseComponent<'header'> {
     const user = user$.value;
     if (user) {
       this.signInButton.hide();
+
+      this.homeButton.show();
       this.achievementsButton.show();
       this.settingsButton.show();
       this.logoutButton.show();
     } else {
       this.signInButton.show();
+
+      this.homeButton.hide();
       this.achievementsButton.hide();
       this.settingsButton.hide();
       this.logoutButton.hide();
