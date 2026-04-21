@@ -42,7 +42,7 @@
 
 .graph-object {
   cursor: pointer;
-  transition: filter $transition-speed;
+  transition: all $transition-speed ease-out;
 
   .object-rect {
     fill: url('#objectGradient');
@@ -87,9 +87,6 @@
 
   &.collecting {
     opacity: 0;
-    transition:
-      transform $transition-speed ease-out,
-      opacity $transition-speed ease-out;
     transform-box: fill-box;
     transform-origin: 50% 50%;
     transform: scale(0);
