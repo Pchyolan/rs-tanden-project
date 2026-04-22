@@ -9,7 +9,7 @@ export function memoryGamePage(): Page {
     render() {
       const items: TicketItem[] = [
         { type: 'memory-game', id: 'gc-007' },
-        { type: 'memory-game', id: 'gc-008' },
+        { type: 'memory-game', id: 'gc-000' },
         { type: 'memory-game', id: 'gc-009' },
         { type: 'memory-game', id: 'gc-010' },
         { type: 'quiz', id: 'quiz-1' },

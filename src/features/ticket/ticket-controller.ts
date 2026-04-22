@@ -10,6 +10,7 @@ import raskrasImg from '@/assets/raskras.png';
 import { createLeftArrow, createRightArrow } from '@/utils/svg-icon';
 
 import './ticket-controller.scss';
+import { showToast } from '@/services/toast-service.ts';
 
 export class TicketPageController extends BaseComponent {
   private currentIndex: number = 0;
@@ -137,22 +138,28 @@ export class TicketPageController extends BaseComponent {
       return;
     }
 
-    const currentItem = this.ticketItems[this.currentIndex];
-    if (currentItem) {
-      const { type, id } = currentItem;
-      this.currentWidget = this.factory.create(type, id);
+    try {
+      const currentItem = this.ticketItems[this.currentIndex];
+      if (currentItem) {
+        const { type, id } = currentItem;
+        this.currentWidget = this.factory.create(type, id);
 
-      this.currentWidget.on(widgetEvents.Ready, () => {
-        this.isLoading$.set(false);
-      });
+        this.currentWidget.on(widgetEvents.Ready, () => {
+          this.isLoading$.set(false);
+        });
 
-      this.currentWidget.on(widgetEvents.Complete, () => {
-        this.currentIndex++;
-        this.updateTaskSegments();
-        this.loadNext();
-      });
+        this.currentWidget.on(widgetEvents.Complete, () => {
+          this.currentIndex++;
+          this.updateTaskSegments();
+          this.loadNext();
+        });
 
-      this.currentWidgetWrapper.append(this.currentWidget.render());
+        this.currentWidgetWrapper.append(this.currentWidget.render());
+      }
+    } catch (error) {
+      showToast(`Failed to load widget: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
+      this.isLoading$.set(false);
+      // TODO: показать кнопку повторной загрузки (?)
     }
     this.updateTaskSegments();
     this.updateButtonsState();

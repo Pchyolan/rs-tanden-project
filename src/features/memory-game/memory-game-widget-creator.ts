@@ -9,6 +9,7 @@ import { gameActions } from './constants';
 import { widgetEvents } from '@/constants';
 
 import { SoundKey, SoundService } from '@/services/sound-service';
+import { showToast } from '@/services/toast-service';
 
 import { GameState } from '@/features/memory-game/core/game-state';
 import { GameMachine } from '@/features/memory-game/core/game-machine';
@@ -79,6 +80,7 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
       this.readyHandler?.();
     } catch (error) {
       console.log('Failed to load memory game widget', error);
+      showToast('Failed to load widget. Please try again.', 'error');
       this.gameMachine.transition({ type: gameActions.loadError, error: String(error) });
     }
   }
@@ -127,7 +129,7 @@ export class MemoryGameWidgetCreator extends BaseComponent implements WidgetComp
       this.completeHandler?.();
     } catch {
       this.gameMachine.transition({ type: gameActions.submitError });
-      this.showNotification('Network error. Please try again.', 'error');
+      showToast('Network error. Please try again.', 'error');
       this.completeHandler?.();
     }
   };

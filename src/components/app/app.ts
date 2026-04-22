@@ -3,6 +3,7 @@ import { Header } from '../header.ts';
 import { Footer } from '../footer.ts';
 
 import { routes } from '@/constants';
+import { ToastContainer } from '@/components';
 import { logoutApi, user$ } from '@/store/auth-store';
 
 import {
@@ -26,6 +27,8 @@ export class App extends BaseComponent {
 
   public router: Router;
   private unsubscribeUser: (() => void) | null = null;
+
+  private readonly toastContainer: ToastContainer;
 
   constructor() {
     super({ tag: 'div', className: ['app-container'] });
@@ -56,7 +59,8 @@ export class App extends BaseComponent {
 
     this.footer = new Footer();
 
-    this.append(this.header, this.mainContainer, this.footer);
+    this.toastContainer = new ToastContainer();
+    this.append(this.header, this.mainContainer, this.footer, this.toastContainer);
 
     this.setupRoutes();
     this.setupAuthGuard();
